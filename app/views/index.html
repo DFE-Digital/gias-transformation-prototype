@@ -1,0 +1,146 @@
+{% extends "layouts/main.html" %}
+
+{% set pageName="Home" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/accessible-autocomplete/dist/accessible-autocomplete.min.css" />
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-m">
+      Get information about schools
+    </h1>
+
+    <p class="govuk-body">
+      This service contains information about schools and school groups in England. 
+    </p>
+
+    <div class="govuk-form-group search--home">
+      <label class="govuk-label govuk-label--xl" for="search">
+        Search for a school or school group
+      </label>
+      <div id="search-hint" class="govuk-hint">
+        Search by school name, group name, URN, UID, or local authority
+      </div>
+      <div class="govuk-input__wrapper">
+        <div id="search-autocomplete-container"></div>
+        <button class="govuk-button" style="margin-bottom: 0;" id="search-button">Search</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible section-break--blue">
+    
+    <h2 class="govuk-heading-m">
+      Looking for more information?
+    </h2>
+    
+    <p class="govuk-body">
+      For more in-depth information about schools and school groups, including:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>contact information</li>
+      <li>school features</li>
+      <li>policies</li>
+      <li>performance data</li>
+    </ul>
+    <p class="govuk-body">
+      please visit our new service, <a class="govuk-link" href="#">School Profiles</a>.
+    </p>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    
+    <h2 class="govuk-heading-m">
+      Interested in other areas of the United Kingdom?
+    </h2>
+
+    <p class="govuk-body">
+      Visit the following links for:
+    </p>
+    
+    <ul class="govuk-list govuk-list">
+      <li><a class="govuk-link" href="https://education.gov.scot/">Scotland</a></li>
+      <li><a class="govuk-link" href="https://mylocalschool.gov.wales/">Wales</a></li>
+      <li><a class="govuk-link" href="https://apps.education-ni.gov.uk/appinstitutes/default.aspx">Northern Ireland</a></li>
+    </ul>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script src="https://unpkg.com/accessible-autocomplete/dist/accessible-autocomplete.min.js"></script>
+<script>
+  accessibleAutocomplete({
+    element: document.querySelector('#search-autocomplete-container'),
+    id: 'search',
+    name: 'term',
+    minLength: 2,
+    showNoOptionsFound: true,
+    menuAttributes: {
+      'aria-labelledby': 'search-hint'
+    },
+    source: function (query, populateResults) {
+      fetch('/api/schools?q=' + encodeURIComponent(query))
+        .then(function (response) { return response.json() })
+        .then(function (data) {
+          populateResults(data)
+        })
+    },
+    onConfirm: function (confirmed) {
+      if (!confirmed) return
+
+      // Extract URN or UID from the confirmed string e.g. "St Paul's Academy (URN: 105135) — Greenwich"
+      var match = confirmed.match(/\((?:URN|UID):\s*(\d+)\)/)
+      if (match) {
+        window.location.href = '/results?id=' + match[1]
+      } else {
+        window.location.href = '/results?q=' + encodeURIComponent(confirmed)
+      }
+    }
+  })
+
+  // Handle free-text search on enter key without selecting from autocomplete
+  document.querySelector('#search').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var val = this.value.trim()
+      if (val.length > 0) {
+        // Check if it looks like an autocomplete selection (contains URN/UID)
+        var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
+        if (match) {
+          window.location.href = '/results?id=' + match[1]
+        } else {
+          window.location.href = '/results?q=' + encodeURIComponent(val)
+        }
+      }
+    }
+  })
+
+  // Search button
+  document.querySelector('#search-button').addEventListener('click', function () {
+  var val = document.querySelector('#search').value.trim()
+  if (val.length > 0) {
+    var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
+    if (match) {
+      window.location.href = '/results?id=' + match[1]
+    } else {
+      window.location.href = '/results?q=' + encodeURIComponent(val)
+    }
+  }
+})
+</script>
+{% endblock %}

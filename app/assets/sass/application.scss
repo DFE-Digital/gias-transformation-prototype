@@ -1,0 +1,56 @@
+//
+// For guidance on how to add CSS and SCSS see:
+// https://prototype-kit.service.gov.uk/docs/adding-css-javascript-and-images
+// 
+
+// Add extra styles here
+
+@import 'node_modules/dfe-frontend/packages/dfefrontend';
+
+.govuk-width-container {
+    @include govuk-width-container;
+}
+
+@import url('https://rsms.me/inter/inter.css');
+$govuk-font-family: 'Inter', sans-serif;
+
+.tableNumbers{
+      font-feature-settings: 'tnum' 1, 'ss01' 1, 'zero' 1;
+  }
+
+.govuk-header__link .govuk-header__logotype{
+  height: 30px;
+}
+
+.govuk-header__link:focus .govuk-header__logotype{
+  content: url(/public/images/department-for-education_black.png);
+  height: 30px;
+}
+
+.section-break--blue {
+  border-bottom: 4px solid;
+  border-bottom-color: #1d70b8;
+}
+
+// Search autocomplete - home page
+.search--home .autocomplete__input {
+  width: 100%;
+  height: 50px;
+  font-size: 1.1875rem;
+}
+
+.search--home #search-autocomplete-container {
+  flex: 1;
+}
+
+.search--home .govuk-input__wrapper {
+  width: 100%;
+}
+
+.moj-filter__tag::after {
+  background-image: url('/public/images/icon-tag-remove-cross.svg');
+}
+
+.moj-filter__tag:hover::after {
+  background-image: url('/public/images/icon-tag-remove-cross-white.svg');
+}

@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "dev": "govuk-prototype-kit dev",
+    "serve": "govuk-prototype-kit serve",
+    "start": "govuk-prototype-kit start"
+  },
+  "dependencies": {
+    "@govuk-prototype-kit/common-templates": "3.0.0",
+    "@ministryofjustice/frontend": "^9.0.0",
+    "accessible-autocomplete": "^3.0.1",
+    "dfe-frontend": "^2.0.1",
+    "govuk-frontend": "^6.1.0",
+    "govuk-prototype-kit": "13.19.1",
+    "moment": "^2.30.1"
+  },
+  "govuk-prototype-kit": {
+    "plugins": {
+      "@ministryofjustice/frontend": {
+        "scripts": ["/moj/moj-frontend.min.js"],
+        "assets": ["/moj/assets"],
+        "stylesheets": ["/moj/moj-frontend.min.css"]
+      }
+    }
+  }
+}

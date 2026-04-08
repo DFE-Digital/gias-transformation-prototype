@@ -1,0 +1,9 @@
+{
+  "serviceName": "GIAS Transformation",
+  "useServiceNavigation": true,
+  "plugins": {
+    "govuk-frontend": {
+      "rebrand": true
+    }
+  }
+}

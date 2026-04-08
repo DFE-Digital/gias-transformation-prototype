@@ -1,0 +1,51 @@
+{% from 'node_modules/dfe-frontend/packages/components/header/macro.njk' import header %}
+
+{% extends "govuk-prototype-kit/layouts/govuk-branded.njk" %}
+
+{% block header %}
+
+{% include "includes/header.html" %}
+
+{% endblock %}
+
+<html class="govuk-template--rebranded">
+{% block content %}
+
+{% endblock %}
+</html>
+
+{% block footer %}
+ {{ govukFooter({
+   meta: {
+     items: [
+      {
+        href:"/manage-prototype",
+        text:"Manage your prototype"
+      },
+       {
+         href: "/manage-prototype/clear-data",
+         text: "Clear data"
+       }
+     ],
+     visuallyHiddenTitle: "Footer links"
+   }
+ }) }}
+{% endblock %}
+
+{# 4 #}
+{% block scripts %}
+  {{ super() }}
+  <script src="/public/javascripts/dfefrontend.js"></script>
+  <script type="text/javascript" src="assets/javascripts/autocomplete.js"></script>
+  <link rel="stylesheet" href="assets/css/accessible-autocomplete.min.css" />
+  <script type="text/javascript" src="/public/javascripts/moj/all.js"></script>
+<script type="text/javascript">
+  if (typeof MOJFrontend.MultiFileUpload !== "undefined") {
+  new MOJFrontend.MultiFileUpload({
+    container: $(".moj-multi-file-upload"),
+    uploadUrl: "/ajax-upload",
+    deleteUrl: "/ajax-delete",
+  });
+}
+</script>
+{% endblock %}

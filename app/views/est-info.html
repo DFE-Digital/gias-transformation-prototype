@@ -1,0 +1,64 @@
+{% set activeNav = "My data" %}
+
+{% extends "layouts/service-index.html" %}
+
+{% block pageTitle %}
+  GOV.UK page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block content %}
+
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: "Harewick and Dubourne Community Primary School"
+    },
+    actions: {
+      items: [
+        {
+          href: "#",
+          text: "Edit"
+        }
+      ]
+    }
+  },
+  rows: [
+    {
+      key: {
+        text: "Postal address"
+      },
+      value: {
+        html: "Orange Lane, Harewick, Corbridge, Corgridgeshire, CO23 7GE"
+      }
+    },
+    {
+      key: {
+        text: "Establishment type"
+      },
+      value: {
+        html: "Community school"
+      }
+    },
+    {
+      key: {
+        text: "URN"
+      },
+      value: {
+        html: "112233"
+      }
+    },
+    {
+      key: {
+        text: "Status"
+      },
+      value: {
+        html: govukTag({
+        text: "Open",
+        classes: "govuk-tag--green"
+      })
+      }
+    }
+  ]
+}) }}
+
+{% endblock %}
