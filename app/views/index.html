@@ -12,30 +12,65 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <h1 class="govuk-heading-m">
-      Get information about schools
+    <h1 class="govuk-heading-xl">
+      Get information about schools register
     </h1>
 
     <p class="govuk-body">
-      This service contains information about schools and school groups in England. 
+      Use this register to search or download publicly available information on educational establishments in England.
+    </p>
+      
+    <p class="govuk-body">
+      This register is also used by Department for Education (DfE) and key partners to contact establishments, update systems, perfrom analysis and inform policy decisons like funding. . 
     </p>
 
     <div class="govuk-form-group search--home">
-      <label class="govuk-label govuk-label--xl" for="search">
-        Search for a school or school group
+      <label class="govuk-label govuk-label--l" for="search">
+        Search the register
       </label>
       <div id="search-hint" class="govuk-hint">
         Search by school name, group name, URN, UID, or local authority
       </div>
-      <div class="govuk-input__wrapper">
-        <div id="search-autocomplete-container"></div>
-        <button class="govuk-button" style="margin-bottom: 0;" id="search-button">Search</button>
+      <div style="display: flex; align-items: flex-start; gap: 0px;">
+        <div id="search-autocomplete-container" style="flex: 1;">
+        </div>
+        <button class="govuk-button" style="margin-bottom: 0; height: 48px;" id="search-button">
+          Search
+        </button>
       </div>
     </div>
+
+    <p class="govuk-body">
+      Or <a href="#" class="govuk-link">view all schools and school groups</a>.
+    </p>
 
   </div>
 </div>
 
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    
+    <h2 class="govuk-heading-l">
+      Download information from the register
+    </h2>
+    
+    <p class="govuk-body">
+      Download publicly available information as CSV files, or request access to our API.
+    </p>
+    <!--<p class="govuk-body">
+      Ideal for users who want to perform their own analysis, maintain up-to-date information, or make use of this information in their own services.
+    </p>-->
+    <p class="govuk-body">
+      <a href="#" class="govuk-link">Visit downloads</a>
+    </p>
+    <!--<div class="govuk-inset-text">
+      Did you know you can also download information from search results?
+    </div>-->
+  </div>
+</div>
+
+<!--
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible section-break--blue">
@@ -79,6 +114,7 @@
 
   </div>
 </div>
+-->
 
 {% endblock %}
 

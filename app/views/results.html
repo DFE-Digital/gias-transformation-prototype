@@ -32,9 +32,12 @@
       <div id="search-hint" class="govuk-hint">
         Search by school name, group name, URN, UID, or local authority
       </div>
-      <div class="govuk-input__wrapper">
-        <div id="search-autocomplete-container"></div>
-        <button class="govuk-button" id="search-button">Search</button>
+      <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div id="search-autocomplete-container" style="flex: 1;">
+        </div>
+        <button class="govuk-button" style="margin-bottom: 0;" id="search-button">
+          Search
+        </button>
       </div>
     </div>
 
@@ -87,7 +90,7 @@
         items: laOptions
       }) }}
 
-      {{ govukCheckboxes({
+<!--  {{ govukCheckboxes({
         idPrefix: "sen_provision",
         name: "sen_provision",
         classes: "govuk-checkboxes--small",
@@ -98,7 +101,7 @@
           }
         },
         items: senOptions
-      }) }}
+      }) }}-->
 
     {% endset %}
 
@@ -132,6 +135,9 @@
       <p class="govuk-body">No results found for <strong>{{ query }}</strong>.</p>
 
     {% else %}
+      <p class="govuk-body">
+        <a href="#" class="govuk-link">Download these search results</a>
+      </p>
 
       <p class="govuk-body">
         {{ totalResults }} result{{ 's' if totalResults !== 1 }} found for <strong>{{ query }}</strong>.

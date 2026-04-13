@@ -32,7 +32,9 @@ $govuk-font-family: 'Inter', sans-serif;
   border-bottom-color: #1d70b8;
 }
 
+
 // Search autocomplete - home page
+
 .search--home .autocomplete__input {
   width: 100%;
   height: 50px;
@@ -45,6 +47,20 @@ $govuk-font-family: 'Inter', sans-serif;
 
 .search--home .govuk-input__wrapper {
   width: 100%;
+}
+
+.search__wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  #search-autocomplete-container {
+    flex: 1;
+  }
+
+  .govuk-button {
+    margin-bottom: 0;
+  }
 }
 
 .moj-filter__tag::after {
