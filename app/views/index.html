@@ -139,11 +139,9 @@
     },
     onConfirm: function (confirmed) {
       if (!confirmed) return
-
-      // Extract URN or UID from the confirmed string e.g. "St Paul's Academy (URN: 105135) — Greenwich"
       var match = confirmed.match(/\((?:URN|UID):\s*(\d+)\)/)
       if (match) {
-        window.location.href = '/results?id=' + match[1]
+        window.location.href = '/establishment/' + match[1] + '?from=/index'
       } else {
         window.location.href = '/results?q=' + encodeURIComponent(confirmed)
       }

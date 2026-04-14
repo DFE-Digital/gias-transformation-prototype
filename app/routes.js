@@ -227,7 +227,25 @@ var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { r
     hasActiveFilters: hasActiveFilters,
     clearFiltersHref: buildClearFiltersUrl(req),
     searchQ: q,
-    searchId: exactId
+    searchId: exactId,
+    currentUrl: req.originalUrl
+  })
+})
+
+// Individual school/group detail page
+router.get('/establishment/:id', function (req, res) {
+  var id = req.params.id
+  var item = giasData.find(function (item) {
+    return item.id === id
+  })
+
+  if (!item) {
+    return res.status(404).render('404')
+  }
+
+  res.render('establishment', {
+    item: item,
+    backLink: req.query.from || '/results'
   })
 })
 

@@ -132,21 +132,24 @@
       <p class="govuk-body">No results found for <strong>{{ query }}</strong>.</p>
 
     {% else %}
-      <p class="govuk-body">
-        <a href="#" class="govuk-link">Download these search results</a>
-      </p>
 
-      <p class="govuk-body">
+      <p class="govuk-body-l">
         {{ totalResults }} result{{ 's' if totalResults !== 1 }} found for <strong>{{ query }}</strong>.
         {% if totalPages > 1 %}
           Showing page {{ currentPage }} of {{ totalPages }}.
         {% endif %}
       </p>
 
+      <p class="govuk-body">
+        <a href="#" class="govuk-link">Download these search results</a>
+      </p>
+
       {% for item in results %}
         <div class="govuk-summary-card">
           <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">{{ item.name }}</h2>
+            <h2 class="govuk-summary-card__title">
+              <a class="govuk-link govuk-link--no-visited-state" href="/establishment/{{ item.id }}?from={{ currentUrl | urlencode }}">{{ item.name }}</a>
+            </h2>
           </div>
           <div class="govuk-summary-card__content">
             <dl class="govuk-summary-list">
