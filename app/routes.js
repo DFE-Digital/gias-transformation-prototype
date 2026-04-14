@@ -104,6 +104,15 @@ var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { r
 
   var startIndex = (currentPage - 1) * RESULTS_PER_PAGE
   var pageResults = filteredResults.slice(startIndex, startIndex + RESULTS_PER_PAGE)
+  pageResults = pageResults.map(function (item) {
+    if (item.id_type === 'UID' || item.id_type === 'Group UID') {
+      var memberCount = giasData.filter(function (school) {
+        return school.part_of && school.part_of.group_uid === item.id
+      }).length
+      return Object.assign({}, item, { memberCount: memberCount })
+    }
+    return item
+  })
 
   // Pagination items
   var paginationItems = []
@@ -243,8 +252,17 @@ router.get('/establishment/:id', function (req, res) {
     return res.status(404).render('404')
   }
 
+  // If it's a group, find all member schools
+  var members = []
+  if (item.id_type === 'UID' || item.id_type === 'Group UID') {
+    members = giasData.filter(function (school) {
+      return school.part_of && school.part_of.group_uid === id
+    })
+  }
+
   res.render('establishment', {
     item: item,
+    members: members,
     backLink: req.query.from || '/results'
   })
 })

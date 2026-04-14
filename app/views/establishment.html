@@ -9,10 +9,13 @@
     
     <a href="/index" class="home-link">Home</a>
 
-    {{ govukBackLink({
-      text: "Back to results",
-      href: backLink
-    }) }}
+    {% if backLink != '/results' %}
+      {{ govukBackLink({
+        text: "Back to results",
+        href: backLink
+      }) }}
+    {% endif %}
+
   </nav>
 {% endblock %}
 
@@ -61,7 +64,10 @@
           {% if item.part_of %}
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Part of</dt>
-              <dd class="govuk-summary-list__value">{{ item.part_of.group_name }} (UID: {{ item.part_of.group_uid }})</dd>
+              <dd class="govuk-summary-list__value">
+               <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}?from={{ backLink | urlencode }}">{{ item.part_of.group_name }}</a>
+                (UID: {{ item.part_of.group_uid }})
+              </dd>
             </div>
           {% endif %}
 
@@ -76,9 +82,30 @@
 
     </dl>
 
-    <div class="govuk-inset-text">
-      Information last updated: 8 March 2026
-    </div>
+    {% if members.length > 0 %}
+      <h2 class="govuk-heading-m govuk-!-margin-top-6">Member establishments ({{ members.length }})</h2>
+      <dl class="govuk-summary-list">
+        {% for member in members %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              <a class="govuk-link govuk-link--no-visited-state" href="/establishment/{{ member.id }}?from=/establishment/{{ item.id }}">{{ member.name }}</a>
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ member.type }}{% if member.local_authority %} — {{ member.local_authority }}{% endif %}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ member.id_type }}: {{ member.id }}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% if item.id_type === 'URN' %}
+      <div class="govuk-inset-text">
+        Information last updated: 8 March 2026
+      </div>
+    {% endif %}
 
   </div>
 </div>

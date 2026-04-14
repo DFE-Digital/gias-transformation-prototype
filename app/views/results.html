@@ -87,19 +87,6 @@
         items: laOptions
       }) }}
 
-<!--  {{ govukCheckboxes({
-        idPrefix: "sen_provision",
-        name: "sen_provision",
-        classes: "govuk-checkboxes--small",
-        fieldset: {
-          legend: {
-            text: "SEN provision",
-            classes: "govuk-fieldset__legend--m"
-          }
-        },
-        items: senOptions
-      }) }}-->
-
     {% endset %}
 
     <form method="get" action="/results">
@@ -190,13 +177,23 @@
                   {% if item.part_of %}
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">Part of</dt>
-                      <dd class="govuk-summary-list__value">{{ item.part_of.group_name }} (UID: {{ item.part_of.group_uid }})</dd>
+                      <dd class="govuk-summary-list__value">
+                        <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}">{{ item.part_of.group_name }}</a>
+                        (UID: {{ item.part_of.group_uid }})
+                      </dd>
                     </div>
                   {% endif %}
 
                 {% endif %}
 
               {% endfor %}
+
+              {% if item.memberCount %}
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Member establishments</dt>
+                  <dd class="govuk-summary-list__value">{{ item.memberCount }}</dd>
+                </div>
+              {% endif %}
 
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
