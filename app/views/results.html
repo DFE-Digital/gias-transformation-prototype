@@ -18,7 +18,7 @@
 {% block content %}
 
   <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
+  <div class="govuk-grid-column-one-half">
 
     <h1 class="govuk-heading-xl">Search results</h1>
 
@@ -29,7 +29,7 @@
       <div id="search-hint" class="govuk-hint">
         Enter an establishment name, location or UK provider number (UKPRN)
       </div>
-      <div style="display: flex; align-items: flex-start; gap: 10px;">
+      <div style="display: flex; align-items: flex-start; gap: 0;">
         <div id="search-autocomplete-container" style="flex: 1;">
         </div>
         <button class="govuk-button" style="margin-bottom: 0;" id="search-button">
@@ -230,6 +230,7 @@
     name: 'term',
     minLength: 2,
     showNoOptionsFound: true,
+    defaultValue: '{{ query }}',
     menuAttributes: {
       'aria-labelledby': 'search-hint'
     },
