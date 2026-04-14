@@ -14,6 +14,29 @@
 @import url('https://rsms.me/inter/inter.css');
 $govuk-font-family: 'Inter', sans-serif;
 
+// Home link
+
+.home-link {
+  font-size: 1rem;
+  line-height: 1.25;
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: 0.1578em;
+  display: inline-block;
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.home-link:link, .home-link:visited, .home-link:active {
+    color: var(--govuk-text-colour, #0b0c0c);
+}
+
+//
+
 .tableNumbers{
       font-feature-settings: 'tnum' 1, 'ss01' 1, 'zero' 1;
   }
@@ -31,7 +54,6 @@ $govuk-font-family: 'Inter', sans-serif;
   border-bottom: 4px solid;
   border-bottom-color: #1d70b8;
 }
-
 
 // Search autocomplete - home page
 
@@ -62,6 +84,8 @@ $govuk-font-family: 'Inter', sans-serif;
     margin-bottom: 0;
   }
 }
+
+// Filters
 
 .moj-filter__tag::after {
   background-image: url('/public/images/icon-tag-remove-cross.svg');

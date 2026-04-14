@@ -58,6 +58,8 @@ var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { r
     searchResults = giasData.filter(function (item) {
       return item.id === exactId
     })
+  } else if (q === '*') {
+    searchResults = giasData
   } else if (q.length > 0) {
     var qLower = q.toLowerCase()
     searchResults = giasData.filter(function (item) {
@@ -267,3 +269,7 @@ function buildClearFiltersUrl (req) {
   }).join('&')
   return '/results?' + qs
 }
+
+router.get('/all', function (req, res) {
+  res.redirect('/results?q=*')
+})

@@ -12,10 +12,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukBackLink({
-    text: "Home",
-    href: "/index"
-  }) }}
+  <a href="/index" class="home-link">Home</a>
 {% endblock %}
 
 {% block content %}
