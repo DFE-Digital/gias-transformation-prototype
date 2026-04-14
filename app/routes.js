@@ -309,3 +309,9 @@ function buildClearFiltersUrl (req) {
 router.get('/all', function (req, res) {
   res.redirect('/results?q=*')
 })
+
+// Fetch school profile page
+
+router.get('/school-profiles/about-the-school', function (req, res) {
+  res.render('school-profiles/about-the-school')
+})

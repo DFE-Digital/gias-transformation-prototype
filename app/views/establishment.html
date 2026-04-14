@@ -102,6 +102,14 @@
     {% endif %}
 
     {% if item.id_type === 'URN' %}
+      <p class="govuk-body govuk-!-margin-top-6">
+        <a href="/school-profiles/about-the-school" class="govuk-link" target="_blank" rel="noopener noreferrer">
+          View more information about this school on School Profiles (opens in new tab)
+        </a>
+      </p>
+    {% endif %}
+
+    {% if item.id_type === 'URN' %}
       <div class="govuk-inset-text">
         Information last updated: 8 March 2026
       </div>
