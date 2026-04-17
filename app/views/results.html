@@ -61,7 +61,7 @@
         items: typeOptions
       }) }}
 
-      {{ govukCheckboxes({
+      <!--{{ govukCheckboxes({
         idPrefix: "status",
         name: "status",
         classes: "govuk-checkboxes--small",
@@ -72,7 +72,7 @@
           }
         },
         items: statusOptions
-      }) }}
+    }) }}-->
 
       {{ govukCheckboxes({
         idPrefix: "local_authority",
@@ -121,7 +121,7 @@
     {% else %}
 
       <p class="govuk-body-l">
-        {{ totalResults }} result{{ 's' if totalResults !== 1 }} found for <strong>{{ query }}</strong>.
+        {{ totalResults }} result{{ 's' if totalResults !== 1 }}{% if query and query !== '*' %} found for <strong>{{ query }}</strong>{% endif %}.
         {% if totalPages > 1 %}
           Showing page {{ currentPage }} of {{ totalPages }}.
         {% endif %}
@@ -149,11 +149,11 @@
                     <dd class="govuk-summary-list__value">{{ item.type }}</dd>
                   </div>
 
-                {% elif field === 'status' %}
+                <!--{% elif field === 'status' %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Status</dt>
                     <dd class="govuk-summary-list__value">{{ item.status }}</dd>
-                  </div>
+                  </div>-->
 
                 {% elif field === 'open_date' %}
                   <div class="govuk-summary-list__row">
@@ -224,58 +224,61 @@
 {% block pageScripts %}
   <script src="https://unpkg.com/accessible-autocomplete/dist/accessible-autocomplete.min.js"></script>
   <script>
-  accessibleAutocomplete({
-    element: document.querySelector('#search-autocomplete-container'),
-    id: 'search',
-    name: 'term',
-    minLength: 2,
-    showNoOptionsFound: true,
-    defaultValue: '{{ query }}',
-    menuAttributes: {
-      'aria-labelledby': 'search-hint'
-    },
-    source: function (query, populateResults) {
-      fetch('/api/schools?q=' + encodeURIComponent(query))
-        .then(function (response) { return response.json() })
-        .then(function (data) {
-          populateResults(data)
-        })
-    },
-    onConfirm: function (confirmed) {
-      if (!confirmed) return
-      var match = confirmed.match(/\((?:URN|UID):\s*(\d+)\)/)
-      if (match) {
-        window.location.href = '/results?id=' + match[1]
-      } else {
-        window.location.href = '/results?q=' + encodeURIComponent(confirmed)
-      }
-    }
-  })
+    function buildSearchUrl (val) {
+    var params = new URLSearchParams(window.location.search)
+    
+    // Remove existing search params
+    params.delete('q')
+    params.delete('id')
+    params.delete('page')
 
-  document.querySelector('#search-button').addEventListener('click', function () {
-    var val = document.querySelector('#search').value.trim()
-    if (val.length > 0) {
+    if (val && val.length > 0) {
+      // Check if it looks like an autocomplete selection
       var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
       if (match) {
-        window.location.href = '/results?id=' + match[1]
+        params.set('id', match[1])
       } else {
-        window.location.href = '/results?q=' + encodeURIComponent(val)
+        params.set('q', val)
       }
     }
-  })
+    // If val is empty, no q or id param — filters remain, shows all
 
-  document.querySelector('#search').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      var val = this.value.trim()
-      if (val.length > 0) {
-        var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
-        if (match) {
-          window.location.href = '/results?id=' + match[1]
-        } else {
-          window.location.href = '/results?q=' + encodeURIComponent(val)
-        }
-      }
+    return '/results?' + params.toString()
     }
-  })
+
+    accessibleAutocomplete({
+      element: document.querySelector('#search-autocomplete-container'),
+      id: 'search',
+      name: 'term',
+      minLength: 2,
+      showNoOptionsFound: true,
+      defaultValue: '{{ query if query !== "*" else "" }}',
+      menuAttributes: {
+        'aria-labelledby': 'search-hint'
+      },
+      source: function (query, populateResults) {
+        fetch('/api/schools?q=' + encodeURIComponent(query))
+          .then(function (response) { return response.json() })
+          .then(function (data) {
+            populateResults(data)
+          })
+      },
+      onConfirm: function (confirmed) {
+        if (confirmed === undefined) return
+        window.location.href = buildSearchUrl(confirmed)
+      }
+    })
+
+    document.querySelector('#search-button').addEventListener('click', function () {
+      var val = document.querySelector('#search').value.trim()
+      window.location.href = buildSearchUrl(val)
+    })
+
+    document.querySelector('#search').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var val = this.value.trim()
+        window.location.href = buildSearchUrl(val)
+      }
+    })
   </script>
 {% endblock %}

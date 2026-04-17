@@ -25,6 +25,16 @@
 
     <span class="govuk-caption-l">{{ item.type }}</span>
     <h1 class="govuk-heading-l">{{ item.name }}</h1>
+    
+    {% if item.id_type === 'URN' %}
+        <p class="govuk-body govuk-!-margin-bottom-0">
+          <strong class="small-tag small-tag--green">Data verified</strong>
+        </p>
+    {% elif item.id_type === 'UID' or item.id_type === 'Group UID' %}
+        <p class="govuk-body govuk-!-margin-bottom-0">
+          <strong class="small-tag small-tag--yellow">Not updated since 16 April 2024</strong>
+        </p>
+    {% endif %}
 
     <dl class="govuk-summary-list">
 
@@ -82,6 +92,53 @@
 
     </dl>
 
+    {% if item.id_type === 'URN' %}
+      <p class="govuk-body govuk-!-margin-top-6">
+        <a href="/school-profiles/about-the-school" class="govuk-link" target="_blank" rel="noopener noreferrer">
+          View more information about this school on School Profiles (opens in new tab)
+        </a>
+      </p>
+      <p class="govuk-body govuk-!-margin-top-6">
+        <a href="#" class="govuk-link" >
+          Download establishment information
+        </a>
+      </p>
+    {% endif %}
+
+    {% if item.id_type === 'UID' %}
+      <p class="govuk-body govuk-!-margin-top-6">
+        <a href="/school-profiles/about-the-school" class="govuk-link" target="_blank" rel="noopener noreferrer">
+          View more information about this group on School Profiles (opens in new tab)
+        </a>
+      </p>
+      <p class="govuk-body govuk-!-margin-top-6">
+        <a href="#" class="govuk-link" >
+          Download establishment group information
+        </a>
+      </p>
+    {% endif %}
+
+    {% if predecessors.length > 0 %}
+      <h2 class="govuk-heading-m govuk-!-margin-top-6">History</h2>
+      <p class="govuk-body">The following establishments previously operated from this location and may be predecessor establishments:</p>
+      <dl class="govuk-summary-list">
+        {% for predecessor in predecessors %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              <a class="govuk-link govuk-link--no-visited-state" href="/establishment/{{ predecessor.id }}?from=/establishment/{{ item.id }}">{{ predecessor.name }}</a>
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ predecessor.type }}{% if predecessor.local_authority %} — {{ predecessor.local_authority }}{% endif %}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              URN: {{ predecessor.id }}
+              {% if predecessor.close_date %} — Closed: {{ predecessor.close_date }}{% endif %}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
     {% if members.length > 0 %}
       <h2 class="govuk-heading-m govuk-!-margin-top-6">Member establishments ({{ members.length }})</h2>
       <dl class="govuk-summary-list">
@@ -99,20 +156,6 @@
           </div>
         {% endfor %}
       </dl>
-    {% endif %}
-
-    {% if item.id_type === 'URN' %}
-      <p class="govuk-body govuk-!-margin-top-6">
-        <a href="/school-profiles/about-the-school" class="govuk-link" target="_blank" rel="noopener noreferrer">
-          View more information about this school on School Profiles (opens in new tab)
-        </a>
-      </p>
-    {% endif %}
-
-    {% if item.id_type === 'URN' %}
-      <div class="govuk-inset-text">
-        Information last updated: 8 March 2026
-      </div>
     {% endif %}
 
   </div>

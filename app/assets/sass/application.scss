@@ -4,6 +4,7 @@
 // 
 
 // Add extra styles here
+$govuk-suppressed-warnings: ("govuk-text-colour");
 
 @import 'node_modules/dfe-frontend/packages/dfefrontend';
 
@@ -26,6 +27,7 @@ $govuk-font-family: 'Inter', sans-serif;
   text-decoration-thickness: max(1px, .0625rem);
   text-underline-offset: 0.1578em;
   display: block;
+  max-width: fit-content;
   position: relative;
   margin-top: 15px;
 }
@@ -92,4 +94,38 @@ $govuk-font-family: 'Inter', sans-serif;
 
 .moj-filter__tag:hover::after {
   background-image: url('/public/images/icon-tag-remove-cross-white.svg');
+}
+
+// Small tag
+
+.small-tag {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1;
+  color: #0f385c;
+  background-color: #d2e2f1;
+  display: block;
+  max-width: fit-content;
+  margin-top: 0;
+  margin-bottom: 5px;
+  padding-top: 3px;
+  padding-right: 8px;
+  padding-bottom: 3px;
+  padding-left: 8px;
+  border-radius: 1px;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+.small-tag--green {
+    color: #083d29;
+    background-color: #cfe4dc;
+}
+
+.small-tag--yellow {
+    color: #7a3c1c;
+    background-color: #ffee80;
 }

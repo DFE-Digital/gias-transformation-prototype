@@ -1,0 +1,267 @@
+{% extends "layouts/main.html" %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "moj/components/filter/macro.njk" import mojFilter %}
+
+{% set pageName = "Archive search (page " + currentPage + " of " + totalPages + ")" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/accessible-autocomplete/dist/accessible-autocomplete.min.css" />
+  {% endblock %}
+
+{% block beforeContent %}
+  <a href="/index" class="home-link">Home</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">Archive of closed establishments</h1>
+
+      <p class="govuk-body">This archive contains {{ totalArchive }} closed establishments that are not known to have a successor. Use the search below to find a specific establishment.</p>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--m" for="search">
+          Search the archive
+        </label>
+        <div id="search-hint" class="govuk-hint">
+          Search by establishment name, URN or local authority
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <div id="search-autocomplete-container" style="flex: 1;"></div>
+          <button class="govuk-button" style="margin-bottom: 0;" id="search-button">
+            Search
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+
+    {# Filter sidebar #}
+    <div class="govuk-grid-column-one-third">
+
+      {% set filterOptionsHtml %}
+
+        {{ govukCheckboxes({
+          idPrefix: "type",
+          name: "type",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Type",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: typeOptions
+        }) }}
+
+        <!--{{ govukCheckboxes({
+          idPrefix: "status",
+          name: "status",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Status",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: statusOptions
+        }) }}-->
+
+        {{ govukCheckboxes({
+          idPrefix: "local_authority",
+          name: "local_authority",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Local authority",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: laOptions
+        }) }}
+
+      {% endset %}
+
+      <form method="get" action="/archive">
+        {% if searchQ %}
+          <input type="hidden" name="q" value="{{ searchQ }}">
+        {% endif %}
+
+        {{ mojFilter({
+          heading: { text: "Filter" },
+          submit: { text: "Apply filters" },
+          selectedFilters: {
+            heading: { text: "Selected filters" },
+            clearLink: { text: "Clear filters", href: clearFiltersHref },
+            categories: selectedCategories
+          } if hasActiveFilters,
+          optionsHtml: filterOptionsHtml
+        }) }}
+
+      </form>
+
+    </div>
+
+    {# Results #}
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if query and results.length === 0 %}
+
+        <p class="govuk-body">No results found for <strong>{{ query }}</strong>.</p>
+
+      {% else %}
+
+        <p class="govuk-body-l">
+          {{ totalResults }} result{{ 's' if totalResults !== 1 }} found
+          {% if query %} for <strong>{{ query }}</strong>{% endif %}.
+          {% if totalPages > 1 %}
+            Showing page {{ currentPage }} of {{ totalPages }}.
+          {% endif %}
+        </p>
+
+        {% for item in results %}
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">
+                <a class="govuk-link govuk-link--no-visited-state" href="/establishment/{{ item.id }}?from={{ currentUrl | urlencode }}">{{ item.name }}</a>
+              </h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <dl class="govuk-summary-list">
+
+                {% for field in item.display_fields %}
+
+                  {% if field === 'type' %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Type</dt>
+                      <dd class="govuk-summary-list__value">{{ item.type }}</dd>
+                    </div>
+
+                  <!--{% elif field === 'status' %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Status</dt>
+                      <dd class="govuk-summary-list__value">{{ item.status }}</dd>
+                    </div>-->
+
+                  {% elif field === 'open_date' %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Opened</dt>
+                      <dd class="govuk-summary-list__value">{{ item.open_date if item.open_date else 'Not recorded' }}</dd>
+                    </div>
+
+                  {% elif field === 'local_authority' %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Local authority</dt>
+                      <dd class="govuk-summary-list__value">{{ item.local_authority if item.local_authority else 'Not recorded' }}</dd>
+                    </div>
+
+                  {% elif field === 'sen_provision' %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">SEN provision</dt>
+                      <dd class="govuk-summary-list__value">{{ 'Yes' if item.sen_provision else 'No' }}</dd>
+                    </div>
+
+                  {% elif field === 'part_of' %}
+                    {% if item.part_of %}
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Part of</dt>
+                        <dd class="govuk-summary-list__value">
+                          <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}">{{ item.part_of.group_name }}</a>
+                          (UID: {{ item.part_of.group_uid }})
+                        </dd>
+                      </div>
+                    {% endif %}
+
+                  {% endif %}
+
+                {% endfor %}
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
+                  <dd class="govuk-summary-list__value">{{ item.id }}</dd>
+                </div>
+
+              </dl>
+            </div>
+          </div>
+        {% endfor %}
+
+        {% if totalPages > 1 %}
+          {{ govukPagination({
+            previous: { href: prevHref } if prevHref,
+            next: { href: nextHref } if nextHref,
+            items: paginationItems
+          }) }}
+        {% endif %}
+
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block pageScripts %}
+  <script src="https://unpkg.com/accessible-autocomplete/dist/accessible-autocomplete.min.js"></script>
+  <script>
+    accessibleAutocomplete({
+      element: document.querySelector('#search-autocomplete-container'),
+      id: 'search',
+      name: 'term',
+      minLength: 2,
+      showNoOptionsFound: true,
+      defaultValue: '{{ query }}',
+      menuAttributes: {
+        'aria-labelledby': 'search-hint'
+      },
+      source: function (query, populateResults) {
+        fetch('/api/archive?q=' + encodeURIComponent(query))
+          .then(function (response) { return response.json() })
+          .then(function (data) {
+            populateResults(data)
+          })
+      },
+      onConfirm: function (confirmed) {
+        if (!confirmed) return
+        var match = confirmed.match(/\((?:URN|UID):\s*(\d+)\)/)
+        if (match) {
+          window.location.href = '/establishment/' + match[1] + '?from=/archive'
+        } else {
+          window.location.href = '/archive?q=' + encodeURIComponent(confirmed)
+        }
+      }
+    })
+
+    document.querySelector('#search-button').addEventListener('click', function () {
+      var val = document.querySelector('#search').value.trim()
+      if (val.length > 0) {
+        var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
+        if (match) {
+          window.location.href = '/establishment/' + match[1] + '?from=/archive'
+        } else {
+          window.location.href = '/archive?q=' + encodeURIComponent(val)
+        }
+      }
+    })
+
+    document.querySelector('#search').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var val = this.value.trim()
+        if (val.length > 0) {
+          var match = val.match(/\((?:URN|UID):\s*(\d+)\)/)
+          if (match) {
+            window.location.href = '/establishment/' + match[1] + '?from=/archive'
+          } else {
+            window.location.href = '/archive?q=' + encodeURIComponent(val)
+          }
+        }
+      }
+    })
+  </script>
+{% endblock %}
