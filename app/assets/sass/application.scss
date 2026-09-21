@@ -96,6 +96,7 @@ $govuk-font-family: 'Inter', sans-serif;
   @include govuk-media-query($from: tablet) {
     .dfe-grid-container {
       grid-template-columns: repeat(2, 1fr);
+      margin-bottom: 0;
     }
   }
 
@@ -158,6 +159,41 @@ $govuk-font-family: 'Inter', sans-serif;
 // Remove the default form-group bottom margin inside the panel.
 .dfe-search-panel .govuk-form-group {
   margin-bottom: 0;
+}
+
+// Browse-by-type block inside the search card, below the Search button.
+// A rule separates it from the primary search action; links are stacked so
+// they read as an alternative route rather than competing with the button.
+.dfe-search-panel__browse {
+  margin-top: govuk-spacing(4);
+  padding-top: govuk-spacing(4);
+  border-top: 1px solid govuk-colour("blue", $variant: "tint-50");
+}
+
+.dfe-browse-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 16px;  
+}
+
+
+.dfe-browse-list a {
+  display: flex;
+  gap: govuk-spacing(1);
+
+  // Chevron after the link text, drawn with an accessible, decorative arrow.
+  &::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border: solid currentColor;
+    border-width: 2px 2px 0 0;
+    transform: rotate(45deg);
+    flex: 0 0 auto;
+    align-self: anchor-center;
+  }
 }
 
 // ============================================================================

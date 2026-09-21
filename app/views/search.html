@@ -11,22 +11,19 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Search the register</h1>
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Search the records</h1>
       <p class="govuk-body-l">
-        Search for education providers, provider groups or governance records and download your search results.
+        Search official records for education providers, provider groups and governance roles in England. View key information and download your search results.
       </p>
     </div>
   </div>
 
-  {# Search panel — a shaded container around the form.
-     Inputs sit on white inside it, so there are no inverse-control concerns.
-     The form submits to /results; "What" maps to the q term the route reads.
-     "Where" is carried but not yet wired to location filtering. #}
+  <!-- Search panel -->
   <form method="get" action="/results" class="dfe-search-panel govuk-!-margin-bottom-6">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
 
-        <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search</p>
+        <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search.</p>
 
         <div class="govuk-grid-row">
 
@@ -67,44 +64,35 @@
           }) }}
         </div>
 
+        <!-- Browse records by type -->
+        <div class="dfe-search-panel__browse">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Or browse records by type</h2>
+          <ul class="govuk-list govuk-!-margin-bottom-0 dfe-browse-list">
+            <li>
+              <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*">
+                Browse all records
+              </a>
+            </li>
+            <li>
+              <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=provider">
+                Browse education providers
+              </a>
+            </li>
+            <li>
+              <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=group">
+                Browse education provider groups
+              </a>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </form>
 
-  {# Quick search — same pattern and labels as the home page #}
-  <div class="govuk-grid-row govuk-!-margin-bottom-4">
-    <div class="govuk-grid-column-full">
-
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Quick search</h2>
-
-      <ul class="govuk-list govuk-!-margin-bottom-0 dfe-quick-search-list">
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*">
-            Show all records
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=provider">
-            Show education providers only
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=group">
-            Show provider groups only
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-      </ul>
-
-    </div>
+  <!-- Inset text -->
+  <div class="govuk-inset-text">
+    Looking to compare schools or explore detailed provider information? Use <a class="govuk-link" href="#">School Profiles</a>.
   </div>
 
 {% endblock %}

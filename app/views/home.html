@@ -10,7 +10,7 @@
   No start button on the home page.
 #}
 {% set mastheadTitle = "Find education provider information" %}
-{% set mastheadDescription = "Search and download information about education providers, provider groups and governance records in England." %}
+{% set mastheadDescription = "Search and download the Department for Education's official records for education providers, provider groups and governance in England." %}
 
 {% block content %}
 
@@ -58,70 +58,40 @@
       {# Cards component - see node_modules/dfe-frontend/packages/components/card/macro.njk #}
 
       <div class="dfe-home-cards">
-      {{ card({
-        cards: [
-          {
-            "imageCard": false,
-            "imagePath": "",
-            "altText": "",
-            "headingLevel": "2",
-            "linkCard": true,
-            "link": "/search",
-            "openInNewTab": false,
-            "heading": "Search the register",
-            "description": "Search for education providers, provider groups or governance records and download your search results.",
-            "meta": ""
-          },
-          {
-            "imageCard": false,
-            "imagePath": "",
-            "altText": "",
-            "headingLevel": "2",
-            "linkCard": true,
-            "link": "/download",
-            "openInNewTab": false,
-            "heading": "Download datasets",
-            "description": "Download complete datasets for analysis, reporting or for use in your own systems.",
-            "meta": ""
-          }
-        ]
-      }) }}
+        {{ card({
+          cards: [
+            {
+              "imageCard": false,
+              "imagePath": "",
+              "altText": "",
+              "headingLevel": "2",
+              "linkCard": true,
+              "link": "/search",
+              "openInNewTab": false,
+              "heading": "Search the records",
+              "description": "Search official records for education providers, provider groups and governance roles.",
+              "meta": ""
+            },
+            {
+              "imageCard": false,
+              "imagePath": "",
+              "altText": "",
+              "headingLevel": "2",
+              "linkCard": true,
+              "link": "/download",
+              "openInNewTab": false,
+              "heading": "Download datasets",
+              "description": "Download complete datasets for analysis, reporting or for use in your own systems.",
+              "meta": ""
+            }
+          ]
+        }) }}
       </div>
-
-      <!-- QUICK SEARCH -->
-      <h2 class="govuk-heading-m govuk-!-margin-top-6 govuk-!-margin-bottom-2">Start with common searches</h2>
-
-      <ul class="govuk-list govuk-!-margin-bottom-0 dfe-quick-search-list">
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*">
-            Browse all records 
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=provider">
-            Browse education providers
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=group">
-            Browse provider groups
-            <svg class="dfe-quick-search-list__chevron" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-              <path d="M0 0h13l20 20-20 20H0l20-20z" fill="currentColor" transform="scale(0.4)" />
-            </svg>
-          </a>
-        </li>
-      </ul>
     
     </div>
-
   </div>
 
+  <!-- BREAK -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
@@ -134,25 +104,34 @@
 
       <h2 class="govuk-heading-l">Related services</h2>
 
-      <p class="govuk-body">
-        If you’re a parent or carer and want to know about a specific school or want to compare schools, use the <a class="govuk-link" href="#">School Profiles service (Opens in a new tab)</a>.
-      </p>
+      <h3 class="govuk-heading-m">School Profiles</h3>
 
       <p class="govuk-body">
-        For inspection reports, use the
-        <a class="govuk-link" href="#">Ofsted website (Opens in a new tab)</a>.
+        Explore detailed profiles of schools, colleges and other education providers. Compare providers and understand their characteristics, performance and provision.
+      </p>
+      <p class="govuk-body">
+      <a class="govuk-link" href="#">Explore School Profiles (opens in a new tab)</a>.
+      </p>
+
+      <h3 class="govuk-heading-m">Ofsted</h3>
+      <p class="govuk-body">
+        Access inspection reports and inspection information published by Ofsted for schools, colleges and other education providers.
+      </p>
+      <p class="govuk-body">
+      <a class="govuk-link" href="#">View Ofsted inspection reports (opens in a new tab)</a>.
       </p>
     
     </div>
   </div>
 
+  <!-- BREAK -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
     </div>
   </div>
 
-  <!-- EDUCATION PROVIDER LINKS -->
+  <!-- REST OF THE UK -->
   <div class="govuk-grid-row">
 
     <div class="govuk-grid-column-two-thirds">
@@ -160,7 +139,11 @@
       <h2 class="govuk-heading-l">Education providers in the rest of the United Kingdom</h2>
 
       <p class="govuk-body">
-        <a class="govuk-link" href="https://www.education-ni.gov.uk/">Department of Education Northern Ireland (Opens in a new tab)</a>
+        Find information about education providers outside England.
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="https://www.education-ni.gov.uk/">Northern Ireland Department of Education (opens in a new tab)</a>
       </p>
       <p class="govuk-body">
         <a class="govuk-link" href="https://education.gov.scot/">Education Scotland (Opens in a new tab)</a>

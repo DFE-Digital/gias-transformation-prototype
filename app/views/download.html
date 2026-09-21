@@ -9,13 +9,6 @@
 {% set pageName = "Download" %}
 {% set activeNav = "Download" %}
 
-{#
-  Build the "Select specific data" reveal as a variable so the radios call
-  below stays readable. It contains an instruction plus three separate
-  checkbox fieldsets (providers / provider groups / governance), each with
-  its own legend so every checkbox is bound to a named group — the
-  accessible way to sub-group a long checkbox list.
-#}
 {% set specificDataHtml %}
   <p class="govuk-body">Select all the data you need</p>
 
@@ -33,7 +26,7 @@
       { value: "closed-provider", text: "Closed education provider data (12 MB)" },
       { value: "open-academies-free", text: "Open academies and free schools data (5.84 MB)" },
       { value: "open-state-funded", text: "Open state-funded schools data (9.85 MB)" },
-      { value: "open-childrens-centres", text: "Open children’s centres data (0.85 MB)" }
+      { value: "open-childrens-centres", text: "Open children's centres data (0.85 MB)" }
     ]
   }) }}
 
@@ -113,11 +106,11 @@
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Download datasets</h1>
 
       <p class="govuk-body-l">
-        Download datasets of education providers, provider groups and governance for analysis or creating your own databases.
+        Download datasets from the Department for Education's official records of education providers, provider groups and governance in England.
       </p>
 
       {{ govukInsetText({
-        text: "Register last updated 7 July 2026"
+        text: "Records last updated 7 July 2026"
       }) }}
 
       {#
@@ -132,7 +125,7 @@
           name: "download-scope",
           fieldset: {
             legend: {
-              text: "What do you want to download?",
+              text: "What records do you want to download?",
               classes: "govuk-fieldset__legend--m",
               isPageHeading: false
             }
@@ -140,11 +133,11 @@
           items: [
             {
               value: "all",
-              text: "All information (345 MB)"
+              text: "All records (345 MB)"
             },
             {
               value: "specific",
-              text: "Select specific data",
+              text: "Selected records",
               conditional: {
                 html: specificDataHtml
               }
@@ -164,7 +157,7 @@
             name: "download-version",
             fieldset: {
               legend: {
-                text: "Which version of the information do you want to download?",
+                text: "Which version of the records do you want to download?",
                 classes: "govuk-fieldset__legend--m",
                 isPageHeading: false
               }
@@ -211,7 +204,7 @@
         }) }}
 
         {{ govukButton({
-          text: "Download file"
+          text: "Download dataset"
         }) }}
 
       </form>
