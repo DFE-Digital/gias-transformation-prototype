@@ -22,6 +22,22 @@
   {% endif %}
 {% endmacro %}
 
+{#
+  typeLabel — shows the broad type with the detailed GIAS type in brackets,
+  e.g. "Maintained school (Foundation school)". Falls back to whichever is
+  present, and collapses to one value when they match (ignoring case), so
+  "Children's Centre (Children's centre)" doesn't render redundantly.
+#}
+{% macro typeLabel(type, detail) %}
+  {%- if type and detail and (type | lower) != (detail | lower) -%}
+    {{ type }} ({{ detail }})
+  {%- elif type -%}
+    {{ type }}
+  {%- elif detail -%}
+    {{ detail }}
+  {%- endif -%}
+{% endmacro %}
+
 {% block beforeContent %}
   {{ govukBreadcrumbs({
     items: [
@@ -87,6 +103,13 @@
         <dt class="govuk-summary-list__key">Type</dt>
         <dd class="govuk-summary-list__value">{{ item.type }}</dd>
       </div>
+      {# School sponsor — only on trusts that GIAS also records as a sponsor #}
+      {% if item.school_sponsor %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">School sponsor</dt>
+          <dd class="govuk-summary-list__value">{{ item.school_sponsor }}</dd>
+        </div>
+      {% endif %}
 
     {% else %}
       {# ---------------------------------------------------------------------
@@ -137,7 +160,7 @@
       {# Type #}
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Type</dt>
-        <dd class="govuk-summary-list__value">{{ item.type }}</dd>
+        <dd class="govuk-summary-list__value">{{ typeLabel(item.type, item.type_detail) }}</dd>
       </div>
 
       {# Phase of education #}
@@ -167,11 +190,21 @@
       {% endif %}
 
       {# Part of #}
-      {% if item.part_of %}
+      {# A school can belong to more than one group, e.g. a federation and a
+         shared foundation trust, so part_of is a list. #}
+      {% if item.part_of and item.part_of.length %}
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Part of</dt>
+          <dt class="govuk-summary-list__key">Part of group</dt>
           <dd class="govuk-summary-list__value">
-            <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}?from={{ backLink | urlencode }}">{{ item.part_of.group_name }}</a>
+            {% if item.part_of.length == 1 %}
+              <a class="govuk-link" href="/establishment/{{ item.part_of[0].group_uid }}?from={{ backLink | urlencode }}">{{ item.part_of[0].group_name }}</a>
+            {% else %}
+              <ul class="govuk-list">
+                {% for group in item.part_of %}
+                  <li><a class="govuk-link" href="/establishment/{{ group.group_uid }}?from={{ backLink | urlencode }}">{{ group.group_name }}</a> ({{ group.group_type | lower }})</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
           </dd>
         </div>
       {% endif %}
@@ -208,11 +241,19 @@
         </div>
       {% endif %}
 
-      {# Religious character #}
+      {# Religious character — a legal designation #}
       {% if item.religious_character %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Religious character</dt>
           <dd class="govuk-summary-list__value">{{ item.religious_character }}</dd>
+        </div>
+      {% endif %}
+
+      {# Religious ethos — not a legal designation; indicates values or culture #}
+      {% if item.religious_ethos %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Religious ethos</dt>
+          <dd class="govuk-summary-list__value">{{ item.religious_ethos }}</dd>
         </div>
       {% endif %}
 

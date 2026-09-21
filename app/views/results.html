@@ -86,6 +86,140 @@
   </details>
 {% endmacro %}
 
+{#
+  Age range filter — two number inputs. A record matches when its statutory age
+  span overlaps the requested range, so either bound can be left blank.
+#}
+{% macro ageRangeSection(ageFrom, ageTo) %}
+  <details class="govuk-details dfe-filter-section" {% if ageFrom or ageTo %}open{% endif %}>
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">Age range</span>
+    </summary>
+    <div class="govuk-details__text">
+      <div class="govuk-date-input">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="age_from">From</label>
+            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="age_from" name="age_from" type="text" inputmode="numeric"
+              value="{{ ageFrom }}">
+          </div>
+        </div>
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="age_to">To</label>
+            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="age_to" name="age_to" type="text" inputmode="numeric"
+              value="{{ ageTo }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+{% endmacro %}
+
+{#
+  Date range filter — From and To, each as day/month/year. Any part can be left
+  blank: a year-only "From" counts from 1 January, a year-only "To" counts to
+  31 December, so broad searches work without entering full dates.
+#}
+{% macro dateRangeSection(title, prefix, fromParts, toParts) %}
+  <details class="govuk-details dfe-filter-section" {% if fromParts or toParts %}open{% endif %}>
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">{{ title }}</span>
+    </summary>
+    <div class="govuk-details__text">
+      {% for bound in [
+        { key: "from", label: "From", parts: fromParts },
+        { key: "to", label: "To", parts: toParts }
+      ] %}
+        {% set p = bound.parts or {} %}
+        <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">{{ bound.label }}</legend>
+          <div class="govuk-date-input">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_day">Day</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="{{ prefix }}_{{ bound.key }}_day" name="{{ prefix }}_{{ bound.key }}_day"
+                  type="text" inputmode="numeric" value="{{ p.d }}">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_month">Month</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="{{ prefix }}_{{ bound.key }}_month" name="{{ prefix }}_{{ bound.key }}_month"
+                  type="text" inputmode="numeric" value="{{ p.m }}">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_year">Year</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                  id="{{ prefix }}_{{ bound.key }}_year" name="{{ prefix }}_{{ bound.key }}_year"
+                  type="text" inputmode="numeric" value="{{ p.y }}">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      {% endfor %}
+    </div>
+  </details>
+{% endmacro %}
+
+{#
+  Provider type accordion.
+
+  Each parent group has a checkbox that selects or clears all of its child
+  types, and reveals the children so any can be unticked. The parent submits
+  no value of its own — only the child "type" checkboxes are sent — so without
+  JavaScript the children behave as an ordinary checkbox list and filtering
+  still works. JS adds the select-all, the indeterminate state, and the reveal.
+#}
+{% macro providerTypeSection(groups) %}
+  {% if groups.length > 0 %}
+    <details class="govuk-details dfe-filter-section" {% if groups | selectattr("anyChecked") | list | length %}open{% endif %}>
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">Provider type</span>
+      </summary>
+      <div class="govuk-details__text">
+        {% for group in groups %}
+          {% set groupId = "type-group-" + loop.index %}
+          <div class="dfe-type-group" data-module="dfe-type-group">
+            <div class="govuk-checkboxes govuk-checkboxes--small dfe-type-group__parent">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="{{ groupId }}" type="checkbox"
+                  data-type-group-toggle
+                  aria-controls="{{ groupId }}-children"
+                  aria-expanded="{{ "true" if group.anyChecked else "false" }}"
+                  {% if group.allChecked %}checked{% endif %}>
+                <label class="govuk-label govuk-checkboxes__label" for="{{ groupId }}">
+                  {{ group.name }} ({{ group.count }})
+                </label>
+              </div>
+            </div>
+            <div class="dfe-type-group__children" id="{{ groupId }}-children">
+              {{ govukCheckboxes({
+                idPrefix: groupId + "-child",
+                name: "type",
+                classes: "govuk-checkboxes--small",
+                fieldset: {
+                  legend: {
+                    text: group.name + " types",
+                    classes: "govuk-visually-hidden"
+                  }
+                },
+                items: group.children
+              }) }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </details>
+  {% endif %}
+{% endmacro %}
+
 {% block content %}
 
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">
@@ -135,13 +269,24 @@
     <div class="govuk-grid-column-one-third">
 
       {% set filterOptionsHtml %}
-        {{ filterSection("Provider type", typeOptions, "type", "type") }}
-        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
         {{ filterSection("Status", statusOptions, "status", "status") }}
+        {{ providerTypeSection(providerTypeGroups) }}
+        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
         {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
+        {{ ageRangeSection(ageFrom, ageTo) }}
         {{ filterSection("Gender", genderOptions, "gender", "gender") }}
-        {{ filterSection("Religious character and ethos", religionOptions, "religious_character", "religious_character") }}
+        {{ filterSection("Boarding provision", boardingOptions, "boarding", "boarding") }}
+        {{ filterSection("Nursery provision", nurseryOptions, "nursery_provision", "nursery_provision") }}
+        {{ filterSection("Sixth form provision", sixthFormOptions, "sixth_form", "sixth_form") }}
+        {{ filterSection("Religious character", religionOptions, "religious_character", "religious_character") }}
+        {{ filterSection("Religious ethos", ethosOptions, "religious_ethos", "religious_ethos") }}
+        {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
+        {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
+        {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
         {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
+        {{ filterSection("Further Education type", feTypeOptions, "fe_type", "fe_type") }}
+        {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
+        {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
         {{ filterSection("Section 41 approved", section41Options, "section_41", "section_41") }}
       {% endset %}
 
@@ -242,7 +387,7 @@
 
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Type</dt>
-                  <dd class="govuk-summary-list__value">{{ item.type }}</dd>
+                  <dd class="govuk-summary-list__value">{% if item.type_detail and (item.type | lower) != (item.type_detail | lower) %}{{ item.type }} ({{ item.type_detail }}){% else %}{{ item.type }}{% endif %}</dd>
                 </div>
 
                 {% if item.street or item.town or item.postcode %}
@@ -259,19 +404,27 @@
                   </div>
                 {% endif %}
 
-                {% if item.part_of %}
+                {% if item.part_of and item.part_of.length %}
                   <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Part of a group</dt>
+                    <dt class="govuk-summary-list__key">Part of group</dt>
                     <dd class="govuk-summary-list__value">
-                      <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}?from={{ currentUrl | urlencode }}">{{ item.part_of.group_name }}</a>
+                      {% if item.part_of.length == 1 %}
+                        <a class="govuk-link" href="/establishment/{{ item.part_of[0].group_uid }}?from={{ currentUrl | urlencode }}">{{ item.part_of[0].group_name }}</a>
+                      {% else %}
+                        <ul class="govuk-list">
+                          {% for group in item.part_of %}
+                            <li><a class="govuk-link" href="/establishment/{{ group.group_uid }}?from={{ currentUrl | urlencode }}">{{ group.group_name }}</a> ({{ group.group_type | lower }})</li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
                     </dd>
                   </div>
                 {% endif %}
 
-                {% if item.memberCount %}
+                {% if item.memberLabel %}
                   <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Academies</dt>
-                    <dd class="govuk-summary-list__value">{{ item.memberCount }}</dd>
+                    <dt class="govuk-summary-list__key">{{ item.memberLabel }}</dt>
+                    <dd class="govuk-summary-list__value">{{ item.memberValue }}</dd>
                   </div>
                 {% endif %}
 
@@ -352,6 +505,50 @@
             form.submit()
           }
         })
+      })
+    })()
+
+    // Provider type accordion.
+    // The parent checkbox selects/clears every child in its group and reveals
+    // the list so individual types can be unticked. It carries no value itself,
+    // so with JS off the children still submit normally.
+    ;(function () {
+      var groups = document.querySelectorAll('[data-module="dfe-type-group"]')
+      Array.prototype.forEach.call(groups, function (group) {
+        var parent = group.querySelector('[data-type-group-toggle]')
+        var childWrap = group.querySelector('.dfe-type-group__children')
+        var children = group.querySelectorAll('.dfe-type-group__children input[type="checkbox"]')
+        if (!parent || !childWrap || children.length === 0) { return }
+
+        function setExpanded (expanded) {
+          parent.setAttribute('aria-expanded', expanded ? 'true' : 'false')
+          group.classList.toggle('dfe-type-group--open', expanded)
+        }
+
+        function syncFromChildren () {
+          var checked = 0
+          Array.prototype.forEach.call(children, function (c) { if (c.checked) checked++ })
+          parent.checked = checked > 0 && checked === children.length
+          parent.indeterminate = checked > 0 && checked < children.length
+          // Keep the group open while any child is selected.
+          if (checked > 0) { setExpanded(true) }
+        }
+
+        parent.addEventListener('change', function () {
+          Array.prototype.forEach.call(children, function (c) { c.checked = parent.checked })
+          parent.indeterminate = false
+          // Ticking reveals the children so they can be refined; unticking
+          // leaves the group open so the user can see what changed.
+          setExpanded(true)
+        })
+
+        Array.prototype.forEach.call(children, function (c) {
+          c.addEventListener('change', syncFromChildren)
+        })
+
+        // Initial state: collapsed unless something in this group is selected.
+        setExpanded(parent.checked || Array.prototype.some.call(children, function (c) { return c.checked }))
+        syncFromChildren()
       })
     })()
   </script>

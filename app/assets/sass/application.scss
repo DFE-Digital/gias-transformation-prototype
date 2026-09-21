@@ -381,3 +381,33 @@ $govuk-font-family: 'Inter', sans-serif;
   @include govuk-font($size: 19);
   margin: 0;
 }
+
+// ============================================================================
+// Provider type accordion filter — parent group with nested child types
+// ============================================================================
+
+.dfe-type-group + .dfe-type-group {
+  margin-top: govuk-spacing(2);
+}
+
+.dfe-type-group__parent .govuk-checkboxes__label {
+  font-weight: bold;
+}
+
+// Child types are indented and marked with a rule to signal the nesting.
+.dfe-type-group__children {
+  margin-left: govuk-spacing(5);
+  padding-left: govuk-spacing(3);
+  border-left: 2px solid $govuk-border-colour;
+}
+
+// With JS enabled the children start collapsed and are revealed by the parent.
+// The `js-enabled` class is added by GOV.UK Frontend, so with JS off the
+// children remain visible and usable as an ordinary checkbox list.
+.js-enabled .dfe-type-group__children {
+  display: none;
+}
+
+.js-enabled .dfe-type-group--open .dfe-type-group__children {
+  display: block;
+}
