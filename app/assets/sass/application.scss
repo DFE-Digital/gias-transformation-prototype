@@ -96,7 +96,6 @@ $govuk-font-family: 'Inter', sans-serif;
   @include govuk-media-query($from: tablet) {
     .dfe-grid-container {
       grid-template-columns: repeat(2, 1fr);
-      margin-bottom: 0;
     }
   }
 
@@ -172,28 +171,18 @@ $govuk-font-family: 'Inter', sans-serif;
 
 .dfe-browse-list {
   display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 16px;  
+  flex-wrap: wrap;
+  gap: govuk-spacing(2) govuk-spacing(5);
 }
 
+.dfe-browse-list li {
+  margin-bottom: 0;
+}
 
 .dfe-browse-list a {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   gap: govuk-spacing(1);
-
-  // Chevron after the link text, drawn with an accessible, decorative arrow.
-  &::after {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border: solid currentColor;
-    border-width: 2px 2px 0 0;
-    transform: rotate(45deg);
-    flex: 0 0 auto;
-    align-self: anchor-center;
-  }
 }
 
 // ============================================================================
@@ -378,6 +367,17 @@ $govuk-font-family: 'Inter', sans-serif;
 // 9. MoJ filter overrides
 // ============================================================================
 
+// Push the Apply button below the filters.
+.moj-filter__options {
+  display: flex;
+  flex-direction: column;
+}
+.moj-filter__options .govuk-button {
+  order: 1;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 // Repoint the selected-filter tag remove-cross to local images.
 .moj-filter__tag::after {
   background-image: url('/public/images/icon-tag-remove-cross.svg');
@@ -447,3 +447,75 @@ $govuk-font-family: 'Inter', sans-serif;
 .js-enabled .dfe-type-group--open .dfe-type-group__children {
   display: block;
 }
+
+// ============================================================================
+// Pending autocomplete selections — tags shown inside a filter before Apply
+// ============================================================================
+
+.dfe-pending-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2);
+  margin-bottom: govuk-spacing(3);
+
+  &:empty {
+    margin-bottom: 0; // no gap when there are no pending tags
+  }
+}
+
+.dfe-pending-tags__item {
+  margin: 0;
+}
+
+// Styled like a removable MoJ filter tag: label plus a × affordance.
+.dfe-pending-tags__remove {
+  @include govuk-font($size: 16);
+  display: inline-flex;
+  align-items: center;
+  gap: govuk-spacing(1);
+  padding: 0 govuk-spacing(2);
+  min-height: 30px;
+  color: govuk-colour("white");
+  background-color: govuk-colour("blue");
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: govuk-shade(govuk-colour("blue"), 20%);
+  }
+
+  &:focus {
+    outline: 3px solid transparent;
+    color: govuk-colour("black");
+    background-color: $govuk-focus-colour;
+    box-shadow: 0 -2px $govuk-focus-colour, 0 4px govuk-colour("black");
+  }
+}
+
+// A–Z jump navigation for the glossary page.
+// Horizontal row of letters; letters with no entries are shown but not linked.
+
+.dfe-az-nav {
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(2);
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.dfe-az-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2) govuk-spacing(3);
+  margin: 0;
+}
+
+.dfe-az-nav__item {
+  @include govuk-font($size: 24, $weight: bold);
+  margin: 0;
+}
+
+// Letters with no glossary entries: visible for a complete A–Z, but muted
+.dfe-az-nav__item--disabled {
+  color: govuk-colour("mid-grey");
+}
+

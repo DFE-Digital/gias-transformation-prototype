@@ -1,0 +1,343 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template - {{ serviceName }} - GOV.UK Prototype Kit
+{% endblock %}
+
+{% set activeNav = "Help" %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">
+        Glossary of terms
+      </h1>
+
+      <p class="govuk-body-l">
+        A list of terms and definitions used in Find Education Provider Records.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Glossary A-Z -->
+  <div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+
+    <nav class="dfe-az-nav" aria-label="A to Z">
+      <ul class="dfe-az-nav__list govuk-list">
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-a">A</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-b">B</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-c">C</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-d">D</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-e">E</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-f">F</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-g">G</a></li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">H</li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-i">I</a></li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">J</li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">K</li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-l">L</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-m">M</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-n">N</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-o">O</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-p">P</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-q">Q</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-r">R</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-s">S</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-t">T</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-u">U</a></li>
+        <li class="dfe-az-nav__item"><a class="govuk-link" href="#letter-v">V</a></li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">W</li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">X</li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">Y</li>
+        <li class="dfe-az-nav__item dfe-az-nav__item--disabled" aria-disabled="true">Z</li>
+      </ul>
+    </nav>
+
+  </div>
+  </div>
+
+  <div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-a" tabindex="-1">A</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academies Financial Handbook</h3>
+    <p class="govuk-body">This has been replaced with the academies trust handbook.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academy</h3>
+    <p class="govuk-body">Academies are publicly funded independent schools. They don’t have to follow the national curriculum and can set their own term times. They still have to follow the same rules on admissions, special educational needs and exclusions as other state schools. Academies get money directly from the government, not the local council. They’re run by an academy trust which employs the staff. Some academies have sponsors such as businesses, universities, other schools, faith groups or voluntary groups. Sponsors are responsible for improving the performance of their schools.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academy converter</h3>
+    <p class="govuk-body">Former schools which have chosen to convert to academy status.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academy special</h3>
+    <p class="govuk-body">These are special schools which have chosen to become an academy. These will be handled differently to academy converters and will follow a different process which is currently being developed.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academy sponsor led</h3>
+    <p class="govuk-body">These academies are established and managed by sponsors from a wide range of backgrounds, including high performing schools and colleges, universities, individual philanthropists, businesses, the voluntary sector, and the faith communities.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Academy Trust Handbook (previously known as the Academies Financial Handbook)</h3>
+    <p class="govuk-body">A handbook produced by the Education and Skills Funding Agency (ESFA) that sets out the requirements that apply to academy trusts. It provides an overarching framework for implementation of effective financial management and other controls, consistent with academy trust obligations as publicly funded bodies. Read this <a class="govuk-link" href="https://www.gov.uk/guidance/academy-trust-handbook">handbook</a> if you have responsibility for governing, managing, or auditing an academy trust.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Accounting officer</h3>
+    <p class="govuk-body">Responsible for ensuring that public money is spent as intended, ensuring value for money and keeping proper records.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Admissions policy</h3>
+    <p class="govuk-body">All establishments have an admissions policy to decide which children get places. For state-maintained schools, these may be set by the local council. Many establishments, for example independent schools, have their own admissions policies.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">All-through school</h3>
+    <p class="govuk-body">All-through is a school that includes the primary and secondary years and therefore covers all compulsory school years (including reception).</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Attainment 8</h3>
+    <p class="govuk-body">Attainment 8 measures a pupil’s achievements across 8 qualifications including maths and English. <a class="govuk-link" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/583857/Progress_8_school_performance_measure_Jan_17.pdf">Find out more</a>.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-b" tabindex="-1">B</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Boarding provision</h3>
+    <p class="govuk-body">Places for boarders are offered at some establishments. National minimum standards are in place to ensure that boarding schools safeguard and protect the children in their care.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">British Schools Overseas</h3>
+    <p class="govuk-body">British schools overseas are a diverse collection of institutions which, in varying degrees, provide instruction in English, have teachers who are native English speakers and which prepare their pupils either for British public examinations and/or for entrance to British universities.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-c" tabindex="-1">C</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Capacity</h3>
+    <p class="govuk-body">The number of pupils the school is organised to provide for. For academies the capacity refers to the planned capacity as stated in the academy’s funding agreement.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Chair of governors</h3>
+    <p class="govuk-body">Responsible for leading and developing the team of governors, managing performance and headteacher recruitment.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Chair of local governing body</h3>
+    <p class="govuk-body">The person in charge of a trust responsible for multiple establishments. The body can include parent, staff and pupil representatives.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Chair of trustees</h3>
+    <p class="govuk-body">Broadly speaking, the equivalent of a chair of governors, but for an academy. They are accountable to regional schools commissioners, rather than local authorities.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Chief financial officer</h3>
+    <p class="govuk-body">The lead finance professional appointed by the academy trust board.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Children looked after</h3>
+    <p class="govuk-body">Children who have been in the care of local authorities for at least one day in the last 6 years, or who have been adopted from care.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Children's centre</h3>
+    <p class="govuk-body">A centre offering early childhood services, including education, childcare, social services and health services.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Children's centre collaboration</h3>
+    <p class="govuk-body">A group of centres which share early childhood services, but do not share leadership and management.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Children's centre group</h3>
+    <p class="govuk-body">A group of centres offering early childhood services, including education, childcare, social services and health services. They also share leadership and management.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Children's centre linked site</h3>
+    <p class="govuk-body">Formerly children’s centres in their own right, but they no longer meet the statutory definition of a children’s centre. However, they offer some early childhood services on behalf of another children’s centre.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">City technology colleges</h3>
+    <p class="govuk-body">These are independent schools in urban areas that are free to go to. They’re owned and funded by companies as well as central government (not the local council). They have an emphasis on technological and practical skills.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Coasting</h3>
+    <p class="govuk-body">A school is described as ‘coasting’ if it does not support its pupils to achieve their potential. Signs of coasting include the pupils’ performance, especially in English and maths, falling below certain standards. <a class="govuk-link" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/566690/coasting_schools_note.pdf">Read more about coasting</a>.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">College</h3>
+    <p class="govuk-body">Colleges generally focus on education for 16-18 year olds. They provide vocational and academic courses and some also offer full-time study at key stage 4.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Community school</h3>
+    <p class="govuk-body">In these schools, the local authority employs the school’s staff, owns the school’s land and buildings and is the admissions authority (it has primary responsibility for deciding the arrangements for admitting pupils).</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Community special school</h3>
+    <p class="govuk-body">This is the special school equivalent of a mainstream community school. It caters wholly or mainly for children with special educational needs.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Companies House number</h3>
+    <p class="govuk-body">A registration number issued by Companies House for companies. With respect to GIAS they are visible for single academy trusts (SATs) and multi academy trusts (MATs) (group level) and for online providers only at establishment level.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-d" tabindex="-1">D</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">DfE number</h3>
+    <p class="govuk-body">The DfE number, is also known as:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>The Department for Education number, the Department for Education no, the DfE no;</li>
+      <li>the DfE establishment number, the DfE establishment no, the DfE estab number, the DfE estab no;</li>
+      <li>the local authority establishment number, the local authority establishment no, the local authority estab number, the local authority estab no;</li>
+      <li>the LA establishment number, the LA establishment no, the LA estab number, the LA estab no (however this is one part of the two components that make the DfE number – see below);</li>
+      <li>the establishment number, the establishment no, the estab number, the estab no (however this is one part of the two components that make the DfE number – see below).</li>
+    </ul>
+    <p class="govuk-body">The DfE number is a concatenation of a 3 digit local authority number (the local authority that administers the establishment) and a 4 digit establishment number. This creates a 7 digit number. This number is issued by DfE to all local authority nurseries and compulsory school aged educational establishments, including further education colleges, that are recorded on Get Information about Schools (GIAS).</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Diocese</h3>
+    <p class="govuk-body">This is the area covered by a Bishop’s jurisdiction and only applies to Catholic and Church of England schools.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Disadvantaged</h3>
+    <p class="govuk-body">Pupils may be defined as disadvantaged if:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>they are known to have been eligible for free school meals in the past 6 years (from year 6 to year 11), or</li>
+      <li>they are recorded as having been looked after for at least one day, or</li>
+      <li>they are recorded as having been adopted from care</li>
+    </ul>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-e" tabindex="-1">E</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">English additional language</h3>
+    <p class="govuk-body">This refers to children who were initially exposed to a non-English language during early development and continue to be exposed to this language in the home or in the community.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">English first language</h3>
+    <p class="govuk-body">This refers to children who were initially exposed to English during early development and continue to be exposed to English in the home or in the community.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment accreditation date</h3>
+    <p class="govuk-body">The date the online provider is given accreditation by the department.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment accreditation date ended</h3>
+    <p class="govuk-body">The date the online provider has their accreditation withdrawn. The online provider can no longer use the term accredited online provider.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment accredited</h3>
+    <p class="govuk-body">For online providers only and confirms if the online provider is accredited or not.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment name</h3>
+    <p class="govuk-body">For all establishment types except online provider (see name of setting).</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment number</h3>
+    <p class="govuk-body">The establishment number is also known as the establishment no, the estab number, the estab no. The establishment number is a 4 digit number. The number is assigned by the DfE to all local authority nurseries and compulsory school aged educational establishments, including further education colleges, that are recorded on Get Information about Schools (GIAS). This number is combined with the 3 digit local authority number to create the 7 digit DfE number.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment status</h3>
+    <p class="govuk-body">For online provider, the status of open and open, propose to close means it is accredited.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishments</h3>
+    <p class="govuk-body">A collective term for educational establishments such as children’s centres, schools, colleges, and further education and higher education institutions.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">European schools</h3>
+    <p class="govuk-body">European schools provide free education for the children of employees of European Union institutions. Where places are available, they admit other children on payment of fees.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-f" tabindex="-1">F</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Faith school</h3>
+    <p class="govuk-body">Faith schools have to follow the national curriculum, but they can choose what they teach in religious studies. Faith schools may have different admissions criteria and staffing policies to state schools, although anyone can apply for a place.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Federation</h3>
+    <p class="govuk-body">The aim of a federation is to address or prevent school failure, achieve economies of scale and to offer pupils greater choice.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Foundation school</h3>
+    <p class="govuk-body">In these schools, the governing body is the employer and the admissions authority. The school’s land and buildings are either owned by the governing body or by a charitable foundation.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Foundation special school</h3>
+    <p class="govuk-body">A special school equivalent of the mainstream foundation school catering wholly or mainly for children with special educational needs.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Foundation trust</h3>
+    <p class="govuk-body">On GIAS recorded as trust. A foundation trust can have one or more foundation school(s), a foundation special school(s) or a combination of both and there is no upper limit to how many schools can be in the foundation trust. The legal definition can be found in the <a class="govuk-link" href="https://www.legislation.gov.uk/ukpga/1998/31/contents">School Standards and Framework Act 1998</a>.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Free school</h3>
+    <p class="govuk-body">Free schools are funded by the government but aren’t run by the local council. They have more control over how they do things. They’re ‘all-ability’ schools, so can’t use academic selection processes like a grammar school. Free schools can set their own pay and conditions for staff and change the length of school terms and the school day. They don’t have to follow the national curriculum.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Free school meals</h3>
+    <p class="govuk-body">This shows whether a pupil’s family have claimed eligibility for free school meals as reported in the annual spring school census. Parents are able to claim free school meals if they receive a qualifying benefit. This does not show pupils who actually received free school meals but those who are eligible to receive them.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-g" tabindex="-1">G</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">GID</h3>
+    <p class="govuk-body">Governor identity. Used to identify governors, for example if 2 governors have the same name, this number identifies each of them.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Governance professional</h3>
+    <p class="govuk-body">This role includes the clerk to the governing body in a maintained school, as well as those supporting the board of trustees or local committee in an academy trust. Governance professionals or clerks cannot be trustees, governors, headteachers, principals, or senior executive leaders of a trust.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Governor</h3>
+    <p class="govuk-body">At local authority maintained schools, governors hold the headteacher to account for performance and oversee the use of resources.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-i" tabindex="-1">I</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Independent school</h3>
+    <p class="govuk-body">Also known as ‘private schools’, these schools charge fees to attend instead of being funded by the government. Pupils don’t have to follow the national curriculum. All independent schools must be registered with the government and are inspected regularly.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Independent special school</h3>
+    <p class="govuk-body">This is equivalent to an independent school, catering wholly or mainly for children with special educational needs.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-l" tabindex="-1">L</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">LAESTAB</h3>
+    <p class="govuk-body">Local authority establishment. A 3-digit local authority code, followed by a 4-digit establishment code.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Local authority number</h3>
+    <p class="govuk-body">The local authority number is also known as the local authority no, the LA number, the LA no. The local authority number is a 3 digit number assigned to each local authority. This number is combined with the 4 digit establishment number to create the 7 digit DfE number.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Local authority nursery school</h3>
+    <p class="govuk-body">A nursery school maintained by a local authority which provides education for children over 2 but under compulsory school age.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Local governor</h3>
+    <p class="govuk-body">A governor on a trust responsible for multiple establishments.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-m" tabindex="-1">M</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Member</h3>
+    <p class="govuk-body">The upper tier of the academy governance structure. They can appoint and remove trustees and make sure the academy’s objectives are being met.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Middle deemed primary</h3>
+    <p class="govuk-body">A former middle school which has been deemed primary because most of its pupils are of primary school age.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Middle deemed secondary</h3>
+    <p class="govuk-body">A former middle school which has been deemed secondary because most of its pupils are of secondary school age.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Multi academy trust (MAT)</h3>
+    <p class="govuk-body">A trust responsible for a number of academies. It consists of members, akin to company shareholders, and trustees, responsible for governance.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-n" tabindex="-1">N</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Name of setting</h3>
+    <p class="govuk-body">The name of the online provider establishment.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Non-maintained special school</h3>
+    <p class="govuk-body">These are run on a not-for-profit basis by charitable trusts and normally cater for children with severe and/or low incidence special educational needs. They get the majority of their funding from local authorities placing children with special educational needs statements at the schools and paying the fees.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Nursery provision</h3>
+    <p class="govuk-body">This is when an establishment offers nursery classes, usually for 3 and 4 year old children.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-o" tabindex="-1">O</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Online providers</h3>
+    <p class="govuk-body">The term online provider refers to a provider of online education services which operates online-only on a permanent basis. Online providers deliver full time education to pupils of compulsory school age and excludes pupils who ordinarily attend a physical site for part of their education.</p>
+    <p class="govuk-body">Online providers offer a full curriculum and represent at least one child’s main source of education. Providers of online education may choose to become accredited under the online education accreditation scheme. To be eligible for the scheme, an online provider must registered with Companies House or the Charity Commission.</p>
+    <p class="govuk-body">A ’provider’ refers to a provider of online education. This does not refer to a provider of education under the Education and Skills Act 2008 or any other relevant Act. Providers of online education services will often be commissioned services that hold responsibility for the delivery of education services only; other education providers, such as independent schools, may have additional responsibilities as a result of their operation from physical premises and the physical presence of pupils.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-p" tabindex="-1">P</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Primary school</h3>
+    <p class="govuk-body">Primary school is defined in section 5 of the <a class="govuk-link" href="https://www.legislation.gov.uk/ukpga/1996/56/contents">Education Act 1996</a> (along with sections 2 to 4). In summary, it is a school for providing one or more of the following:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>part or full-time education aimed at children who are at least two years old but under compulsory school age;</li>
+      <li>full-time education aimed at children of compulsory school age who are under 10½ years old;</li>
+      <li>full-time education aimed at children of compulsory school age who are 10½ to 11 years old and are taught together with children under 10½.</li>
+    </ul>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Progress 8</h3>
+    <p class="govuk-body">Progress 8 measures a pupil’s progress across 8 qualifications including maths and English. <a class="govuk-link" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/583857/Progress_8_school_performance_measure_Jan_17.pdf">Find out more</a>.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Pupil referral unit</h3>
+    <p class="govuk-body">A pupil referral unit (PRU) is established and maintained by a local authority to provide education for children who are excluded, sick or otherwise unable to attend mainstream school. It is not a special or other type of school.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-q" tabindex="-1">Q</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Quality assurance body</h3>
+    <p class="govuk-body">The quality assurance body for online providers only. This is still to be confirmed.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Quality assurance report</h3>
+    <p class="govuk-body">The quality assurance body report on the online provider.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-r" tabindex="-1">R</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Religious character</h3>
+    <p class="govuk-body">A school designated with a religious character has to follow the national curriculum, but it can choose what to teach in religious studies.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-s" tabindex="-1">S</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">School sponsor</h3>
+    <p class="govuk-body">Sponsors include businesses, charities and faith organisations. They are responsible for:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the performance and finances of their school (or group of schools)</li>
+      <li>setting up the academy trust</li>
+      <li>selecting the governing body</li>
+      <li>recruiting the headteacher</li>
+    </ul>
+    <p class="govuk-body">Sponsors work closely with the governing body to run the academy.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Secondary school</h3>
+    <p class="govuk-body">Secondary school is defined in section 5 of the <a class="govuk-link" href="https://www.legislation.gov.uk/ukpga/1996/56/contents">Education Act 1996</a> (along with sections 2 to 4). In summary, it is a school for providing one or more of the following: full-time education aimed at children of compulsory school age who are 10½ to 11 years old and are taught together with children aged 12 and above; full-time education aimed at children of compulsory school age who are at least 12 years old. In some circumstances it can also include part-time education for pupils who are receiving the rest of their secondary education elsewhere, full-time education for pupils over compulsory school age but under 19, and education for pupils aged 19 or older who are finishing courses they started at the school before turning 19.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Secure 16 to 19 academy</h3>
+    <p class="govuk-body">A secure 16 to 19 academy, also known as a secure school, is a new type of youth custody provision, providing education and secure accommodation for its students. A secure 16 to 19 academy is part of a secure single-academy trust (SAT). For more information see the frequently asked questions (FAQs) section on secure 16 to 19 academies.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Secure single-academy trust (SSAT)</h3>
+    <p class="govuk-body">A secure single-academy trust (SSAT) is a not-for-profit company limited by guarantee, formed specifically to establish and run a secure 16 to 19 academy. It will have a separate board to give strategic leadership to and have accountability for the performance of its secure 16 to 19 academy. The secure academy trust is accountable to the Ministry of Justice (MOJ) and will be a separate legal entity from an academy trust that is accountable to the Department for Education (DfE). Secure single-academy trusts will have charitable status.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">SEN support</h3>
+    <p class="govuk-body">See ‘Special educational needs’. This is when the school gives children extra or different help from its usual curriculum. Outside specialists may advise or support the class teacher and SEN coordinator.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Single academy trust (SAT)</h3>
+    <p class="govuk-body">A trust responsible for a single academy. It consists of members, akin to company shareholders, and trustees, responsible for governance. In a single academy trust (SAT), one school becomes an academy, or two schools combine to form a single academy.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Sixth form college</h3>
+    <p class="govuk-body">An educational institution, funded by the Learning Skills Council, for 16-19 year olds.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Sixth form provision</h3>
+    <p class="govuk-body">Places for sixth form pupils are available both at establishments catering for a wider age range of pupils and at dedicated sixth form colleges.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Special educational needs (SEN)</h3>
+    <p class="govuk-body">This refers to pupils who have learning difficulties or disabilities that make it harder for them to learn than most children of the same age. There’s a formal assessment to decide if a pupil needs a statement of SEN or an education, health and care (EHC) plan.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Special measures</h3>
+    <p class="govuk-body">This is when OFSTED judges that a school is failing, or likely to fail, to provide an acceptable standard of education.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Special post–16 institutions</h3>
+    <p class="govuk-body">Special post–16 institutions which are legally established to provide education and are not maintained schools or FE colleges, which provide specialist post-16 education and support to young people with some of the most severe learning difficulties and/or disabilities or low incidence needs.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Sponsor</h3>
+    <p class="govuk-body">An academy sponsor is an organisation or person approved by the Department for Education to support an underperforming academy or group of academies. Sponsors are generally businesses, charitable trusts, church groups or other educational institutions.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Studio school</h3>
+    <p class="govuk-body">Small free schools - usually with around 300 pupils - delivering mainstream qualifications through project-based learning. This means working in realistic situations as well as learning academic subjects.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-t" tabindex="-1">T</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Trustee</h3>
+    <p class="govuk-body">Trustees are broadly the equivalent of governors, but for academies. They hold the headteacher to account for performance and oversee the use of resources. They are both company directors and charity trustees.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-u" tabindex="-1">U</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">UKPRN</h3>
+    <p class="govuk-body">UK provider reference number. A reference number issued by the UK Register of Learning Providers.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Unique Reference Number (URN)</h3>
+    <p class="govuk-body">The URN is a sequential and unique number automatically assigned by the DfE’s Get Information about Schools (GIAS) system when a record is created. Children centres are 5 digits and start with a 2. Welsh establishments are 6 digits and start with a 4. All other establishments are 6 digits and start with a 1.</p>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">University technical college</h3>
+    <p class="govuk-body">These are a kind of free school specialising in subjects like engineering and construction. They usually teach these subjects along with business skills and IT. Pupils study academic subjects as well as practical subjects leading to technical qualifications. The curriculum is designed by the university and employers, who also provide work experience for students. University technical colleges are sponsored by:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>universities</li>
+      <li>employers</li>
+      <li>further education colleges</li>
+    </ul>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+
+    <h2 class="govuk-heading-l govuk-!-margin-top-6" id="letter-v" tabindex="-1">V</h2>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Voluntary aided school</h3>
+    <p class="govuk-body">A school where the governing body is the employer and the admissions authority. The school’s land and buildings (apart from playing fields which are normally owned by the local authority) will normally be owned by a charitable foundation.</p>
+    <p class="govuk-body govuk-!-margin-top-2"><a class="govuk-link" href="#top">Back to top</a></p>
+  </div>
+</div>
+
+
+{% endblock %}

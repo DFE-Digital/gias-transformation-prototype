@@ -1,0 +1,93 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">
+        Guidance
+      </h1>
+
+      <p class="govuk-body">
+        Find education provider records is a comprehensive database of educational providers in England. It contains data on around 65,000 providers, including academies, maintained schools and children’s centres.
+      </p>
+
+      <p class="govuk-body">
+        There are currently over 250 data fields for each record, and this number is expected to grow.
+      </p>
+      <p class="govuk-body">
+        Provider data is available for several groups of users, such as:
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          the general public
+        </li>
+        <li>
+          provider users
+        </li>
+        <li>
+          stakeholders
+        </li>
+        <li>
+          DfE staff
+        </li>
+        <li>
+          system administrators and helpdesk staff
+        </li>
+      </ul>
+      <p class="govuk-body">
+        Each group of users accesses their data through a separate online portal. Each portal provides access to Find education provider records functions available for a specific user group.
+      </p>
+      <p class="govuk-body">
+        Find education provider records is mainly intended as resource for educational professionals. Parents and guardians are likely to find Compare School and College Performance in England (opens in new tab) more helpful to meet their needs
+      </p>
+
+      <h2 class="govuk-heading-l">
+        How to log in
+      </h2>
+      <p class="govuk-body">
+        If you are an educational professional and you need to log in to Find education provider records, click on the top menu bar ‘Sign in’ link which will take you to the login page.
+      </p>
+      <p class="govuk-body">
+        Enter your user name and password to log in. If you don’t have these details, contact the named user at your organisation.
+      </p>
+
+      <h2 class="govuk-heading-l">
+        Search and menu options
+      </h2>
+      <p class="govuk-body">
+        You can use either the search tabs or links in the top menu on Find education provider records. The search page allows you to search by provider, group (for example multi-academy trust or federation) or by governor.
+      </p>
+      <p class="govuk-body">
+        The options available in the top menu depend on your role. All users can search and download data. Some users also have access to tools which allow them to create and edit details of providers and groups.
+      </p>
+      <h2 class="govuk-heading-l">
+        Search using filters
+      </h2>
+      <p class="govuk-body">
+        You can customise your search using search filters. These appear once you have used one of the three search options.
+      </p>
+      <p class="govuk-body">
+        Each of the headings, for example ‘Provider type’ and ‘Status’ opens a list of filters with tick boxes for you to search more specifically.
+      </p>
+
+      <p>
+        Read more <a href="#">about this topic</a>.
+      </p>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -3,6 +3,24 @@
 {% set pageName = "Downloading" %}
 {% set activeNav = "Download" %}
 
+{#
+  Map the chosen format to its pre-prepared sample file and a friendly
+  download name. These are fixed 1,000-record samples used to let people
+  review the new column headers and layout — they are not generated from
+  the user's selections.
+#}
+{% set fmt = data['download-format'] or 'csv' %}
+{% set sampleFile = {
+  "csv": "/public/downloads/sample.csv",
+  "json": "/public/downloads/sample.json",
+  "xlsx": "/public/downloads/sample.xlsx"
+}[fmt] or "/public/downloads/sample.csv" %}
+{% set downloadName = {
+  "csv": "FEPI-Sample-2026_07_13.csv",
+  "json": "FEPI-Sample-2026_07_13.json",
+  "xlsx": "FEPI-Sample-2026_07_13.xlsx"
+}[fmt] or "FEPI-Sample-2026_07_13.csv" %}
+
 {% block content %}
 
   <div class="govuk-grid-row">
@@ -39,7 +57,8 @@
 
       <noscript>
         <p class="govuk-body">
-          <a class="govuk-link" href="/download-complete">Continue to confirmation</a>
+          <a class="govuk-link" href="{{ sampleFile }}" download="{{ downloadName }}">Download your file</a>,
+          then <a class="govuk-link" href="/download-complete">continue to confirmation</a>.
         </p>
       </noscript>
 
@@ -58,10 +77,24 @@
 
       if (!statusEl) { return }
 
-      // After 3 seconds: file is "ready", hide the spinner, update the text.
+      // After 3 seconds: file is "ready", hide the spinner, update the text,
+      // and start the actual download of the sample file for the chosen format.
       window.setTimeout(function () {
         statusEl.textContent = 'File ready, downloading …'
         if (spinnerEl) { spinnerEl.hidden = true }
+
+        // Trigger the download via a temporary link. The `download` attribute
+        // gives the saved file a friendly name while the file on disk is the
+        // fixed sample. A real confirmation-page link is the reliable fallback
+        // if the browser blocks this programmatic download.
+        try {
+          var a = document.createElement('a')
+          a.href = '{{ sampleFile }}'
+          a.setAttribute('download', '{{ downloadName }}')
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
+        } catch (e) { /* confirmation page link covers this */ }
 
         // After 1 more second: move to the confirmation page.
         window.setTimeout(function () {

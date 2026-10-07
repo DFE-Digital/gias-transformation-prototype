@@ -389,7 +389,7 @@ router.get('/results', function (req, res) {
   var typeOptions = Object.keys(typeCounts).sort().map(function (type) {
     return {
       value: type,
-      text: type + ' (' + typeCounts[type] + ')',
+      text: type,
       checked: activeTypes.indexOf(type) !== -1
     }
   })
@@ -397,7 +397,7 @@ router.get('/results', function (req, res) {
   var statusOptions = Object.keys(statusCounts).sort().map(function (status) {
     return {
       value: status,
-      text: status + ' (' + statusCounts[status] + ')',
+      text: status,
       checked: activeStatuses.indexOf(status) !== -1
     }
   })
@@ -405,7 +405,7 @@ router.get('/results', function (req, res) {
   var laOptions = Object.keys(laCounts).sort().map(function (la) {
     return {
       value: la,
-      text: la + ' (' + laCounts[la] + ')',
+      text: la,
       checked: activeLAs.indexOf(la) !== -1
     }
   })
@@ -413,12 +413,12 @@ router.get('/results', function (req, res) {
   var senOptions = [
     {
       value: 'true',
-      text: 'Yes (' + senCounts['true'] + ')',
+      text: 'Yes',
       checked: activeSen.indexOf('true') !== -1
     },
     {
       value: 'false',
-      text: 'No (' + senCounts['false'] + ')',
+      text: 'No',
       checked: activeSen.indexOf('false') !== -1
     }
   ]
@@ -427,7 +427,7 @@ router.get('/results', function (req, res) {
     return Object.keys(counts).sort().map(function (key) {
       return {
         value: key,
-        text: key + ' (' + counts[key] + ')',
+        text: key,
         checked: active.indexOf(key) !== -1
       }
     })
@@ -452,12 +452,12 @@ router.get('/results', function (req, res) {
     function label (val) { return labels[val] || val }
     order.forEach(function (val) {
       if (counts[val]) {
-        out.push({ value: val, text: label(val) + ' (' + counts[val] + ')', checked: active.indexOf(val) !== -1 })
+        out.push({ value: val, text: label(val), checked: active.indexOf(val) !== -1 })
         seen[val] = true
       }
     })
     Object.keys(counts).sort().forEach(function (val) {
-      if (!seen[val]) out.push({ value: val, text: label(val) + ' (' + counts[val] + ')', checked: active.indexOf(val) !== -1 })
+      if (!seen[val]) out.push({ value: val, text: label(val), checked: active.indexOf(val) !== -1 })
     })
     return out
   }
@@ -512,7 +512,7 @@ router.get('/results', function (req, res) {
     var children = Object.keys(childCounts).sort().map(function (child) {
       return {
         value: child,
-        text: child + ' (' + childCounts[child] + ')',
+        text: child,
         checked: activeTypes.indexOf(child) !== -1
       }
     })
@@ -531,7 +531,7 @@ router.get('/results', function (req, res) {
     if (typeGroupOrder.indexOf(groupName) !== -1) return
     var childCounts = typeDetailCounts[groupName] || {}
     var children = Object.keys(childCounts).sort().map(function (child) {
-      return { value: child, text: child + ' (' + childCounts[child] + ')', checked: activeTypes.indexOf(child) !== -1 }
+      return { value: child, text: child, checked: activeTypes.indexOf(child) !== -1 }
     })
     if (children.length === 0) return
     providerTypeGroups.push({
@@ -630,7 +630,7 @@ router.get('/results', function (req, res) {
   tagCategory('Admissions policy', 'admissions_policy', activeAdmissions)
   tagCategory('Special classes', 'special_classes', activeSpecialClasses)
   tagCategory('Type of SEN provision', 'sen_type', activeSenTypes)
-  tagCategory('Further Education type', 'fe_type', activeFeTypes)
+  tagCategory('Further education type', 'fe_type', activeFeTypes)
 
   // Age range shows as a single removable tag covering both bounds.
   if (ageFrom !== null || ageTo !== null) {

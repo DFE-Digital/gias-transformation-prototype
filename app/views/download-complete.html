@@ -43,7 +43,20 @@
   "specific": "Selected_Data",
   "updates": "Updates"
 }[scope] or "All_Data" %}
-{% set fileName = "FEPI-" + scopeFilePart + "-2026_07_13.zip" %}
+{% set fileExt = {
+  "csv": "csv",
+  "json": "json",
+  "xlsx": "xlsx"
+}[data['download-format']] or "csv" %}
+{% set fileName = "FEPI-" + scopeFilePart + "-2026_07_13." + fileExt %}
+
+{# The fixed sample file for the chosen format, so people can re-download and
+   review the column headers and layout without replaying the journey. #}
+{% set sampleFile = {
+  "csv": "/public/downloads/sample.csv",
+  "json": "/public/downloads/sample.json",
+  "xlsx": "/public/downloads/sample.xlsx"
+}[data['download-format']] or "/public/downloads/sample.csv" %}
 
 {#********************#}
 {# Build summary rows. Version row only included if user chose a version #}
@@ -68,8 +81,12 @@
 
       <p class="govuk-body">
         Your file <strong>{{ fileName }}</strong> has downloaded.
-        <br>
         Check your browser's downloads folder to open it.
+      </p>
+
+      <p class="govuk-body">
+        If the download did not start,
+        <a class="govuk-link" href="{{ sampleFile }}" download="{{ fileName }}">download {{ fileName }}</a>.
       </p>
 
       <h2 class="govuk-heading-m govuk-!-margin-top-8">What you have downloaded</h2>

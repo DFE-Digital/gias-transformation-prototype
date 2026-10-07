@@ -1,5 +1,5 @@
 {
-  "serviceName": "Find education provider information",
+  "serviceName": "Find education provider records",
   "useServiceNavigation": true,
   "plugins": {
     "govuk-frontend": {

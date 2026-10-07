@@ -12,11 +12,11 @@
 {#
   statusTag — renders a GOV.UK tag for statuses that have one, otherwise the
   plain status text. Extend the mapping here when status_detail is introduced
-  (e.g. "Proposed to convert to academy" -> govuk-tag--yellow).
+  (e.g. "Proposed to convert to academy" -> govuk-tag--blue).
 #}
 {% macro statusTag(status) %}
   {% if status == "Closed" %}
-    <strong class="govuk-tag govuk-tag--grey">Closed</strong>
+    <strong class="govuk-tag govuk-tag--orange">Closed</strong>
   {% else %}
     {{ status }}
   {% endif %}
@@ -116,6 +116,28 @@
          Provider details — row order follows establishment-page-reorder.png
          --------------------------------------------------------------------- #}
 
+      {# Local authority #}
+      {% if item.local_authority %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Local authority</dt>
+          <dd class="govuk-summary-list__value">{{ item.local_authority }}</dd>
+        </div>
+      {% endif %}
+
+      {# Phase of education #}
+      {% if item.phase %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Phase of education</dt>
+          <dd class="govuk-summary-list__value">{{ item.phase }}</dd>
+        </div>
+      {% endif %}
+
+      {# Type #}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Type</dt>
+        <dd class="govuk-summary-list__value">{{ typeLabel(item.type, item.type_detail) }}</dd>
+      </div>
+
       {# Status #}
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Status</dt>
@@ -129,45 +151,85 @@
         <dt class="govuk-summary-list__key">ID numbers</dt>
         <dd class="govuk-summary-list__value">
           <dl class="dfe-id-numbers">
-            {% if item.dfe_number %}
-              <div class="dfe-id-numbers__row">
-                <dt class="dfe-id-numbers__key">LAESTAB</dt>
-                <dd class="dfe-id-numbers__value">{{ item.dfe_number }} (also known as DfE number)</dd>
-              </div>
-            {% endif %}
+            <div class="dfe-id-numbers__row">
+              <dt class="dfe-id-numbers__key">URN</dt>
+              <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
+            </div>
             {% if item.ukprn %}
               <div class="dfe-id-numbers__row">
                 <dt class="dfe-id-numbers__key">UKPRN</dt>
                 <dd class="dfe-id-numbers__value">{{ item.ukprn }}</dd>
               </div>
             {% endif %}
-            <div class="dfe-id-numbers__row">
-              <dt class="dfe-id-numbers__key">URN</dt>
-              <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
-            </div>
+            {% if item.dfe_number %}
+              <div class="dfe-id-numbers__row">
+                <dt class="dfe-id-numbers__key">DfE No.</dt>
+                <dd class="dfe-id-numbers__value">{{ item.dfe_number }}</dd>
+              </div>
+            {% endif %}
           </dl>
         </dd>
       </div>
+
+      {# Number of pupils (total, with girls/boys split) #}
+      {% if item.pupil_numbers %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Number of pupils</dt>
+          <dd class="govuk-summary-list__value">{{ item.pupil_numbers.display }}</dd>
+        </div>
+      {% endif %}
+
+      {# Pupil capacity #}
+      {% if item.max_students %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Pupil capacity</dt>
+          <dd class="govuk-summary-list__value">{{ item.max_students }}</dd>
+        </div>
+      {% endif %}
+
+      {# Free school meals — count and percentage in one row #}
+      {% if item.fsm %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Pupils eligible for free school meals</dt>
+          <dd class="govuk-summary-list__value">{{ item.fsm.display }}</dd>
+        </div>
+      {% endif %}
+
+      {# SEN capacity #}
+      {% if item.sen_capacity %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">SEN capacity</dt>
+          <dd class="govuk-summary-list__value">{{ item.sen_capacity }}</dd>
+        </div>
+      {% endif %}
+
+      {# Number of pupils with SEN provision #}
+      {% if item.sen_pupils %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Number of pupils with SEN provision</dt>
+          <dd class="govuk-summary-list__value">{{ item.sen_pupils }}</dd>
+        </div>
+      {% endif %}
+
+      {# Type of SEN provision #}
+      {% if item.sen_types and item.sen_types.length > 0 %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Type of SEN provision</dt>
+          <dd class="govuk-summary-list__value">
+            <ul class="govuk-list">
+              {% for type in item.sen_types %}
+                <li class="">{{ type }}</li>
+              {% endfor %}
+            </ul>
+          </dd>
+        </div>
+      {% endif %}
 
       {# Headteacher #}
       {% if item.headteacher %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Headteacher</dt>
           <dd class="govuk-summary-list__value">{{ item.headteacher }}</dd>
-        </div>
-      {% endif %}
-
-      {# Type #}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Type</dt>
-        <dd class="govuk-summary-list__value">{{ typeLabel(item.type, item.type_detail) }}</dd>
-      </div>
-
-      {# Phase of education #}
-      {% if item.phase %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Phase of education</dt>
-          <dd class="govuk-summary-list__value">{{ item.phase }}</dd>
         </div>
       {% endif %}
 
@@ -181,11 +243,37 @@
         </div>
       {% endif %}
 
-      {# Local authority #}
-      {% if item.local_authority %}
+      {# Website #}
+      {% if item.website %}
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Local authority</dt>
-          <dd class="govuk-summary-list__value">{{ item.local_authority }}</dd>
+          <dt class="govuk-summary-list__key">Website</dt>
+          <dd class="govuk-summary-list__value">
+            <a class="govuk-link" href="{{ item.website.href }}" rel="noreferrer noopener" target="_blank">{{ item.website.label }} (opens in a new tab)</a>
+          </dd>
+        </div>
+      {% endif %}
+
+      {# Ofsted #}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Ofsted</dt>
+        <dd class="govuk-summary-list__value">
+          <a class="govuk-link" href="#" rel="noreferrer noopener" target="_blank">Inspection report (opens in new tab)</a>
+        </dd>
+      </div>
+
+      {# Age range #}
+      {% if item.age_range %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Age range</dt>
+          <dd class="govuk-summary-list__value">{{ item.age_range }}</dd>
+        </div>
+      {% endif %}
+
+      {# Gender #}
+      {% if item.gender %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Gender</dt>
+          <dd class="govuk-summary-list__value">{{ item.gender }}</dd>
         </div>
       {% endif %}
 
@@ -209,38 +297,6 @@
         </div>
       {% endif %}
 
-      {# Age range #}
-      {% if item.age_range %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Age range</dt>
-          <dd class="govuk-summary-list__value">{{ item.age_range }}</dd>
-        </div>
-      {% endif %}
-
-      {# Gender #}
-      {% if item.gender %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Gender</dt>
-          <dd class="govuk-summary-list__value">{{ item.gender }}</dd>
-        </div>
-      {% endif %}
-
-      {# Number of pupils (total, with girls/boys split) #}
-      {% if item.pupil_numbers %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Number of pupils</dt>
-          <dd class="govuk-summary-list__value">{{ item.pupil_numbers.display }}</dd>
-        </div>
-      {% endif %}
-
-      {# Pupil capacity #}
-      {% if item.max_students %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Pupil capacity</dt>
-          <dd class="govuk-summary-list__value">{{ item.max_students }}</dd>
-        </div>
-      {% endif %}
-
       {# Religious character — a legal designation #}
       {% if item.religious_character %}
         <div class="govuk-summary-list__row">
@@ -256,48 +312,6 @@
           <dd class="govuk-summary-list__value">{{ item.religious_ethos }}</dd>
         </div>
       {% endif %}
-
-      {# Number of pupils with SEN provision #}
-      {% if item.sen_pupils %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Number of pupils with SEN provision</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_pupils }}</dd>
-        </div>
-      {% endif %}
-
-      {# SEN capacity #}
-      {% if item.sen_capacity %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">SEN capacity</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_capacity }}</dd>
-        </div>
-      {% endif %}
-
-      {# Type of SEN provision #}
-      {% if item.sen_types and item.sen_types.length > 0 %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Type of SEN provision</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_types | join(", ") }}</dd>
-        </div>
-      {% endif %}
-
-      {# Website #}
-      {% if item.website %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Website</dt>
-          <dd class="govuk-summary-list__value">
-            <a class="govuk-link" href="{{ item.website.href }}" rel="noreferrer noopener" target="_blank">{{ item.website.label }} (opens in a new tab)</a>
-          </dd>
-        </div>
-      {% endif %}
-
-      {# Ofsted #}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Ofsted</dt>
-        <dd class="govuk-summary-list__value">
-          <a class="govuk-link" href="#" rel="noreferrer noopener" target="_blank">Inspection report (opens in new tab)</a>
-        </dd>
-      </div>
 
       {# School profiles service (hash link for now) #}
       <div class="govuk-summary-list__row">

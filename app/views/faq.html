@@ -1,0 +1,417 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% set activeNav = "Help" %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">
+        Frequently asked questions (FAQs)
+      </h1>
+
+      <p class="govuk-body-l">
+        A list of terms and definitions used in Find Education Provider Records.
+      </p>
+
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h2 class="govuk-heading-l">
+        General questions
+      </h2>
+
+      <h3 class="govuk-heading-m">
+        Where is the Find education provider records guidance?
+      </h3>
+      <p class="govuk-body">
+        The Find education provider records guidance can be found <a href="guidance.html">here</a>.
+      </p>
+
+      <h3 class="govuk-heading-m">
+        Why does Find education provider records not register early years providers?
+      </h3>
+      <p class="govuk-body">
+        Find education provider records does not register or hold details of private, voluntary and independent (PVI) childcare providers, including pre-schools and day nurseries in England.
+      </p>
+      <p class="govuk-body">
+        These providers are registered by Ofsted. Details of these providers can be found on the <a href="#">Ofsted website</a>.
+      </p>
+
+
+      <h3 class="govuk-heading-m">
+        Why is there no Ofsted rating and date of last full inspection?
+      </h3>
+      <p class="govuk-body">
+        The Ofsted rating and date of last inspection fields were removed from  in January 2025.
+      </p>
+      <p class="govuk-body">
+        Following the Secretary of State’s announcement that, from September 2024, inspections of state-funded schools will no longer include an overall effectiveness judgement, the  service has made the following changes to the existing Ofsted fields in :
+      </p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>Removed the rating (code and name) fields</li>
+        <li>Removed the Ofsted last inspection field</li>
+        <li>Renamed the Ofsted report link field to Ofsted rating and reports (the hyperlink to the Ofsted website for the provider will remain on the user interface (UI) so users can access this directly from  if they wish to)</li>
+      </ul>
+
+      <h3 class="govuk-heading-m">
+        Where is the Find education provider records guidance?
+      </h3>
+      <p class="govuk-body">
+        The Find education provider records guidance can be found <a href="guidance.html">here</a>.
+      </p>
+
+      <h3 class="govuk-heading-m">
+        Where is the statutory guidance about making organisation changes to academies and free schools, including school closure?
+      </h3>
+      <p class="govuk-body">
+        The statutory guidance about making organisation changes to academies and free schools, including school closure can be found here.
+      </p>
+
+      <h2>Personal data</h2>
+
+      <h3>What personal data is held in Find education provider records ?</h3>
+      <p class="govuk-body">
+        Most of the data held on Find education provider records  is non-personal. However, some data is considered personal, such as the headteacher/principal/manager email address, independent school proprietor personal information and governance roles personal information which are stored in a secure part of the service. They can only be viewed by authorised users with a DfE Sign-in (DSI) account.
+      </p>
+
+      <h3>Who can access personal data in Find education provider records ?</h3>
+      <p class="govuk-body">
+        As public appointees, headteacher names, proprietor names and governance roles name and appointment dates are available via the public site on Find education provider records . All other personal information is held securely, and access can only be obtained by authorised users with a DfE Sign-in (DSI) account.
+      </p>
+
+      <h3>What does DfE do with the personal data held in Find education provider records ?</h3>
+      <p class="govuk-body">
+        Holding this data enables DfE to meet their statutory requirements. The section, ‘How Government Uses Your Data’ within the model privacy notice explains how DfE uses governance roles data.
+      </p>
+
+      <p>Contact details are used to help us to improve the site by monitoring how you use it and respond to any feedback you send us. Contact details are also used to send important messaging from the department.</p>
+      
+      <h3>Is the  site secure?</h3>
+      <p class="govuk-body">
+        There are several security management protocols in place to ensure the site is secure, including data encryption, system security checks, audit trails of user actions and processes to prevent unauthorised access or disclosure of the data.
+      </p>
+
+      <h2>Updating your provider details</h2>
+
+      <h3>How often do I need to update and/or confirm my provider record?</h3>
+
+      <p class="govuk-body">
+        An provider’s record should be updated as changes occur, and at a minimum of once a month if required. This is for the details tab and the governance tab.
+      </p>
+
+      <p class="govuk-body">
+        If provider users have no changes to make to the provider’s record but wish to confirm their record is up to date this can be undertaken by selecting the green confirm details button next to the edit button on the details tab and the green confirm governance information button next to the edit button on the governance tab. By selecting these buttons, providers are confirming all their provider’s record information is correct. The last confirmed or updated field on the details tab will then reflect todays’ date.
+      </p>
+
+      <p class="govuk-body">
+        If you do not update one or more detail tab fields or select the confirm details button on the details tab within 60 days since the last confirm was made or field update was completed all  users in your provider, the headteacher/principal/manager, the main school email address, and the alternative school email address will receive the reminder email to review and update or confirm your provider’s record. This message will be resent weekly until the provider’s record is reviewed and confirmed or updated.
+      </p>
+
+      <p class="govuk-body">
+        A confirm details notification banner will also appear at the top of your provider’s record. This banner will remain until the confirm button is selected or an update to one or more fields is undertaken and saved. Once completed the last confirmed or updated field will show today’s date and the day count since the last confirm or update will restart.
+      </p>
+
+      <h3>Why has our provider record not been updated?</h3>
+
+      <p class="govuk-body">
+        If a particular field or fields on your provider record have not been updated it is because when an provider updates it's Find education provider records  provider record some fields require local authority or departmental approval (provider type dependent). Once these change requests are approved the record will automatically be updated.
+      </p>
+
+      <p class="govuk-body">
+        If the change requests are not approved your provider may need to provide supplementary evidence to the relevant local authority approver or departmental policy team.
+      </p>
+
+      <h3>Why is there is no edit button and therefore why am I unable to amend my record?</h3>
+
+      <p class="govuk-body">
+        If your provider is due to close within 28 days, you will not be able to edit the record. In this scenario you should send a service request here and the  Support team will liaise with the relevant departmental colleagues to make the changes on your behalf if we have sufficient evidence.
+      </p>
+
+      <h3>Where does the pupil number information and free school meal information on Find education provider records  come from and when is it updated?</h3>
+
+      <p class="govuk-body">
+        The figures for number of pupils, number of boys, number of girls, number of pupils eligible for free school meals (FSMs) and percentage of children eligible for free school meals (FSMs) are updated annually in July or August from the underlying data of the schools, pupils and their characteristics publication, usually published in July.
+      </p>
+
+      <p class="govuk-body">
+        This is a link to the publication <a href="#">here</a>.
+      </p>
+
+      <p class="govuk-body">
+        The number of pupils eligible for free school meals (FSMs) and percentage of children eligible for free school meals (FSMs) fields use the data from the following columns in the underlying data file: number of pupils known to be eligible for free school meals (Performance Tables) and % of pupils known to be eligible for free school meals (Performance Tables).
+      </p>
+
+      <p class="govuk-body">
+        This information comes from the January school census, the school level annual school census (SLASC) and the general hospital schools (GHS) data collections, respectively.
+      </p>
+
+      <p class="govuk-body">
+        We currently have data from the January 2026 census data collections on Find education provider records.
+      </p>
+
+      <h2>Online providers</h2>
+
+      <h3>What is an online provider?</h3>
+      
+      <p class="govuk-body">
+        The term online provider refers to a provider of online education services which is provided remotely through digital technologies. Online providers operate online-only on a permanent basis, delivering a full-time education, a full curriculum, and representing at least one child’s main source of education.
+      </p>
+
+      <p class="govuk-body">
+        For further details please see glossary.
+      </p>
+
+      <h3>How do I register as an online provider?</h3>
+      <p class="govuk-body">
+        To become accredited as an online provider, you will need to apply via the website. Visit Accreditation for online education providers (opens in new tab) for the latest information about applying to become an accredited provider.
+      </p>
+
+      <h3>What age group can attend an online provider provider?</h3>
+      <p class="govuk-body">
+        An online provider can have a child of any age. However, they can only apply to the department for the online education accreditation scheme if they have a child of compulsory school age, in England on their roll.
+      </p>
+
+      <h3>Who is the accreditation body for online providers?</h3>
+      <p class="govuk-body">
+        The accreditation body for this scheme is the Department for Education.
+      </p>
+
+      <h2>Secure 16 to 19 academies and secure single-academy trusts (SSATs)</h2>
+
+      <h3>What is a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        A secure 16 to 19 academy, also known as a secure school, is a new type of youth custody provision, created as part of the Government’s response to Charlie Taylor’s, Review of the Youth Justice System in England and Wales, published in December 2016, which recommended the creation of secure schools.
+      </p>
+
+      <p class="govuk-body">
+        Secure 16 to 19 academies aim to tackle violence, address the underlying causes of youth offending, and improve outcomes for young people in custody by creating a therapeutic environment in a secure setting, which places education, healthcare, and physical activity at its heart.
+      </p>
+
+      <p class="govuk-body">
+        A secure 16 to 19 academy is defined in section 1B of the Academies Act 2010 as a 16 to 19 academy which provides accommodation approved by the Secretary of State for the restriction of liberty of its students. Secure 16 to 19 academies are included in the definition of a secure children’s home as in regulation 2 of the Children’s Home (England) Regulations 2015 (S.I. 2015/541).
+      </p>
+
+      <p class="govuk-body">
+        Secure 16 to 19 academies must comply with all the relevant legislation for children’s homes, and 16 to 19 academies such as the Care Standards Act 2000, the Children’s Homes (England) Regulations 2015 and the Academies Act 2010.
+      </p>
+
+      <p class="govuk-body">
+        Secure 16 to 19 academies are run by secure single-academy trusts (SSATs). They are funded by the Ministry of Justice (MOJ) and accountable to the Secretary of State for Justice. The Secretary of State for Justice will sign a funding agreement with each secure single-academy trust.
+      </p>
+
+      <p class="govuk-body">
+        The Secretary of State for Justice acts as the principal regulator for secure single-academy trusts and is responsible for promoting compliance by the trustees with their legal obligations in exercising control and management of the administration of the secure single-academy trust.
+      </p>
+
+      <h3>What is a secure single-academy trust (SSAT)?</h3>
+      <p class="govuk-body">
+        A secure single-academy trust (SSAT) is a not-for-profit company limited by guarantee, formed specifically to establish and run a secure 16 to 19 academy, that has a separate board to give strategic leadership to and have accountability for the performance of its secure 16 to 19 academy.
+      </p>
+
+      <p class="govuk-body">
+        The secure single-academy trust is accountable to the Ministry of Justice (MOJ) and is a separate legal entity from an academy trust that is accountable to the Department for Education (DfE).
+      </p>
+
+      <p class="govuk-body">
+        Secure single-academy trusts – are exempt charities section 12 of the Academies Act 2010 (as amended).
+      </p>
+
+      <h3>Why is there no information recorded about the number of pupils in a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        The pupil numbers have not been recorded on Find education provider records  because the Youth Custody Service (YCS) are responsible for publishing monthly statistics on the population in custody of children and young people within the secure estate, which includes secure 16 to 19 academies. The published data does not specify numbers of children and young people, nor the number of boys and girls in individual providers and so they are not recorded on . The Youth Custody Service published data can be found here: Youth Custody Data
+      </p>
+
+      <h3>Why is there only a care of (c/o) address for a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        A care of (c/o) address is used for the secure 16 to 19 academies because secure 16 to 19 academies are also secure children’s homes. There is legislation (Regulation 2: Amendment of the Care Standards Act 2000 (Registration) (England) Regulations 2010) that specifies the circumstances when addresses of secure children’s homes can be disclosed, which do not include publication of addresses on Get Information about School .
+      </p>
+
+      <h3>Why is the location tab data only representative of the care of (c/o) address for the secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        The location tab data is only representative of the care of (c/o) address for the secure 16 to 19 academy because this is the address that can be legally published on Find education provider records .
+      </p>
+
+      <p class="govuk-body">
+        A care of (c/o) address is used for the secure 16 to 19 academies because secure 16 to 19 academies are also secure children’s homes. There is legislation (Regulation 2: Amendment of the Care Standards Act 2000 (Registration) (England) Regulations 2010) that specifies the circumstances when addresses of secure children’s homes can be disclosed, which do not include publication of addresses on Get Information about School . This therefore means that the location data is representative of the care of address as it is fed by the address data.
+      </p>
+
+      <h3>Why is the Ofsted inspection report and rating not available for a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        Secure 16 to 19 academies are inspected to ensure that they are providing an effective service across education, health, wellbeing, and care.
+      </p>
+
+      <p class="govuk-body">
+        Secure 16 to 19 academies are jointly inspected by Ofsted and the Care Quality Commission (CQC), covering education, care, and health, aligning the relevant elements of the Education Inspection Framework (EIF): 16 to 19 Academies and Social Care Common Inspection Framework (SCCIF): Secure Children’s Homes.
+      </p>
+
+      <p class="govuk-body">
+        The secure 16 to 19 academy Ofsted inspection report and rating is not available on Find education provider records  because this report would include the address of a secure 16 to 19 academy. Secure 16 to 19 academies are also secure children’s homes and there is legislation (Regulation 2: Amendment of the Care Standards Act 2000 (Registration) (England) Regulations 2010) that specifies the circumstances when addresses of secure children’s homes can be disclosed, which do not include publication of addresses on Find education provider records .
+      </p>
+
+      <h3>Why is the age range recorded as 12 to 17 years for a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        The age range for a secure 16 to 19 academy corresponds to the age range specified in the funding agreement with the secure single-academy trust (SSAT).
+      </p>
+
+      <p class="govuk-body">
+        Any boy or girl aged 12 to 17 who is remanded or sentenced into youth detention accommodation could be placed in a secure 16 to 19 academy by the Youth Custody Service (YCS). The Youth Custody Service decides about the most appropriate placement after consideration of each child’s individual needs. Placements are made with the aim of promoting the child’s safety and ensuring decisions are made with the child’s best interests as a primary consideration.
+      </p>
+
+      <p class="govuk-body">
+        Most children remanded or sentenced to custody are aged 16 to 17. There may also be occasions when a child turns 18 years of age whilst placed in a secure 16 to 19 academy, this might be because an individual is waiting for transition to the adult prison estate or because they are about to be imminently released from custody.
+      </p>
+
+      <h3>Why is the phase of education for secure 16 to 19 academies stated as being 16 plus when the age range is stated as being 12 to 17?</h3>
+      <p class="govuk-body">
+        The phase of education for secure 16 to 19 academies is stated as 16 plus because 16 to 19 academies are defined by law (1B of the Academies Act 2010) as institutions principally concerned with the education of young people above compulsory school age and below 19. There is no strict legal age bracket for 16 to 19 academies although most 16 to 19 academies would only have children aged 16-19.
+      </p>
+
+      <p class="govuk-body">
+        Whilst any boy or girl aged 12 to 17 who is remanded or sentenced into youth detention accommodation could be placed into a secure 16 to 19 academy, the majority of children placed there will be aged 16 to 17. This is because this age group makes up the largest proportion of children remanded or sentenced to youth detention across the whole of the children and young people secure estate.
+      </p>
+
+      <h3>Why is there no exam performance or assessment data available for a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        Secure 16 to 19 academies have their own set of performance measures and report performance data to the Youth Custody Service (YCS) on a regular basis. Secure 16 to 19 academies are not included in the Department for Education (DfE) performance tables because it is likely that fewer than five children will be undertaking exam qualifications in any given year, and as such publication of results would present a risk to the anonymity of children.
+      </p>
+
+      <h3>Why is there no information about special educational needs (SEN) available for a secure 16 to 19 academy?</h3>
+      <p class="govuk-body">
+        SEN provision, SEN unit capacity and SEN unit number on role are not recorded because a secure 16 to 19 academy must meet the needs of all the children placed there who are sentenced or remanded to custody.
+      </p>
+
+      <h3>Why is there not a links tab for the secure 16 to 19 academies?</h3>
+      <p class="govuk-body">
+        Secure 16 to 19 academes will not have predecessors as they are a brand-new provider type, and they will not have successors as they will not be changed to another provider type.
+      </p>
+
+      <h3>To whom should I send a Freedom of Information (FOI) request relating to secure 16 to 19 academies?</h3>
+      <p class="govuk-body">
+        Freedom of Information (FOI) requests regarding secure 16 to 19 academies should be addressed to the Youth Custody Service (YCS) central briefing and correspondence team who manage FOIs centrally for the children and young people secure estate. Please email: data.access@justice.gov.uk.
+      </p>
+
+      <h3>To whom should I send a Freedom of Information (FOI) request relating to Find education provider records?</h3>
+      <p class="govuk-body">
+        Freedom of Information (FOI) requests regarding Find education provider records  can be submitted to the Department for Education (DfE) via this form
+      </p>
+
+      <h2>Governance </h2>
+
+      <h3>Why have I received a governance role term of office expiry email telling me that a governance role term of office at my provider is coming to an end?</h3>
+
+      <p class="govuk-body">
+         issues two alert warning emails for the governance role term of office expiry date. The first is sent 180 days before the term of office expiry date and the second is sent on the day the term of office expires.
+      </p>
+
+      <h3>How does DfE ensure that governance roles personal data is kept secure?</h3>
+      <p class="govuk-body">
+        Access to governance roles personal data is restricted to authorised DfE and education provider users with a DfE Sign-in (DSI) account. The data is stored in a secure, encrypted database. We have set up systems and processes to prevent unauthorised access or disclosure of this data.
+      </p>
+
+      <h3>Do educational providers need consent to collect governance roles personal data?</h3>
+      <p class="govuk-body">
+        Yes, further information can be found in the model privacy notice developed for use by educational providers.
+      </p>
+
+      <h3>Who can access a governance role personal data?</h3>
+      <p class="govuk-body">
+        As public appointees, all governance roles name and appointment date are available via the public site on . All other personal information is held securely, and access can only be obtained by authorised users.
+      </p>
+
+      <h3>How do I add a chief executive officer (CEO) who has been appointed as a trustee by the members, where their role has no end date and their term isn’t fixed?</h3>
+      <p class="govuk-body">
+        In an academy trust, the CEO does not have an ex-oficio role on the board. If Members appoint a CEO as a trustee, they need to stipulate the term of office similar to any other trustee position, in accordance with their articles of association.
+      </p>
+
+      <h3> We have a new trustee or governor, and they have asked for their details not to be published on Find education provider records , how do we do this?</h3>
+      <p class="govuk-body">
+        As collection of this data is a legal requirement we are required to collect and publish information about members, the chair of the board, governors, trustees and local governors, as set out in the DfE’s governance guides and the Academies Trust Handbook. This information must be provided via Find education provider records . Only certain information will be published as stated in the following: National database of governors
+      </p>
+
+      <h2>Address and postcode</h2>
+      
+      <h3>Why is my postcode not recognised?</h3>
+      <p class="govuk-body">
+        Find education provider records  uses the Ordnance Survey OS Places API, our postcode data provider, to validate postcodes. There may be a delay between a new postcode being created and appearing on OS Places. If your school is a new build, please check with the local gazetteer at your local authority that the postcode has been set up.
+      </p>
+
+      <h3>How do I check my provider’s unique property reference number (UPRN) value on the system?</h3>
+      <ol class="govuk-list govuk-list--number govuk-list--spaced">
+        <li>Sign into your provider’s Find education provider records  record</li>
+        <li>Select the 'Edit details' button on the details tab of your provider's record</li>
+        <li>Select the 'Replace this address' link</li>
+        <li>Enter or re-enter your provider's correct postcode and then select the 'Find address' button</li>
+        <li>Select your provider’s correct address from the 'Pick an address' drop-down list. For information, this list is populated with data from the Ordinance Survey (OS). If there is no obvious match for your provider or you are unsure of the correct choice to make please contact the service desk to seek further guidance.</li>
+        <li>Select the 'Replace address' button which will take you back to the main details tab page</li>
+        <li>Select the 'Continue' button</li>
+        <li>Select the ‘Accept and Save’ button</li>
+        <li>9. You will receive an update confirmation at the top of the page.</li>
+      </ol>
+
+      <h2>Downloads</h2>
+
+      <h3>Why do some dates download with a '-' rather than a '/' as the separator?</h3>
+      <p class="govuk-body">
+        This is the result of a known issue with the way in which MS Excel processes dates prior to 1900.
+      </p>
+      <p class="govuk-body">
+        For further information about date formats in MS Excel please see the Microsoft support website here.
+      </p>
+
+      <h2>DfE Sign-in (DSI)</h2>
+
+      <h3>How do I get access to Find education provider records  through DfE Sign-in (DSI)?</h3>
+      <p class="govuk-body">
+        Information on how you can get access to Find education provider records  and any other relevant DfE Sign-in (DSI) service can be found here.
+      </p>
+
+      <h3>How do I contact the DfE Sign-in (DSI) service desk?</h3>
+      <p class="govuk-body">
+        To contact the DfE Sign-in (DSI) service desk please submit a service request
+        here.
+      </p>
+
+      <h2>His Majesty'sRevenue and Customes (HMRC) Tax Free Childcare service</h2>
+
+      <h3>Why is our provider’s Find education provider records  information not present on His Majesty’s Revenue and Customs (HMRC) Tax-Free Childcare (TFC) service?</h3>
+      <p class="govuk-body">
+        The Tax-Free Childcare (TFC) service uses the open registered provider information from the  service to ensure only those providers can sign-up for TFC. This enables parents to instruct for payments to be made to their childcare provider when it is an open registered provider.
+      </p>
+      <p class="govuk-body">
+        If your provider (subject to  being the place of registration) is not registered on  as open or open, but proposed to close, if your provider address and contact details are not completed or up-to-date, and if your headteacher, principal or manager details, including email address, are not completed or up-to-date this will prevent you from being able to sign-up for TFC.
+      </p>
+      <p class="govuk-body">
+        If the details noted above change between the provision of data from  to the TFC service this will also prevent you from being able to sign-up for TFC or access your existing account on the TFC service.
+      </p>
+      <p class="govuk-body">
+        From May 2026 the data is provided by  to the TFC service on a monthly basis. The data is supplied in the second week of each month.
+      </p>
+
+      <p class="govuk-body">
+        If you have not updated your provider record prior to the data being transferred your information will be updated on the TFC service after the next data transfer. Please make sure your  record is always up-to-date and correct.
+      </p>
+
+      <p class="govuk-body">
+        Contact points and further details about the TFC service and how tax free childcare providers can access their account can be found here
+      </p>
+
+    </div>
+  </div>
+
+{% endblock %}

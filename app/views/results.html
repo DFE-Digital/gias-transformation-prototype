@@ -55,13 +55,14 @@
 {#
   Autocomplete filter section (Local authority, Diocese).
   Long value lists (100+) aren't usable as checkboxes, so these use the
-  accessible-autocomplete "type to filter" pattern. Selecting a suggestion
-  submits the filter form (reusing the same server-side filtering as the
-  checkbox facets), so the value applies and appears as a removable tag in
-  the "Selected filters" area — no bespoke filtering logic.
+  accessible-autocomplete "type to filter" pattern. Selecting a suggestion adds
+  it as a pending tag inside the filter (above the input) without applying it;
+  pending tags can be removed before applying. On "Apply filters" the values
+  submit and appear as removable tags in the top "Selected filters" area,
+  reusing the same server-side filtering as the checkbox facets.
 
-  Already-selected values are carried as hidden inputs so they persist across
-  submissions and can be removed via the selected-filter tags.
+  Already-applied values are carried as hidden inputs so they persist across
+  submissions and can be removed via the top selected-filter tags.
 #}
 {% macro autocompleteSection(title, name, activeValues) %}
   <details class="govuk-details dfe-filter-section">
@@ -72,6 +73,9 @@
       {% for val in activeValues %}
         <input type="hidden" name="{{ name }}" value="{{ val }}">
       {% endfor %}
+      {# Pending selections (chosen but not yet applied) are listed here by JS,
+         above the input. They move to the top "Selected filters" panel on Apply. #}
+      <ul class="dfe-pending-tags govuk-list" data-pending-for="{{ name }}"></ul>
       <div class="govuk-form-group govuk-!-margin-bottom-0">
         <label class="govuk-label govuk-visually-hidden" for="{{ name }}-autocomplete">{{ title }}</label>
         <div
@@ -195,7 +199,7 @@
                   aria-expanded="{{ "true" if group.anyChecked else "false" }}"
                   {% if group.allChecked %}checked{% endif %}>
                 <label class="govuk-label govuk-checkboxes__label" for="{{ groupId }}">
-                  {{ group.name }} ({{ group.count }})
+                  {{ group.name }}
                 </label>
               </div>
             </div>
@@ -237,19 +241,19 @@
   #}
   <form method="get" action="/results" class="dfe-search-panel govuk-!-margin-bottom-6">
     {% if kind %}<input type="hidden" name="kind" value="{{ kind }}">{% endif %}
-    <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search</p>
+    <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search.</p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-label--s" for="what">Enter a name or ID number</label>
-          <div id="what-hint" class="govuk-hint">For example, a school or trust name, UKPRN or DfE number.</div>
+          <div id="what-hint" class="govuk-hint">For example, a school or trust name, URN, UKPRN or DfE number</div>
           <input class="govuk-input" id="what" name="what" type="text" value="{{ searchQ if searchQ !== '*' else '' }}" aria-describedby="what-hint">
         </div>
       </div>
       <div class="govuk-grid-column-one-half">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-label--s" for="where">Enter a location</label>
-          <div id="where-hint" class="govuk-hint">For example, a postcode, city or local authority.</div>
+          <div id="where-hint" class="govuk-hint">For example, a postcode, city or local authority</div>
           <input class="govuk-input" id="where" name="where" type="text" value="{{ searchWhere }}" aria-describedby="where-hint">
         </div>
       </div>
@@ -269,25 +273,25 @@
     <div class="govuk-grid-column-one-third">
 
       {% set filterOptionsHtml %}
-        {{ filterSection("Status", statusOptions, "status", "status") }}
-        {{ providerTypeSection(providerTypeGroups) }}
-        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
         {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
+        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
+        {{ providerTypeSection(providerTypeGroups) }}
+        {{ filterSection("Further education type", feTypeOptions, "fe_type", "fe_type") }}
+        {{ filterSection("Section 41 approved (independent SEND school)", section41Options, "section_41", "section_41") }}
+        {{ filterSection("Status", statusOptions, "status", "status") }}
+        {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
+        {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
+        {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
         {{ ageRangeSection(ageFrom, ageTo) }}
         {{ filterSection("Gender", genderOptions, "gender", "gender") }}
+        {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
+        {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
         {{ filterSection("Boarding provision", boardingOptions, "boarding", "boarding") }}
         {{ filterSection("Nursery provision", nurseryOptions, "nursery_provision", "nursery_provision") }}
         {{ filterSection("Sixth form provision", sixthFormOptions, "sixth_form", "sixth_form") }}
         {{ filterSection("Religious character", religionOptions, "religious_character", "religious_character") }}
         {{ filterSection("Religious ethos", ethosOptions, "religious_ethos", "religious_ethos") }}
-        {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
-        {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
-        {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
         {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
-        {{ filterSection("Further Education type", feTypeOptions, "fe_type", "fe_type") }}
-        {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
-        {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
-        {{ filterSection("Section 41 approved", section41Options, "section_41", "section_41") }}
       {% endset %}
 
       <form method="get" action="/results">
@@ -358,7 +362,7 @@
 
           <div class="dfe-results-download">
             {{ govukButton({
-              text: "Download results",
+              text: "Download full records",
               classes: "govuk-button--secondary govuk-!-margin-bottom-0",
               href: "#"
             }) }}
@@ -367,40 +371,43 @@
 
         {% for item in results %}
           <div class="govuk-summary-card">
+            
             <div class="govuk-summary-card__title-wrapper">
               <h2 class="govuk-summary-card__title govuk-heading-s govuk-!-margin-bottom-0">
                 <a class="govuk-link" href="/establishment/{{ item.id }}?from={{ currentUrl | urlencode }}">{{ item.name }}</a>
               </h2>
               {% if item.status == "Closed" %}
                 <div class="govuk-summary-card__actions">
-                  <strong class="govuk-tag govuk-tag--grey">Closed</strong>
+                  <strong class="govuk-tag govuk-tag--orange">Closed</strong>
                 </div>
               {% endif %}
             </div>
+            
             <div class="govuk-summary-card__content">
+              
               <dl class="govuk-summary-list">
 
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
-                  <dd class="govuk-summary-list__value">{{ item.id }}</dd>
-                </div>
+                {% if item.local_authority %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Local authority</dt>
+                    <dd class="govuk-summary-list__value">{{ item.local_authority }}</dd>
+                  </div>
+                {% endif %}
 
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Type</dt>
                   <dd class="govuk-summary-list__value">{% if item.type_detail and (item.type | lower) != (item.type_detail | lower) %}{{ item.type }} ({{ item.type_detail }}){% else %}{{ item.type }}{% endif %}</dd>
                 </div>
 
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
+                  <dd class="govuk-summary-list__value">{{ item.id }}</dd>
+                </div>
+
                 {% if item.street or item.town or item.postcode %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Address</dt>
                     <dd class="govuk-summary-list__value">{{ [item.street, item.town, item.county, item.postcode] | select | join(", ") }}</dd>
-                  </div>
-                {% endif %}
-
-                {% if item.local_authority %}
-                  <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Local authority</dt>
-                    <dd class="govuk-summary-list__value">{{ item.local_authority }}</dd>
                   </div>
                 {% endif %}
 
@@ -462,9 +469,11 @@
   <script>
     (function () {
       // Enhance each filter that opts in via data-module="dfe-filter-autocomplete".
-      // On selecting a suggestion we set a hidden field and submit the sidebar
-      // filter form, so the value applies through the same server-side filtering
-      // as the checkbox facets and appears as a removable "Selected filter" tag.
+      // Selecting a suggestion adds it as a *pending* tag inside the filter plus
+      // a hidden field on the form, but does NOT apply it. On "Apply filters"
+      // the form submits normally and the value appears in the top "Selected
+      // filters" panel (rendered server-side). Pending tags can be removed with
+      // their own × before applying.
       var containers = document.querySelectorAll('[data-module="dfe-filter-autocomplete"]')
 
       containers.forEach(function (container) {
@@ -478,11 +487,58 @@
 
         // The sidebar filter form this facet belongs to
         var form = container.closest('form')
+        var pendingList = form ? form.querySelector('[data-pending-for="' + name + '"]') : null
+
+        // Values already applied (server-rendered hidden inputs) — don't let the
+        // user add a pending duplicate of something that's already applied.
+        function appliedValues () {
+          var out = []
+          if (!form) { return out }
+          form.querySelectorAll('input[type="hidden"][name="' + name + '"]').forEach(function (h) {
+            if (!h.hasAttribute('data-pending')) { out.push(h.value) }
+          })
+          return out
+        }
+        function pendingValues () {
+          var out = []
+          if (!form) { return out }
+          form.querySelectorAll('input[type="hidden"][name="' + name + '"][data-pending]').forEach(function (h) {
+            out.push(h.value)
+          })
+          return out
+        }
+
+        function addPending (value) {
+          if (!form || !pendingList) { return }
+          if (appliedValues().indexOf(value) !== -1) { return }
+          if (pendingValues().indexOf(value) !== -1) { return }
+
+          var hidden = document.createElement('input')
+          hidden.type = 'hidden'
+          hidden.name = name
+          hidden.value = value
+          hidden.setAttribute('data-pending', '')
+          form.appendChild(hidden)
+
+          var li = document.createElement('li')
+          li.className = 'dfe-pending-tags__item'
+          var btn = document.createElement('button')
+          btn.type = 'button'
+          btn.className = 'dfe-pending-tags__remove'
+          btn.innerHTML = value + ' <span aria-hidden="true">\u00d7</span>'
+          btn.setAttribute('aria-label', 'Remove ' + label + ' ' + value)
+          btn.addEventListener('click', function () {
+            form.removeChild(hidden)
+            pendingList.removeChild(li)
+          })
+          li.appendChild(btn)
+          pendingList.appendChild(li)
+        }
 
         accessibleAutocomplete({
           element: container,
           id: name + '-autocomplete',
-          name: name + '-autocomplete-input', // not submitted directly; see below
+          name: name + '-autocomplete-input', // not submitted directly
           minLength: 3,
           showNoOptionsFound: true,
           placeholder: 'Type to filter ' + label.toLowerCase(),
@@ -493,16 +549,11 @@
             }))
           },
           onConfirm: function (selected) {
-            if (!selected || !form) { return }
-            // Add the chosen value as a hidden field on the filter form, then
-            // submit so it applies and shows as a tag. Standard behaviour:
-            // the input clears and the list closes on reload.
-            var hidden = document.createElement('input')
-            hidden.type = 'hidden'
-            hidden.name = name
-            hidden.value = selected
-            form.appendChild(hidden)
-            form.submit()
+            if (!selected) { return }
+            addPending(selected)
+            // Clear the input so the user can add another.
+            var input = document.getElementById(name + '-autocomplete')
+            if (input) { input.value = '' }
           }
         })
       })
