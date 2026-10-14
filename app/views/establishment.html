@@ -10,13 +10,30 @@
 {% set isGroup = (item.id_type === 'UID' or item.id_type === 'Group UID') %}
 
 {#
+  The member tab/panel noun depends on what the group contains, since not all
+  groups hold academies. Mirrors the member-count wording used on result cards.
+    Academy trusts            -> Academies
+    Federations / foundations -> Providers
+    Children's centre groups  -> Centres
+    anything else             -> Members
+#}
+{% set memberNoun = "Members" %}
+{% if item.type === "Trust: Multi-academy" or item.type === "Trust: Single-academy" or item.type === "Trust: Secure single-academy" %}
+  {% set memberNoun = "Academies" %}
+{% elif item.type === "Federation" or item.type === "Shared foundation trust" %}
+  {% set memberNoun = "Providers" %}
+{% elif item.type === "Children's Centres Group" or item.type === "Children's Centres Collaboration" %}
+  {% set memberNoun = "Centres" %}
+{% endif %}
+
+{#
   statusTag — renders a GOV.UK tag for statuses that have one, otherwise the
   plain status text. Extend the mapping here when status_detail is introduced
   (e.g. "Proposed to convert to academy" -> govuk-tag--blue).
 #}
 {% macro statusTag(status) %}
   {% if status == "Closed" %}
-    <strong class="govuk-tag govuk-tag--orange">Closed</strong>
+    <strong class="govuk-tag govuk-tag--blue">Closed</strong>
   {% else %}
     {{ status }}
   {% endif %}
@@ -38,6 +55,62 @@
   {%- endif -%}
 {% endmacro %}
 
+{#
+  Governance date + table helpers.
+  Source dates are dd/mm/yyyy strings; govDate renders them in GOV.UK style
+  (e.g. "31 Aug 2024"). govTerm shows the appointment term, falling back to
+  "From <date>" when no end date is recorded and "Not recorded" when neither.
+#}
+{% set govMonths = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] %}
+
+{% macro govDate(d) %}
+  {%- if d and '/' in d -%}
+    {%- set p = d.split('/') -%}
+    {{- p[0] | int }} {{ govMonths[p[1] | int] }} {{ p[2] -}}
+  {%- else -%}
+    {{- d -}}
+  {%- endif -%}
+{% endmacro %}
+
+{% macro govTerm(p) %}
+  {%- if p.term_ends -%}
+    {{ govDate(p.appointed) }} to {{ govDate(p.term_ends) }}
+  {%- elif p.appointed -%}
+    From {{ govDate(p.appointed) }}
+  {%- else -%}
+    Not recorded
+  {%- endif -%}
+{% endmacro %}
+
+{#
+  governanceTable — renders a board/trustee/member table with the columns
+  Name & role | Governor ID | Appointed by | Term. "defaultRole" is the role
+  that is implied by the table (e.g. "Governor"), so only differing roles such
+  as "Chair" are shown in brackets after the name.
+#}
+{% macro governanceTable(people, defaultRole) %}
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Name &amp; role</th>
+        <th scope="col" class="govuk-table__header">Governor ID</th>
+        <th scope="col" class="govuk-table__header">Appointed by</th>
+        <th scope="col" class="govuk-table__header">Term</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for p in people %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">{{ p.name }}{% if 'Chair' in p.role %} (Chair){% elif p.role and p.role != defaultRole %} ({{ p.role }}){% endif %}</td>
+          <td class="govuk-table__cell">{{ p.gid }}</td>
+          <td class="govuk-table__cell">{{ p.appointing_body or "Not recorded" }}</td>
+          <td class="govuk-table__cell">{{ govTerm(p) }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}
+
 {% block beforeContent %}
   {{ govukBreadcrumbs({
     items: [
@@ -56,7 +129,7 @@
   ===========================================================================
 #}
 {% set detailsHtml %}
-  <h2 class="govuk-heading-m">Details</h2>
+  <h2 class="govuk-heading-l">Details</h2>
   <dl class="govuk-summary-list">
 
     {% if isGroup %}
@@ -113,9 +186,10 @@
 
     {% else %}
       {# ---------------------------------------------------------------------
-         Provider details — row order follows establishment-page-reorder.png
+         Provider details
          --------------------------------------------------------------------- #}
 
+      
       {# Local authority #}
       {% if item.local_authority %}
         <div class="govuk-summary-list__row">
@@ -151,22 +225,22 @@
         <dt class="govuk-summary-list__key">ID numbers</dt>
         <dd class="govuk-summary-list__value">
           <dl class="dfe-id-numbers">
-            <div class="dfe-id-numbers__row">
-              <dt class="dfe-id-numbers__key">URN</dt>
-              <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
-            </div>
+            {% if item.dfe_number %}
+              <div class="dfe-id-numbers__row">
+                <dt class="dfe-id-numbers__key">LAESTAB</dt>
+                <dd class="dfe-id-numbers__value">{{ item.dfe_number }} (also known as DfE number)</dd>
+              </div>
+            {% endif %}
             {% if item.ukprn %}
               <div class="dfe-id-numbers__row">
                 <dt class="dfe-id-numbers__key">UKPRN</dt>
                 <dd class="dfe-id-numbers__value">{{ item.ukprn }}</dd>
               </div>
             {% endif %}
-            {% if item.dfe_number %}
-              <div class="dfe-id-numbers__row">
-                <dt class="dfe-id-numbers__key">DfE No.</dt>
-                <dd class="dfe-id-numbers__value">{{ item.dfe_number }}</dd>
-              </div>
-            {% endif %}
+            <div class="dfe-id-numbers__row">
+              <dt class="dfe-id-numbers__key">URN</dt>
+              <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
+            </div>
           </dl>
         </dd>
       </div>
@@ -195,14 +269,6 @@
         </div>
       {% endif %}
 
-      {# SEN capacity #}
-      {% if item.sen_capacity %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">SEN capacity</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_capacity }}</dd>
-        </div>
-      {% endif %}
-
       {# Number of pupils with SEN provision #}
       {% if item.sen_pupils %}
         <div class="govuk-summary-list__row">
@@ -211,17 +277,19 @@
         </div>
       {% endif %}
 
+      {# SEN capacity #}
+      {% if item.sen_capacity %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">SEN capacity</dt>
+          <dd class="govuk-summary-list__value">{{ item.sen_capacity }}</dd>
+        </div>
+      {% endif %}
+
       {# Type of SEN provision #}
       {% if item.sen_types and item.sen_types.length > 0 %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Type of SEN provision</dt>
-          <dd class="govuk-summary-list__value">
-            <ul class="govuk-list">
-              {% for type in item.sen_types %}
-                <li class="">{{ type }}</li>
-              {% endfor %}
-            </ul>
-          </dd>
+          <dd class="govuk-summary-list__value">{{ item.sen_types | join(", ") }}</dd>
         </div>
       {% endif %}
 
@@ -277,6 +345,22 @@
         </div>
       {% endif %}
 
+      {# Religious character — a legal designation #}
+      {% if item.religious_character %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Religious character</dt>
+          <dd class="govuk-summary-list__value">{{ item.religious_character }}</dd>
+        </div>
+      {% endif %}
+
+      {# Religious ethos — not a legal designation; indicates values or culture #}
+      {% if item.religious_ethos %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Religious ethos</dt>
+          <dd class="govuk-summary-list__value">{{ item.religious_ethos }}</dd>
+        </div>
+      {% endif %}
+
       {# Part of #}
       {# A school can belong to more than one group, e.g. a federation and a
          shared foundation trust, so part_of is a list. #}
@@ -297,22 +381,6 @@
         </div>
       {% endif %}
 
-      {# Religious character — a legal designation #}
-      {% if item.religious_character %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Religious character</dt>
-          <dd class="govuk-summary-list__value">{{ item.religious_character }}</dd>
-        </div>
-      {% endif %}
-
-      {# Religious ethos — not a legal designation; indicates values or culture #}
-      {% if item.religious_ethos %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Religious ethos</dt>
-          <dd class="govuk-summary-list__value">{{ item.religious_ethos }}</dd>
-        </div>
-      {% endif %}
-
       {# School profiles service (hash link for now) #}
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">School profiles service</dt>
@@ -320,6 +388,7 @@
           <a class="govuk-link" href="{{ item.school_profiles_url or '#' }}" rel="noreferrer noopener" target="_blank">{{ item.name }} (opens in a new tab)</a>
         </dd>
       </div>
+
     {% endif %}
 
   </dl>
@@ -334,78 +403,47 @@
   ===========================================================================
 #}
 {% set governanceHtml %}
+  <div class="dfe-governance-header">
+    <h2 class="govuk-heading-l govuk-!-margin-bottom-0">Governance</h2>
+    <a class="govuk-link" href="/glossary">Glossary of terms</a>
+  </div>
+
   {% if isGroup %}
-    <h2 class="govuk-heading-m">Trustees</h2>
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Trustees</h3>
     {% if governance and governance.trustees_current.length > 0 %}
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Name</th>
-            <th scope="col" class="govuk-table__header">Governor ID</th>
-            <th scope="col" class="govuk-table__header">Start date</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for p in governance.trustees_current %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{ p.name }}{% if 'Chair' in p.role %} (Chair){% elif p.role !== 'Trustee' %} ({{ p.role }}){% endif %}</td>
-              <td class="govuk-table__cell">{{ p.gid }}</td>
-              <td class="govuk-table__cell">{{ p.appointed }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {{ governanceTable(governance.trustees_current, "Trustee") }}
     {% else %}
       <p class="govuk-body">No trustee information is currently recorded for this group.</p>
     {% endif %}
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-8">Members</h2>
+    {% if governance and governance.trustees_left_recent.length > 0 %}
+      <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-2">Trustees who have left within the last 12 months</h3>
+      {{ governanceTable(governance.trustees_left_recent, "Trustee") }}
+    {% endif %}
+
+    <h3 class="govuk-heading-m govuk-!-margin-top-8 govuk-!-margin-bottom-2">Members</h3>
     {% if governance and governance.members_current.length > 0 %}
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Name</th>
-            <th scope="col" class="govuk-table__header">Governor ID</th>
-            <th scope="col" class="govuk-table__header">Start date</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for p in governance.members_current %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{ p.name }}</td>
-              <td class="govuk-table__cell">{{ p.gid }}</td>
-              <td class="govuk-table__cell">{{ p.appointed }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {{ governanceTable(governance.members_current, "Member") }}
     {% else %}
       <p class="govuk-body">No member information is currently recorded for this group.</p>
     {% endif %}
 
+    {% if governance and governance.members_left_recent.length > 0 %}
+      <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-2">Members who have left within the last 12 months</h3>
+      {{ governanceTable(governance.members_left_recent, "Member") }}
+    {% endif %}
+
   {% else %}
-    <h2 class="govuk-heading-m">Governors</h2>
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Board of governors</h3>
     {% if governance and governance.governors_current.length > 0 %}
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Name</th>
-            <th scope="col" class="govuk-table__header">Governor ID</th>
-            <th scope="col" class="govuk-table__header">Start date</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for p in governance.governors_current %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{ p.name }}{% if 'Chair' in p.role %} (Chair){% endif %}</td>
-              <td class="govuk-table__cell">{{ p.gid }}</td>
-              <td class="govuk-table__cell">{{ p.appointed }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {{ governanceTable(governance.governors_current, "Governor") }}
     {% else %}
       <p class="govuk-body">No governance information is currently recorded for this provider.</p>
+    {% endif %}
+
+    {% if governance and governance.governors_left_recent.length > 0 %}
+      <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-2">Governors who have left within the last 12 months</h3>
+      {{ governanceTable(governance.governors_left_recent, "Governor") }}
     {% endif %}
   {% endif %}
 {% endset %}
@@ -416,28 +454,31 @@
   ===========================================================================
 #}
 {% set academiesHtml %}
-  <h2 class="govuk-heading-m">Academies</h2>
-  {% if members.length > 0 %}
-    <table class="govuk-table">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Name</th>
-          <th scope="col" class="govuk-table__header">URN</th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-        {% for member in members %}
+  <h2 class="govuk-heading-l">{{ memberNoun }}</h2>
+  {% if membersByPhase.length > 0 %}
+    {% for section in membersByPhase %}
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2{% if not loop.first %} govuk-!-margin-top-6{% endif %}">{{ section.phase }} ({{ section.members.length }})</h3>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell">
-              <a class="govuk-link" href="/establishment/{{ member.id }}?from=/establishment/{{ item.id }}">{{ member.name }}</a>
-            </td>
-            <td class="govuk-table__cell">{{ member.id }}</td>
+            <th scope="col" class="govuk-table__header">Name</th>
+            <th scope="col" class="govuk-table__header">URN</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for member in section.members %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <a class="govuk-link" href="/establishment/{{ member.id }}?from=/establishment/{{ item.id }}">{{ member.name }}</a>
+              </td>
+              <td class="govuk-table__cell">{{ member.id }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
   {% else %}
-    <p class="govuk-body">No academies are currently recorded for this group.</p>
+    <p class="govuk-body">No {{ memberNoun | lower }} are currently recorded for this group.</p>
   {% endif %}
 {% endset %}
 
@@ -447,7 +488,7 @@
   ===========================================================================
 #}
 {% set historyHtml %}
-  <h2 class="govuk-heading-m">History</h2>
+  <h2 class="govuk-heading-l">History</h2>
   {% if predecessors.length > 0 %}
     <p class="govuk-body">Previously known as</p>
     <table class="govuk-table">
@@ -484,7 +525,7 @@
         <h1 class="govuk-heading-xl dfe-page-header__heading">{{ item.name }}</h1>
         <div class="dfe-page-header__action">
           {{ govukButton({
-            text: "Download information",
+            text: "Download full records",
             classes: "govuk-button--secondary",
             href: "#"
           }) }}
@@ -500,7 +541,7 @@
               panel: { html: detailsHtml }
             },
             {
-              label: "Academies (" + members.length + ")",
+              label: memberNoun + " (" + members.length + ")",
               id: "academies",
               panel: { html: academiesHtml }
             },

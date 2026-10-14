@@ -104,6 +104,7 @@ router.get('/results', function (req, res) {
   // Active filters
   var activeTypes = [].concat(req.query.type || []).filter(function (v) { return v !== '_unchecked' })
   var activeStatuses = [].concat(req.query.status || []).filter(function (v) { return v !== '_unchecked' })
+  var activeGroupTypes = [].concat(req.query.group_type || []).filter(function (v) { return v !== '_unchecked' })
   var activeLAs = [].concat(req.query.local_authority || []).filter(function (v) { return v !== '_unchecked' })
   var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { return v !== '_unchecked' })
   var activePhases = [].concat(req.query.phase || []).filter(function (v) { return v !== '_unchecked' })
@@ -143,9 +144,12 @@ router.get('/results', function (req, res) {
   // Sort order: 'az' (default) or 'za'
   var sortOrder = (req.query.sort === 'za') ? 'za' : 'az'
 
-  // Status is an explicit filter only. Search returns records of all statuses
-  // (Open, Closed, Proposed to open, etc.) unless the user ticks specific
-  // statuses in the Status filter. There is no "open only" default.
+  // "Include closed education providers" toggle from the search panel.
+  // Closed providers and groups are hidden by default; this opts them back in.
+  var includeClosed = req.query.include_closed === 'yes'
+
+  // Status handling: an explicit Status filter always takes precedence. When no
+  // status is ticked, closed records are hidden unless "Include closed" is set.
 
   // Base search against active data only
   var searchResults = []
@@ -214,6 +218,7 @@ router.get('/results', function (req, res) {
   var feTypeCounts = {}
   var typeGroupCounts = {}
   var typeDetailCounts = {}
+  var groupTypeCounts = {}
 
   // Count a value, treating null/empty as "Not recorded" so the filter can
   // offer that as an explicit option.
@@ -234,6 +239,10 @@ router.get('/results', function (req, res) {
     if (item.religious_ethos) ethosCounts[item.religious_ethos] = (ethosCounts[item.religious_ethos] || 0) + 1
     if (item.diocese) dioceseCounts[item.diocese] = (dioceseCounts[item.diocese] || 0) + 1
     if (item.section_41) section41Counts[item.section_41] = (section41Counts[item.section_41] || 0) + 1
+    // Group-only facet: group type (e.g. "Trust: Multi-academy", "Federation").
+    if (item.id_type === 'UID' || item.id_type === 'Group UID') {
+      if (item.type) groupTypeCounts[item.type] = (groupTypeCounts[item.type] || 0) + 1
+    }
     // Provider-only facets
     if (item.id_type === 'URN') {
       bump(boardingCounts, item.boarding)
@@ -267,12 +276,18 @@ router.get('/results', function (req, res) {
     // Record kind: provider = URN, group = UID / Group UID.
     if (kind === 'provider' && item.id_type !== 'URN') return false
     if (kind === 'group' && item.id_type !== 'UID' && item.id_type !== 'Group UID') return false
-    // Status filter: only applies when the user has ticked one or more statuses.
-    if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) {
+    // Status: an explicit Status-filter selection wins; otherwise hide closed
+    // records unless the "Include closed" toggle is on.
+    if (activeStatuses.length > 0) {
+      if (activeStatuses.indexOf(item.status) === -1) return false
+    } else if (!includeClosed && item.status === 'Closed') {
       return false
     }
     // Provider type accordion filters on the detailed type (child checkboxes).
     if (activeTypes.length > 0 && activeTypes.indexOf(item.type_detail) === -1) return false
+    // Group type filters on a group's type; providers have no group type so a
+    // group-type selection excludes them (mirrors the provider-type facet).
+    if (activeGroupTypes.length > 0 && activeGroupTypes.indexOf(item.type) === -1) return false
     if (activeLAs.length > 0 && activeLAs.indexOf(item.local_authority) === -1) return false
     if (activeSen.length > 0 && activeSen.indexOf(String(item.sen_provision)) === -1) return false
     if (activePhases.length > 0 && activePhases.indexOf(item.phase) === -1) return false
@@ -401,6 +416,23 @@ router.get('/results', function (req, res) {
       checked: activeStatuses.indexOf(status) !== -1
     }
   })
+
+  var groupTypeOptions = Object.keys(groupTypeCounts).sort().map(function (type) {
+    return {
+      value: type,
+      text: type,
+      checked: activeGroupTypes.indexOf(type) !== -1
+    }
+  })
+
+  // Whether the *displayed* results contain providers and/or groups. Based on
+  // the filtered set (after kind and the Group type facet are applied), not the
+  // pre-filter search set — so browsing or filtering down to groups hides the
+  // provider facets and leaves only Group type. The filter sidebar shows
+  // provider facets only when providers are present, and the Group type facet
+  // only when groups are present.
+  var hasProviders = filteredResults.some(function (x) { return x.id_type === 'URN' })
+  var hasGroups = filteredResults.some(function (x) { return x.id_type === 'UID' || x.id_type === 'Group UID' })
 
   var laOptions = Object.keys(laCounts).sort().map(function (la) {
     return {
@@ -618,6 +650,7 @@ router.get('/results', function (req, res) {
       })
     }
   }
+  tagCategory('Group type', 'group_type', activeGroupTypes)
   tagCategory('Phase of education', 'phase', activePhases, phaseLabels)
   tagCategory('Gender', 'gender', activeGenders)
   tagCategory('Religious character', 'religious_character', activeReligions)
@@ -680,6 +713,9 @@ router.get('/results', function (req, res) {
     nextHref: currentPage < totalPages ? buildPageUrl(req, currentPage + 1) : null,
     typeOptions: typeOptions,
     statusOptions: statusOptions,
+    groupTypeOptions: groupTypeOptions,
+    hasProviders: hasProviders,
+    hasGroups: hasGroups,
     laOptions: laOptions,
     senOptions: senOptions,
     phaseOptions: phaseOptions,
@@ -708,6 +744,7 @@ router.get('/results', function (req, res) {
     activeDioceses: activeDioceses,
     sortOrder: sortOrder,
     kind: kind,
+    includeClosed: includeClosed,
     selectedCategories: selectedCategories,
     hasActiveFilters: hasActiveFilters,
     clearFiltersHref: buildClearFiltersUrl(req),
@@ -739,15 +776,78 @@ router.get('/establishment/:id', function (req, res) {
     })
   }
 
+  // Group members by phase of education for the Academies tab. Sections are
+  // shown in education order; any member without a recognised phase (including
+  // "Not applicable" and blanks) falls under "Other". Members are listed
+  // alphabetically within each section.
+  var PHASE_ORDER = [
+    'Nursery',
+    'Primary',
+    'Middle deemed primary',
+    'Middle deemed secondary',
+    'Secondary',
+    'All-through',
+    '16 plus'
+  ]
+  var membersByPhase = []
+  if (members.length > 0) {
+    var phaseBuckets = {}
+    members.forEach(function (m) {
+      var label = PHASE_ORDER.indexOf(m.phase) !== -1 ? m.phase : 'Other'
+      if (!phaseBuckets[label]) phaseBuckets[label] = []
+      phaseBuckets[label].push(m)
+    })
+    PHASE_ORDER.concat(['Other']).forEach(function (label) {
+      if (phaseBuckets[label]) {
+        phaseBuckets[label].sort(function (a, b) {
+          return (a.name || '').localeCompare(b.name || '')
+        })
+        membersByPhase.push({ phase: label, members: phaseBuckets[label] })
+      }
+    })
+  }
+
   // Find any predecessor establishments
   var predecessors = predecessorsData[id] || []
 
   // Governance record (governors for providers; trustees + members for groups)
   var governance = governanceData[id] || null
 
+  // Build "left within the last 12 months" lists from the full governance
+  // arrays. A person counts as a recent leaver if they are no longer current
+  // and their term end date falls within the last 12 months.
+  if (governance) {
+    var govNow = new Date()
+    var govCutoff = new Date()
+    govCutoff.setFullYear(govCutoff.getFullYear() - 1)
+
+    var parseDmy = function (s) {
+      if (!s) return null
+      var parts = s.split('/')
+      if (parts.length !== 3) return null
+      var d = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]))
+      return isNaN(d.getTime()) ? null : d
+    }
+
+    var recentLeavers = function (list) {
+      return (list || []).filter(function (g) {
+        if (g.current) return false
+        var ended = parseDmy(g.term_ends)
+        return ended && ended >= govCutoff && ended <= govNow
+      }).sort(function (a, b) {
+        return parseDmy(b.term_ends) - parseDmy(a.term_ends)
+      })
+    }
+
+    governance.governors_left_recent = recentLeavers(governance.governors)
+    governance.trustees_left_recent = recentLeavers(governance.trustees)
+    governance.members_left_recent = recentLeavers(governance.members)
+  }
+
   res.render('establishment', {
     item: item,
     members: members,
+    membersByPhase: membersByPhase,
     predecessors: predecessors,
     governance: governance,
     backLink: req.query.from || '/results'
@@ -868,6 +968,8 @@ function buildClearFiltersUrl (req) {
   if (req.query.what) params.what = req.query.what
   if (req.query.where) params.where = req.query.where
   if (req.query.id) params.id = req.query.id
+  // Keep the search-panel "Include closed" toggle; it isn't a sidebar filter.
+  if (req.query.include_closed) params.include_closed = req.query.include_closed
   var qs = Object.keys(params).map(function (k) {
     return encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
   }).join('&')

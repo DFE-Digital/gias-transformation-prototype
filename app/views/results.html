@@ -259,9 +259,18 @@
       </div>
     </div>
 
+    {# Include closed providers toggle — reflects the current search state. #}
+    {{ govukCheckboxes({
+      name: "include_closed",
+      classes: "govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-bottom-4",
+      items: [
+        { value: "yes", text: "Include closed education providers", checked: includeClosed }
+      ]
+    }) }}
+
     <div class="dfe-search-panel__actions">
       {{ govukButton({
-        text: "Search",
+        text: "Search the records",
         classes: "govuk-!-margin-bottom-0"
       }) }}
     </div>
@@ -272,26 +281,38 @@
     {# Filter sidebar #}
     <div class="govuk-grid-column-one-third">
 
+      {#
+        Provider facets show only when the results include providers; the Group
+        type facet shows only when they include groups and sits fourth (after
+        Provider type). A groups-only search therefore offers just Group type.
+      #}
       {% set filterOptionsHtml %}
-        {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
-        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
-        {{ providerTypeSection(providerTypeGroups) }}
-        {{ filterSection("Further education type", feTypeOptions, "fe_type", "fe_type") }}
-        {{ filterSection("Section 41 approved (independent SEND school)", section41Options, "section_41", "section_41") }}
-        {{ filterSection("Status", statusOptions, "status", "status") }}
-        {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
-        {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
-        {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
-        {{ ageRangeSection(ageFrom, ageTo) }}
-        {{ filterSection("Gender", genderOptions, "gender", "gender") }}
-        {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
-        {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
-        {{ filterSection("Boarding provision", boardingOptions, "boarding", "boarding") }}
-        {{ filterSection("Nursery provision", nurseryOptions, "nursery_provision", "nursery_provision") }}
-        {{ filterSection("Sixth form provision", sixthFormOptions, "sixth_form", "sixth_form") }}
-        {{ filterSection("Religious character", religionOptions, "religious_character", "religious_character") }}
-        {{ filterSection("Religious ethos", ethosOptions, "religious_ethos", "religious_ethos") }}
-        {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
+        {% if hasProviders %}
+          {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
+          {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
+          {{ providerTypeSection(providerTypeGroups) }}
+        {% endif %}
+        {% if hasGroups %}
+          {{ filterSection("Group type", groupTypeOptions, "group_type", "group_type") }}
+        {% endif %}
+        {% if hasProviders %}
+          {{ filterSection("Further education type", feTypeOptions, "fe_type", "fe_type") }}
+          {{ filterSection("Section 41 approved (independent SEND school)", section41Options, "section_41", "section_41") }}
+          {{ filterSection("Status", statusOptions, "status", "status") }}
+          {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
+          {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
+          {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
+          {{ ageRangeSection(ageFrom, ageTo) }}
+          {{ filterSection("Gender", genderOptions, "gender", "gender") }}
+          {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
+          {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
+          {{ filterSection("Boarding provision", boardingOptions, "boarding", "boarding") }}
+          {{ filterSection("Nursery provision", nurseryOptions, "nursery_provision", "nursery_provision") }}
+          {{ filterSection("Sixth form provision", sixthFormOptions, "sixth_form", "sixth_form") }}
+          {{ filterSection("Religious character", religionOptions, "religious_character", "religious_character") }}
+          {{ filterSection("Religious ethos", ethosOptions, "religious_ethos", "religious_ethos") }}
+          {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
+        {% endif %}
       {% endset %}
 
       <form method="get" action="/results">
@@ -302,6 +323,7 @@
           <input type="hidden" name="what" value="{{ searchQ }}">
         {% endif %}
         {% if searchWhere %}<input type="hidden" name="where" value="{{ searchWhere }}">{% endif %}
+        {% if includeClosed %}<input type="hidden" name="include_closed" value="yes">{% endif %}
         {% if sortOrder and sortOrder !== 'az' %}
           <input type="hidden" name="sort" value="{{ sortOrder }}">
         {% endif %}
@@ -341,6 +363,7 @@
             {% if searchId %}<input type="hidden" name="id" value="{{ searchId }}">{% elif searchQ %}<input type="hidden" name="what" value="{{ searchQ }}">{% endif %}
             {% if searchWhere %}<input type="hidden" name="where" value="{{ searchWhere }}">{% endif %}
             {% if kind %}<input type="hidden" name="kind" value="{{ kind }}">{% endif %}
+            {% if includeClosed %}<input type="hidden" name="include_closed" value="yes">{% endif %}
             {{ govukSelect({
               id: "sort",
               name: "sort",

@@ -161,12 +161,19 @@ $govuk-font-family: 'Inter', sans-serif;
 }
 
 // Browse-by-type block inside the search card, below the Search button.
-// A rule separates it from the primary search action; links are stacked so
-// they read as an alternative route rather than competing with the button.
+// The "Or browse records by type" heading sits inline with the links on one
+// baseline, wrapping to its own line on narrow screens.
 .dfe-search-panel__browse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: govuk-spacing(2) govuk-spacing(4);
   margin-top: govuk-spacing(4);
-  padding-top: govuk-spacing(4);
-  border-top: 1px solid govuk-colour("blue", $variant: "tint-50");
+}
+
+// Keep the inline heading tight so it aligns with the link row.
+.dfe-browse-list__title {
+  margin-bottom: 0;
 }
 
 .dfe-browse-list {
@@ -374,8 +381,6 @@ $govuk-font-family: 'Inter', sans-serif;
 }
 .moj-filter__options .govuk-button {
   order: 1;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
 }
 
 // Repoint the selected-filter tag remove-cross to local images.
@@ -519,3 +524,15 @@ $govuk-font-family: 'Inter', sans-serif;
   color: govuk-colour("mid-grey");
 }
 
+
+// Governance tab header: section heading on the left, glossary link on the
+// right, aligned on the same baseline. Wraps to two lines on narrow screens.
+
+.dfe-governance-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: govuk-spacing(2) govuk-spacing(4);
+  margin-bottom: govuk-spacing(4);
+}
