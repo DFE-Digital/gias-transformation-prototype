@@ -289,7 +289,13 @@
       {% if item.sen_types and item.sen_types.length > 0 %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Type of SEN provision</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_types | join(", ") }}</dd>
+          <dd class="govuk-summary-list__value">
+            <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+              {% for senType in item.sen_types %}
+                <li>{{ senType }}</li>
+              {% endfor %}
+            </ul>
+          </dd>
         </div>
       {% endif %}
 
