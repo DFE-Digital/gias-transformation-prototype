@@ -27,19 +27,65 @@
           <li class="inline-list"><a class="govuk-link" href="/home">Home</a></li>
           <li class="inline-list"><a class="govuk-link" href="/search">Search</a></li>
           <li class="inline-list"><a class="govuk-link" href="/download">Download</a></li>
+          <li class="inline-list"><a class="govuk-link" href="/help">Help</a></li>
         </ol>
 
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-        <h2 class="govuk-heading-l no-gap">Version 4.0</h2>
+        <h2 class="govuk-heading-l no-gap">Version 4.2</h2>
 
         <p class="govuk-body">
-          3 August 2026
+          November 2026
         </p>
 
+        <h3 class="govuk-heading-s">Search and filters</h3>
+        
         <ul class="govuk-list govuk-list--bullet">
-          <li>Translated designs from Figma</li>
-          <li>Updated content based on user feedback</li>
+          <li>Fixed search glitch where searching again on results wasn’t resetting the search</li>
+          <li>Operating status now shows “Open” and “Open, but proposed to close” as selected on filters by default.</li>
+          <li>Filter labels are now per-field: Operating status, Education provider type, Education group type, and “Section 41 (approved for SEND provision)”.</li>
+          <li>Added a Resourced provision filter.</li>
+          <li>A search with a single result goes straight to the record.</li>
+        </ul>
+
+        <h3 class="govuk-heading-s">Search result cards</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Provider cards show Local authority, Phase of education, Education provider type, DfE number, URN, Address and Part of group.</li>
+          <li>Group cards show Education group type and Address where the data has one. A lot of groups have no address recorded.</li>
+        </ul>
+
+        <h3 class="govuk-heading-s">Provider pages</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Renamed fields: Status → Operating status, Close date → Closed date, Pupil capacity → School capacity, “Name &amp; role” → “Name and role”.</li>
+          <li>Pupils and capacity show as “6 (16 capacity)”, with the Summer census 2026 note right-aligned inside the existing rows.</li>
+          <li>Added Resourced provision and SEN unit numbers.</li>
+          <li>Added a Section 41 Yes/No row, hidden where it isn’t applicable.</li>
+          <li>Added “Date last changed/confirmed” as the last Details row.</li>
+          <li>Empty fields use per-field wording rather than “Not recorded”.</li>
+          <li>DfE numbers display in the 861 7007 format.</li>
+          <li>Added a green Open tag; Closed is blue.</li>
+        </ul>
+
+        <h3 class="govuk-heading-s">Group pages</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Added an ID numbers row, Education group type, Operating status with an incorporated or opening date, and Address.</li>
+          <li>Added a green Open tag.</li>
+          <li>School sponsor shows the sponsor name when one is recorded, and the row is hidden otherwise.</li>
+          <li>Group type labels use the format “Trust: Multi-academy”.</li>
+        </ul>
+
+        <h3 class="govuk-heading-s">Downloads</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Download buttons are now live CSV exports: “Download this record (CSV)” and “Download these results (CSV)”.</li>
+          <li>Added the new Selected records options and recalculated file sizes.</li>
+        </ul>
+
+        <h3 class="govuk-heading-s">Content and navigation</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>FAQ, Glossary and Guidance now have breadcrumbs instead of Back links.</li>
+          <li>Fixed the FAQ page title.</li>
+          <li>Dates use the “1 Jul 2025” format. Date-range filters and static page copy keep full month names.</li>
+          <li>Four-figure numbers take a comma, per the GOV.UK style guide.</li>
         </ul>
 
       </div>
@@ -47,6 +93,17 @@
       <div class="govuk-grid-column-two-thirds top-border">
 
         <h2 class="govuk-heading-l">Previous versions</h2>
+
+        <h3 class="govuk-heading-l no-gap">Version 4.0</h3>
+
+        <p class="govuk-body">
+          August to October 2026
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Translated designs from Figma</li>
+          <li>Updated content based on user feedback</li>
+        </ul>
 
         <h3 class="govuk-heading-m no-gap">v3.0</h3>
 
