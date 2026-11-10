@@ -1,13 +1,18 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+  Guidance – {{ serviceName }}
 {% endblock %}
 
-{% block containerStart %}
-  {{ govukBackLink({
-    text: "Back",
-    href: "javascript:window.history.back()"
+{% set activeNav = "Help" %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Help", href: "/help" },
+      { text: "Guidance" }
+    ]
   }) }}
 {% endblock %}
 
@@ -80,7 +85,7 @@
         You can customise your search using search filters. These appear once you have used one of the three search options.
       </p>
       <p class="govuk-body">
-        Each of the headings, for example ‘Provider type’ and ‘Status’ opens a list of filters with tick boxes for you to search more specifically.
+        Each of the headings, for example ‘Education provider type’ and ‘Operating status’ opens a list of filters with tick boxes for you to search more specifically.
       </p>
 
       <p>

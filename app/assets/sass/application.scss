@@ -402,6 +402,24 @@ $govuk-font-family: 'Inter', sans-serif;
   margin: 0;
 }
 
+// A source note ("Summer census 2026") ranged right inside a summary list value,
+// so rows keep the full value width. Wraps under the figure on narrow screens.
+.dfe-summary-list__value--with-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 govuk-spacing(4);
+}
+
+.dfe-summary-list__note {
+  color: #484949;
+
+  @include govuk-media-query($from: tablet) {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
 .dfe-id-numbers__row {
   display: flex;
   gap: govuk-spacing(4);
@@ -421,6 +439,8 @@ $govuk-font-family: 'Inter', sans-serif;
 .dfe-id-numbers__value {
   @include govuk-font($size: 19);
   margin: 0;
+  width:90px;
+  order: -1; // value shows first even where the term comes first in the markup
 }
 
 // ============================================================================

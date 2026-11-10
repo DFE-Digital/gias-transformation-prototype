@@ -1,15 +1,18 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Content page template – {{ serviceName }} – GOV.UK Prototype Kit
+  Frequently asked questions (FAQs) – {{ serviceName }}
 {% endblock %}
 
 {% set activeNav = "Help" %}
 
-{% block containerStart %}
-  {{ govukBackLink({
-    text: "Back",
-    href: "javascript:window.history.back"
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Help", href: "/help" },
+      { text: "Frequently asked questions (FAQs)" }
+    ]
   }) }}
 {% endblock %}
 

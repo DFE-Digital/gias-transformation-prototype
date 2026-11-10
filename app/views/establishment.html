@@ -29,11 +29,13 @@
 {#
   statusTag — renders a GOV.UK tag for statuses that have one, otherwise the
   plain status text. Extend the mapping here when status_detail is introduced
-  (e.g. "Proposed to convert to academy" -> govuk-tag--blue).
+  (e.g. "Proposed to convert to academy" -> govuk-tag--orange).
 #}
 {% macro statusTag(status) %}
   {% if status == "Closed" %}
-    <strong class="govuk-tag govuk-tag--blue">Closed</strong>
+    <strong class="govuk-tag govuk-tag--orange">Closed</strong>
+  {% elif status == "Open" %}
+    <strong class="govuk-tag govuk-tag--green">Open</strong>
   {% else %}
     {{ status }}
   {% endif %}
@@ -84,7 +86,7 @@
 
 {#
   governanceTable — renders a board/trustee/member table with the columns
-  Name & role | Governor ID | Appointed by | Term. "defaultRole" is the role
+  Name and role | Governor ID | Appointed by | Term. "defaultRole" is the role
   that is implied by the table (e.g. "Governor"), so only differing roles such
   as "Chair" are shown in brackets after the name.
 #}
@@ -92,7 +94,7 @@
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Name &amp; role</th>
+        <th scope="col" class="govuk-table__header">Name and role</th>
         <th scope="col" class="govuk-table__header">Governor ID</th>
         <th scope="col" class="govuk-table__header">Appointed by</th>
         <th scope="col" class="govuk-table__header">Term</th>
@@ -103,7 +105,7 @@
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">{{ p.name }}{% if 'Chair' in p.role %} (Chair){% elif p.role and p.role != defaultRole %} ({{ p.role }}){% endif %}</td>
           <td class="govuk-table__cell">{{ p.gid }}</td>
-          <td class="govuk-table__cell">{{ p.appointing_body or "Not recorded" }}</td>
+          <td class="govuk-table__cell">{{ p.appointing_body or "No appointing body recorded" }}</td>
           <td class="govuk-table__cell">{{ govTerm(p) }}</td>
         </tr>
       {% endfor %}
@@ -112,13 +114,21 @@
 {% endmacro %}
 
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    items: [
+  {# A one-result search lands here with from=/search, so there is no
+     "Search results" step to link back to. #}
+  {% if backLink != "/search" %}
+    {% set crumbs = [
       { text: "Home", href: "/home" },
       { text: "Search", href: "/search" },
       { text: "Search results", href: backLink }
-    ]
-  }) }}
+    ] %}
+  {% else %}
+    {% set crumbs = [
+      { text: "Home", href: "/home" },
+      { text: "Search", href: "/search" }
+    ] %}
+  {% endif %}
+  {{ govukBreadcrumbs({ items: crumbs }) }}
 {% endblock %}
 
 {#
@@ -129,58 +139,85 @@
   ===========================================================================
 #}
 {% set detailsHtml %}
-  <h2 class="govuk-heading-l">Details</h2>
+  <div class="dfe-governance-header">
+    <h2 class="govuk-heading-l govuk-!-margin-bottom-0">Details</h2>
+    <a class="govuk-link" href="/glossary">Glossary of terms</a>
+  </div>
   <dl class="govuk-summary-list">
 
     {% if isGroup %}
-      {# Group details #}
+      {# Group details: ID numbers, Education group type, Operating status, Address,
+         School sponsor, School profiles service #}
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">UID</dt>
-        <dd class="govuk-summary-list__value">{{ item.id }}</dd>
-      </div>
-      {% if item.group_id %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Group ID</dt>
-          <dd class="govuk-summary-list__value">{{ item.group_id }}</dd>
-        </div>
-      {% endif %}
-      {% if item.ukprn %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">UKPRN</dt>
-          <dd class="govuk-summary-list__value">{{ item.ukprn }}</dd>
-        </div>
-      {% endif %}
-      {% if item.companies_house_number %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Company number</dt>
-          <dd class="govuk-summary-list__value">
-            <a class="govuk-link" href="#" rel="noreferrer noopener" target="_blank">{{ item.companies_house_number }} (opens in new tab)</a>
-          </dd>
-        </div>
-      {% endif %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Status</dt>
+        <dt class="govuk-summary-list__key">ID numbers</dt>
         <dd class="govuk-summary-list__value">
-          {{ statusTag(item.status) }}{% if item.status == "Closed" and item.close_date %} {{ item.close_date | govukDate }}{% elif item.open_date %} on {{ item.open_date }}{% endif %}
+          <dl class="dfe-id-numbers">
+            {% if item.group_id %}
+              <div class="dfe-id-numbers__row">
+                <dt class="dfe-id-numbers__key">Group ID</dt>
+                <dd class="dfe-id-numbers__value">{{ item.group_id }}</dd>
+              </div>
+            {% endif %}
+            <div class="dfe-id-numbers__row">
+              <dt class="dfe-id-numbers__key">Group unique identifier (UID)</dt>
+              <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
+            </div>
+            {% if item.ukprn %}
+              <div class="dfe-id-numbers__row">
+                <dt class="dfe-id-numbers__key">UK Provider reference number (UKPRN)</dt>
+                <dd class="dfe-id-numbers__value">{{ item.ukprn }}</dd>
+              </div>
+            {% endif %}
+            {% if item.companies_house_number %}
+              <div class="dfe-id-numbers__row">
+                <dt class="dfe-id-numbers__key">Companies House number</dt>
+                <dd class="dfe-id-numbers__value"><a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/{{ item.companies_house_number }}" rel="noreferrer noopener" target="_blank">{{ item.companies_house_number }}<span class="govuk-visually-hidden"> (opens in new tab)</span></a></dd>
+              </div>
+            {% endif %}
+          </dl>
         </dd>
       </div>
+
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Education group type</dt>
+        <dd class="govuk-summary-list__value">{{ item.type }}</dd>
+      </div>
+
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Operating status</dt>
+        <dd class="govuk-summary-list__value">
+          {{ statusTag(item.status) }}{% if item.status == "Closed" and item.close_date %} {{ item.close_date | govukDate }}{% elif item.incorporated_date %} Incorporated {{ item.incorporated_date | govukDate }}{% elif item.open_date %} on {{ item.open_date | govukDate }}{% endif %}
+        </dd>
+      </div>
+
       {% if item.postcode or item.street or item.town %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address</dt>
           <dd class="govuk-summary-list__value">
-            {{ [item.street, item.town, item.county, item.postcode] | select | join(", ") }}
+            {{ [item.street, item.town, (item.county if item.county != "Not recorded"), item.postcode] | select | join(", ") }}
           </dd>
         </div>
       {% endif %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Type</dt>
-        <dd class="govuk-summary-list__value">{{ item.type }}</dd>
-      </div>
-      {# School sponsor — only on trusts that GIAS also records as a sponsor #}
-      {% if item.school_sponsor %}
+
+      {# School sponsor — an add-on, not core data: shown only when a sponsor name
+         is recorded, with no "not recorded" row. #}
+      {% set sponsorName = item.school_sponsor_source.name if item.school_sponsor_source else "" %}
+      {% if sponsorName %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">School sponsor</dt>
-          <dd class="govuk-summary-list__value">{{ item.school_sponsor }}</dd>
+          <dd class="govuk-summary-list__value">
+            {{ sponsorName }}
+          </dd>
+        </div>
+      {% endif %}
+
+      {# School profiles service — trusts only (hash link for now) #}
+      {% if item.type in ["Trust: Multi-academy", "Trust: Single-academy", "Trust: Secure single-academy"] %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">School profiles service</dt>
+          <dd class="govuk-summary-list__value">
+            <a class="govuk-link" href="{{ item.school_profiles_url or '#' }}" rel="noreferrer noopener" target="_blank">{{ item.name }} (opens in a new tab)</a>
+          </dd>
         </div>
       {% endif %}
 
@@ -208,38 +245,38 @@
 
       {# Type #}
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Type</dt>
+        <dt class="govuk-summary-list__key">Education provider type</dt>
         <dd class="govuk-summary-list__value">{{ typeLabel(item.type, item.type_detail) }}</dd>
       </div>
 
-      {# Status #}
+      {# Operating status #}
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Status</dt>
+        <dt class="govuk-summary-list__key">Operating status</dt>
         <dd class="govuk-summary-list__value">
-          {{ statusTag(item.status) }}{% if item.status == "Closed" and item.close_date %} {{ item.close_date | govukDate }}{% elif item.open_date %} on {{ item.open_date }}{% endif %}
+          {{ statusTag(item.status) }}{% if item.status == "Closed" and item.close_date %} {{ item.close_date | govukDate }}{% elif item.open_date %} on {{ item.open_date | govukDate }}{% endif %}
         </dd>
       </div>
 
-      {# ID numbers — LAESTAB (DfE number), UKPRN and URN grouped in one row #}
+      {# ID numbers — DfE number, UKPRN and URN grouped in one row #}
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">ID numbers</dt>
         <dd class="govuk-summary-list__value">
           <dl class="dfe-id-numbers">
             {% if item.dfe_number %}
               <div class="dfe-id-numbers__row">
-                <dt class="dfe-id-numbers__key">LAESTAB</dt>
-                <dd class="dfe-id-numbers__value">{{ item.dfe_number }} (also known as DfE number)</dd>
+                <dd class="dfe-id-numbers__value">{{ item.dfe_number }}</dd>
+                <dt class="dfe-id-numbers__key">Department for Education (DfE) number</dt>
               </div>
             {% endif %}
             {% if item.ukprn %}
               <div class="dfe-id-numbers__row">
-                <dt class="dfe-id-numbers__key">UKPRN</dt>
                 <dd class="dfe-id-numbers__value">{{ item.ukprn }}</dd>
+                <dt class="dfe-id-numbers__key">UK Provider reference number (UKPRN)</dt>
               </div>
             {% endif %}
             <div class="dfe-id-numbers__row">
-              <dt class="dfe-id-numbers__key">URN</dt>
               <dd class="dfe-id-numbers__value">{{ item.id }}</dd>
+              <dt class="dfe-id-numbers__key">Unique Reference Number (URN)</dt>
             </div>
           </dl>
         </dd>
@@ -249,15 +286,18 @@
       {% if item.pupil_numbers %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Number of pupils</dt>
-          <dd class="govuk-summary-list__value">{{ item.pupil_numbers.display }}</dd>
+          <dd class="govuk-summary-list__value dfe-summary-list__value--with-note">
+            <span>{{ item.pupil_numbers.display | thousands }}</span>
+            <span class="dfe-summary-list__note">Summer census 2026</span>
+          </dd>
         </div>
       {% endif %}
 
-      {# Pupil capacity #}
+      {# School capacity #}
       {% if item.max_students %}
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Pupil capacity</dt>
-          <dd class="govuk-summary-list__value">{{ item.max_students }}</dd>
+          <dt class="govuk-summary-list__key">School capacity</dt>
+          <dd class="govuk-summary-list__value">{{ item.max_students | thousands }}</dd>
         </div>
       {% endif %}
 
@@ -265,37 +305,60 @@
       {% if item.fsm %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Pupils eligible for free school meals</dt>
-          <dd class="govuk-summary-list__value">{{ item.fsm.display }}</dd>
-        </div>
-      {% endif %}
-
-      {# Number of pupils with SEN provision #}
-      {% if item.sen_pupils %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Number of pupils with SEN provision</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_pupils }}</dd>
-        </div>
-      {% endif %}
-
-      {# SEN capacity #}
-      {% if item.sen_capacity %}
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">SEN capacity</dt>
-          <dd class="govuk-summary-list__value">{{ item.sen_capacity }}</dd>
+          <dd class="govuk-summary-list__value dfe-summary-list__value--with-note">
+            <span>{{ item.fsm.display | thousands }}</span>
+            <span class="dfe-summary-list__note">Summer census 2026</span>
+          </dd>
         </div>
       {% endif %}
 
       {# Type of SEN provision #}
-      {% if item.sen_types and item.sen_types.length > 0 %}
+      {% set realSenTypes = (item.sen_types or []) | reject("equalto", "Not recorded") | list %}
+      {% if item.sen_types is defined and item.sen_types is not none %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Type of SEN provision</dt>
           <dd class="govuk-summary-list__value">
-            <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
-              {% for senType in item.sen_types %}
-                <li>{{ senType }}</li>
-              {% endfor %}
-            </ul>
+            {% if realSenTypes.length > 0 %}
+              <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+                {% for senType in realSenTypes %}
+                  <li>{{ senType }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              No type of SEN provision recorded
+            {% endif %}
           </dd>
+        </div>
+      {% endif %}
+
+      {# Resourced provision #}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Resourced provision</dt>
+        <dd class="govuk-summary-list__value">{{ item.resourced_provision or "No resourced provision recorded" }}</dd>
+      </div>
+
+      {# Pupils in resourced provision and in a SEN unit. Shown as
+         "6 (16 capacity)". Each row appears only when the record holds the
+         number, so nothing is shown for providers without that provision. #}
+      {% if item.resourced_pupils is defined and item.resourced_pupils is not none %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Pupils in resourced provision</dt>
+          <dd class="govuk-summary-list__value">{{ item.resourced_pupils | thousands }}{% if item.resourced_capacity is defined and item.resourced_capacity is not none %} ({{ item.resourced_capacity | thousands }} capacity){% endif %}</dd>
+        </div>
+      {% endif %}
+      {% if item.sen_unit_pupils is defined and item.sen_unit_pupils is not none %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Pupils in Special Educational Needs (SEN) unit</dt>
+          <dd class="govuk-summary-list__value">{{ item.sen_unit_pupils | thousands }}{% if item.sen_unit_capacity is defined and item.sen_unit_capacity is not none %} ({{ item.sen_unit_capacity | thousands }} capacity){% endif %}</dd>
+        </div>
+      {% endif %}
+
+      {# Section 41 — Yes/No where it applies. Hidden where the data says Not applicable,
+         and "Not approved" is not shown for Welsh schools (an English provision). #}
+      {% if item.section_41 == "Approved" or (item.section_41 == "Not approved" and item.type_group != "Welsh schools") %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Section 41 (approved for SEND provision)</dt>
+          <dd class="govuk-summary-list__value">{{ "Yes" if item.section_41 == "Approved" else "No" }}</dd>
         </div>
       {% endif %}
 
@@ -312,7 +375,7 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address</dt>
           <dd class="govuk-summary-list__value">
-            {{ [item.street, item.town, item.county, item.postcode] | select | join(", ") }}
+            {{ [item.street, item.town, (item.county if item.county != "Not recorded"), item.postcode] | select | join(", ") }}
           </dd>
         </div>
       {% endif %}
@@ -397,6 +460,14 @@
 
     {% endif %}
 
+    {# Date last changed/confirmed — last row of the Details list, providers and groups #}
+    {% if item.last_changed %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Date last changed/confirmed</dt>
+        <dd class="govuk-summary-list__value">{{ item.last_changed | govukDate }}</dd>
+      </div>
+    {% endif %}
+
   </dl>
 {% endset %}
 
@@ -463,7 +534,7 @@
   <h2 class="govuk-heading-l">{{ memberNoun }}</h2>
   {% if membersByPhase.length > 0 %}
     {% for section in membersByPhase %}
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2{% if not loop.first %} govuk-!-margin-top-6{% endif %}">{{ section.phase }} ({{ section.members.length }})</h3>
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2{% if not loop.first %} govuk-!-margin-top-6{% endif %}">{{ section.phase }} ({{ section.members.length | thousands }})</h3>
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
@@ -496,7 +567,6 @@
 {% set historyHtml %}
   <h2 class="govuk-heading-l">History</h2>
   {% if predecessors.length > 0 %}
-    <p class="govuk-body">Previously known as</p>
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
@@ -531,9 +601,9 @@
         <h1 class="govuk-heading-xl dfe-page-header__heading">{{ item.name }}</h1>
         <div class="dfe-page-header__action">
           {{ govukButton({
-            text: "Download full records",
+            text: "Download this record (CSV)",
             classes: "govuk-button--secondary",
-            href: "#"
+            href: "/download/record/" + (item.id | urlencode)
           }) }}
         </div>
       </div>
@@ -547,7 +617,7 @@
               panel: { html: detailsHtml }
             },
             {
-              label: memberNoun + " (" + members.length + ")",
+              label: memberNoun + " (" + (members.length | thousands) + ")",
               id: "academies",
               panel: { html: academiesHtml }
             },

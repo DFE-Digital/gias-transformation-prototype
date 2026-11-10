@@ -185,7 +185,7 @@
   {% if groups.length > 0 %}
     <details class="govuk-details dfe-filter-section" {% if groups | selectattr("anyChecked") | list | length %}open{% endif %}>
       <summary class="govuk-details__summary">
-        <span class="govuk-details__summary-text">Provider type</span>
+        <span class="govuk-details__summary-text">Education provider type</span>
       </summary>
       <div class="govuk-details__text">
         {% for group in groups %}
@@ -240,7 +240,6 @@
     (postcode, town, county, local authority, street). Both are wired in the route.
   #}
   <form method="get" action="/results" class="dfe-search-panel govuk-!-margin-bottom-6">
-    {% if kind %}<input type="hidden" name="kind" value="{{ kind }}">{% endif %}
     <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search.</p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
@@ -287,21 +286,22 @@
         Provider type). A groups-only search therefore offers just Group type.
       #}
       {% set filterOptionsHtml %}
+        {{ filterSection("Operating status", statusOptions, "status", "status") }}
         {% if hasProviders %}
           {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
           {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
           {{ providerTypeSection(providerTypeGroups) }}
         {% endif %}
         {% if hasGroups %}
-          {{ filterSection("Group type", groupTypeOptions, "group_type", "group_type") }}
+          {{ filterSection("Education group type", groupTypeOptions, "group_type", "group_type") }}
         {% endif %}
         {% if hasProviders %}
           {{ filterSection("Further education type", feTypeOptions, "fe_type", "fe_type") }}
-          {{ filterSection("Section 41 approved (independent SEND school)", section41Options, "section_41", "section_41") }}
-          {{ filterSection("Status", statusOptions, "status", "status") }}
+          {{ filterSection("Section 41 (approved for SEND provision)", section41Options, "section_41", "section_41") }}
           {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
-          {{ dateRangeSection("Close date", "close", closeFromParts, closeToParts) }}
+          {{ dateRangeSection("Closed date", "close", closeFromParts, closeToParts) }}
           {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
+          {{ filterSection("Resourced provision", resourcedOptions, "resourced_provision", "resourced_provision") }}
           {{ ageRangeSection(ageFrom, ageTo) }}
           {{ filterSection("Gender", genderOptions, "gender", "gender") }}
           {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
@@ -354,7 +354,7 @@
         {# Results header row: count, sort, download #}
         <div class="dfe-results-header">
           <p class="govuk-body-l govuk-!-margin-bottom-2">
-            {{ totalResults }} result{{ 's' if totalResults !== 1 }}
+            {{ totalResults | thousands }} result{{ 's' if totalResults !== 1 }}
           </p>
         </div>
 
@@ -385,9 +385,9 @@
 
           <div class="dfe-results-download">
             {{ govukButton({
-              text: "Download full records",
+              text: "Download these results (CSV)",
               classes: "govuk-button--secondary govuk-!-margin-bottom-0",
-              href: "#"
+              href: downloadHref
             }) }}
           </div>
         </div>
@@ -417,10 +417,26 @@
                   </div>
                 {% endif %}
 
+                {# Providers: Local authority, Phase of education, Education provider type,
+                   DfE number, URN, Address, Part of. Groups keep their own shorter set. #}
+                {% if item.id_type == "URN" and item.phase %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Phase of education</dt>
+                    <dd class="govuk-summary-list__value">{{ item.phase }}</dd>
+                  </div>
+                {% endif %}
+
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Type</dt>
+                  <dt class="govuk-summary-list__key">{{ "Education provider type" if item.id_type == "URN" else "Education group type" }}</dt>
                   <dd class="govuk-summary-list__value">{% if item.type_detail and (item.type | lower) != (item.type_detail | lower) %}{{ item.type }} ({{ item.type_detail }}){% else %}{{ item.type }}{% endif %}</dd>
                 </div>
+
+                {% if item.id_type == "URN" and item.dfe_number %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">DfE number</dt>
+                    <dd class="govuk-summary-list__value">{{ item.dfe_number }}</dd>
+                  </div>
+                {% endif %}
 
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
@@ -430,7 +446,7 @@
                 {% if item.street or item.town or item.postcode %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Address</dt>
-                    <dd class="govuk-summary-list__value">{{ [item.street, item.town, item.county, item.postcode] | select | join(", ") }}</dd>
+                    <dd class="govuk-summary-list__value">{{ [item.street, item.town, (item.county if item.county != "Not recorded"), item.postcode] | select | join(", ") }}</dd>
                   </div>
                 {% endif %}
 
@@ -454,7 +470,7 @@
                 {% if item.memberLabel %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">{{ item.memberLabel }}</dt>
-                    <dd class="govuk-summary-list__value">{{ item.memberValue }}</dd>
+                    <dd class="govuk-summary-list__value">{{ item.memberValue | thousands }}</dd>
                   </div>
                 {% endif %}
 

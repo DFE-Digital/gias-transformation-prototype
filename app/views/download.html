@@ -12,6 +12,8 @@
 {% set specificDataHtml %}
   <p class="govuk-body">Select all the data you need</p>
 
+  <p class="govuk-hint">File sizes are for CSV. JSON and XLSX files are larger.</p>
+
   {{ govukCheckboxes({
     name: "provider-data",
     classes: "govuk-checkboxes--small",
@@ -22,11 +24,12 @@
       }
     },
     items: [
-      { value: "open-provider", text: "Open education provider data (51.52 MB)" },
-      { value: "closed-provider", text: "Closed education provider data (12 MB)" },
-      { value: "open-academies-free", text: "Open academies and free schools data (5.84 MB)" },
-      { value: "open-state-funded", text: "Open state-funded schools data (9.85 MB)" },
-      { value: "open-childrens-centres", text: "Open children's centres data (0.85 MB)" }
+      { value: "all-provider", text: "All education provider data (53 MB)" },
+      { value: "open-provider", text: "Open education provider data (29 MB)" },
+      { value: "closed-provider", text: "Closed education provider data (24 MB)" },
+      { value: "open-academies-free", text: "Open academies and free schools data (12 MB)" },
+      { value: "open-state-funded", text: "Open state-funded schools data (22 MB)" },
+      { value: "open-childrens-centres", text: "Open children's centres data (2.7 MB)" }
     ]
   }) }}
 
@@ -40,8 +43,10 @@
       }
     },
     items: [
-      { value: "open-provider-group", text: "Open education provider group data (16.15 MB)" },
-      { value: "closed-provider-group", text: "Closed education provider group data (5.2 MB)" }
+      { value: "all-provider-group", text: "All education provider group data (1.4 MB)" },
+      { value: "open-provider-group", text: "Open education provider group data (0.9 MB)" },
+      { value: "closed-provider-group", text: "Closed education provider group data (0.5 MB)" },
+      { value: "open-trusts", text: "All open single and multi-academy trusts data (0.6 MB)" }
     ]
   }) }}
 
@@ -55,7 +60,9 @@
       }
     },
     items: [
-      { value: "all-governor", text: "All Governor data (64.9 MB)" }
+      { value: "all-governor", text: "All governor data (71 MB)" },
+      { value: "trust-governance", text: "All single and multi-academy trust governance records (7.8 MB)" },
+      { value: "maintained-governance", text: "All maintained school governance records (29 MB)" }
     ]
   }) }}
 {% endset %}
@@ -133,7 +140,7 @@
           items: [
             {
               value: "all",
-              text: "All records (345 MB)"
+              text: "All records (125 MB)"
             },
             {
               value: "specific",

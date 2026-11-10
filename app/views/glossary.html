@@ -1,15 +1,18 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Content page template - {{ serviceName }} - GOV.UK Prototype Kit
+  Glossary – {{ serviceName }}
 {% endblock %}
 
 {% set activeNav = "Help" %}
 
-{% block containerStart %}
-  {{ govukBackLink({
-    text: "Back",
-    href: "javascript:window.history.back()"
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Help", href: "/help" },
+      { text: "Glossary" }
+    ]
   }) }}
 {% endblock %}
 
@@ -172,7 +175,7 @@
     <p class="govuk-body">For all establishment types except online provider (see name of setting).</p>
     <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment number</h3>
     <p class="govuk-body">The establishment number is also known as the establishment no, the estab number, the estab no. The establishment number is a 4 digit number. The number is assigned by the DfE to all local authority nurseries and compulsory school aged educational establishments, including further education colleges, that are recorded on Get Information about Schools (GIAS). This number is combined with the 3 digit local authority number to create the 7 digit DfE number.</p>
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment status</h3>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Operating status</h3>
     <p class="govuk-body">For online provider, the status of open and open, propose to close means it is accredited.</p>
     <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Establishments</h3>
     <p class="govuk-body">A collective term for educational establishments such as children’s centres, schools, colleges, and further education and higher education institutions.</p>

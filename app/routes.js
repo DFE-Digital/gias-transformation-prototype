@@ -53,6 +53,100 @@ function partOfMatches (item, needle) {
   })
 }
 
+// DfE number (LAESTAB) is a 3-digit local authority code plus a 4-digit
+// establishment number, held as "861/7007". People type it several ways:
+// 861/7007, 8617007, 861 7007 or 861-7007. Compare on digits only.
+function digitsOnly (v) { return String(v || '').replace(/\D/g, '') }
+function dfeNumberMatches (item, rawQuery) {
+  if (!item.dfe_number) return false
+  var q = String(rawQuery || '').trim()
+  var itemDigits = digitsOnly(item.dfe_number)
+  // Seven digits with no separator: exact match on the whole DfE number.
+  if (/^\d{7}$/.test(q)) return itemDigits === q
+  // Three digits, a separator, then some of the establishment number.
+  if (/^\d{3}\s*[\/\-]\s*\d{1,4}$|^\d{3}\s+\d{1,4}$/.test(q)) {
+    var qDigits = digitsOnly(q)
+    return qDigits.length >= 4 && itemDigits.indexOf(qDigits) === 0
+  }
+  return false
+}
+
+// ---------------------------------------------------------------------------
+// CSV export (live downloads on the results page and record pages)
+// ---------------------------------------------------------------------------
+
+// Source dates are day-first (DD-MM-YYYY or DD/MM/YYYY); exports use ISO dates
+// so they sort and import cleanly.
+function isoDate (d) {
+  if (!d) return ''
+  var m = String(d).trim().match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/)
+  return m ? m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0') : String(d)
+}
+function csvCell (v) {
+  if (v === null || v === undefined) return ''
+  var t = String(v)
+  return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t
+}
+var CSV_COLUMNS = [
+  ['URN or UID', function (x) { return x.id }],
+  ['Record type', function (x) { return x.id_type }],
+  ['Name', function (x) { return x.name }],
+  ['Type', function (x) { return x.type }],
+  ['Detailed type', function (x) { return x.type_detail }],
+  ['Operating status', function (x) { return x.status }],
+  ['Open date', function (x) { return isoDate(x.open_date) }],
+  ['Closed date', function (x) { return isoDate(x.close_date) }],
+  ['Local authority', function (x) { return x.local_authority }],
+  ['Phase of education', function (x) { return x.phase }],
+  ['Street', function (x) { return x.street }],
+  ['Town', function (x) { return x.town }],
+  ['County', function (x) { return x.county === 'Not recorded' ? '' : x.county }],
+  ['Postcode', function (x) { return x.postcode }],
+  ['DfE number (LAESTAB)', function (x) { return x.dfe_number }],
+  ['UKPRN', function (x) { return x.ukprn }],
+  ['Gender', function (x) { return x.gender }],
+  ['Age low', function (x) { return x.age_low }],
+  ['Age high', function (x) { return x.age_high }],
+  ['School capacity', function (x) { return x.max_students }],
+  ['Number of pupils', function (x) { return x.pupil_numbers && x.pupil_numbers.total }],
+  ['Pupils in resourced provision', function (x) { return x.resourced_pupils }],
+  ['Resourced provision capacity', function (x) { return x.resourced_capacity }],
+  ['Pupils in SEN unit', function (x) { return x.sen_unit_pupils }],
+  ['SEN unit capacity', function (x) { return x.sen_unit_capacity }],
+  ['Type of SEN provision', function (x) { return (x.sen_types || []).filter(function (t) { return t !== 'Not recorded' }).join('; ') }],
+  ['Resourced provision', function (x) { return x.resourced_provision }],
+  ['Section 41 (approved for SEND provision)', function (x) { return x.section_41 === 'Approved' ? 'Yes' : (x.section_41 === 'Not approved' ? 'No' : '') }],
+  ['Boarding provision', function (x) { return x.boarding }],
+  ['Nursery provision', function (x) { return x.nursery_provision }],
+  ['Sixth form provision', function (x) { return x.sixth_form }],
+  ['Admissions policy', function (x) { return x.admissions_policy }],
+  ['Special classes', function (x) { return x.special_classes }],
+  ['Religious character', function (x) { return x.religious_character }],
+  ['Diocese', function (x) { return x.diocese }],
+  ['Website', function (x) { return x.website && x.website.href }],
+  ['Headteacher', function (x) { return x.headteacher }],
+  ['Date last changed/confirmed', function (x) { return isoDate(x.last_changed) }],
+  ['Part of group', function (x) { return partOfGroups(x).map(function (g) { return g.group_name }).join('; ') }]
+]
+function sendCsv (res, fileName, records) {
+  var lines = [CSV_COLUMNS.map(function (c) { return csvCell(c[0]) }).join(',')]
+  records.forEach(function (x) {
+    lines.push(CSV_COLUMNS.map(function (c) { return csvCell(c[1](x)) }).join(','))
+  })
+  res.set({
+    'Content-Type': 'text/csv; charset=utf-8',
+    'Content-Disposition': 'attachment; filename="' + fileName + '"'
+  })
+  // Byte order mark so Excel opens the file as UTF-8.
+  res.send('\uFEFF' + lines.join('\r\n') + '\r\n')
+}
+
+router.get('/download/record/:id', function (req, res) {
+  var item = giasData.find(function (x) { return x.id === req.params.id })
+  if (!item) return res.status(404).render('404')
+  sendCsv(res, 'record-' + item.id + '.csv', [item])
+})
+
 
 // Full value lists for the autocomplete filter facets (computed once).
 // These power the Local authority and Diocese "type to filter" inputs.
@@ -82,6 +176,7 @@ router.get('/api/schools', function (req, res) {
       (item.name && item.name.toLowerCase().indexOf(q) !== -1) ||
       (item.id && item.id.toLowerCase().indexOf(q) !== -1) ||
       (item.local_authority && item.local_authority.toLowerCase().indexOf(q) !== -1) ||
+      dfeNumberMatches(item, q) ||
       partOfMatches(item, q)
     )
   })
@@ -103,7 +198,7 @@ router.get('/results', function (req, res) {
 
   // Active filters
   var activeTypes = [].concat(req.query.type || []).filter(function (v) { return v !== '_unchecked' })
-  var activeStatuses = [].concat(req.query.status || []).filter(function (v) { return v !== '_unchecked' })
+  var activeStatuses = [].concat(req.query.status || []).filter(function (v) { return v !== '_unchecked' && v !== '_all' })
   var activeGroupTypes = [].concat(req.query.group_type || []).filter(function (v) { return v !== '_unchecked' })
   var activeLAs = [].concat(req.query.local_authority || []).filter(function (v) { return v !== '_unchecked' })
   var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { return v !== '_unchecked' })
@@ -119,6 +214,7 @@ router.get('/results', function (req, res) {
   var activeSpecialClasses = [].concat(req.query.special_classes || []).filter(function (v) { return v !== '_unchecked' })
   var activeSenTypes = [].concat(req.query.sen_type || []).filter(function (v) { return v !== '_unchecked' })
   var activeFeTypes = [].concat(req.query.fe_type || []).filter(function (v) { return v !== '_unchecked' })
+  var activeResourced = [].concat(req.query.resourced_provision || []).filter(function (v) { return v !== '_unchecked' })
   var activeEthos = [].concat(req.query.religious_ethos || []).filter(function (v) { return v !== '_unchecked' })
 
   // Range filters (From/To). Empty string means unbounded on that side.
@@ -146,7 +242,22 @@ router.get('/results', function (req, res) {
 
   // "Include closed education providers" toggle from the search panel.
   // Closed providers and groups are hidden by default; this opts them back in.
-  var includeClosed = req.query.include_closed === 'yes'
+  // The kit's checkboxes send a hidden "_unchecked" value too, so a ticked box
+  // arrives as an array (['_unchecked', 'yes']) rather than the string 'yes'.
+  var includeClosed = [].concat(req.query.include_closed || []).indexOf('yes') !== -1
+
+  // Operating status defaults to the open statuses, shown as selected filters,
+  // so people can see (and remove) the assumption that they want open records.
+  // An explicit status choice, including "none ticked" (status=_all), wins.
+  // "Include closed" switches the default off. effQuery is req.query plus the
+  // default, used when building links so they carry the effective filters.
+  var DEFAULT_STATUSES = ['Open', 'Open, but proposed to close']
+  var effQuery = Object.assign({}, req.query)
+  if (req.query.status === undefined && !includeClosed) {
+    activeStatuses = DEFAULT_STATUSES.slice()
+    effQuery.status = DEFAULT_STATUSES.slice()
+  }
+  var effReq = { query: effQuery }
 
   // Status handling: an explicit Status filter always takes precedence. When no
   // status is ticked, closed records are hidden unless "Include closed" is set.
@@ -168,6 +279,7 @@ router.get('/results', function (req, res) {
       (item.id && item.id.toLowerCase().indexOf(qLower) !== -1) ||
       (item.ukprn && item.ukprn.toLowerCase().indexOf(qLower) !== -1) ||
       (item.dfe_number && item.dfe_number.toLowerCase().indexOf(qLower) !== -1) ||
+      dfeNumberMatches(item, q) ||
       partOfMatches(item, qLower)
     )
   }
@@ -216,6 +328,7 @@ router.get('/results', function (req, res) {
   var specialClassesCounts = {}
   var senTypeCounts = {}
   var feTypeCounts = {}
+  var resourcedCounts = {}
   var typeGroupCounts = {}
   var typeDetailCounts = {}
   var groupTypeCounts = {}
@@ -250,6 +363,7 @@ router.get('/results', function (req, res) {
       bump(sixthFormCounts, item.sixth_form)
       bump(admissionsCounts, item.admissions_policy)
       bump(specialClassesCounts, item.special_classes)
+      bump(resourcedCounts, item.resourced_provision)
       if (item.fe_type) feTypeCounts[item.fe_type] = (feTypeCounts[item.fe_type] || 0) + 1
       if (item.type_group) {
         typeGroupCounts[item.type_group] = (typeGroupCounts[item.type_group] || 0) + 1
@@ -276,13 +390,9 @@ router.get('/results', function (req, res) {
     // Record kind: provider = URN, group = UID / Group UID.
     if (kind === 'provider' && item.id_type !== 'URN') return false
     if (kind === 'group' && item.id_type !== 'UID' && item.id_type !== 'Group UID') return false
-    // Status: an explicit Status-filter selection wins; otherwise hide closed
-    // records unless the "Include closed" toggle is on.
-    if (activeStatuses.length > 0) {
-      if (activeStatuses.indexOf(item.status) === -1) return false
-    } else if (!includeClosed && item.status === 'Closed') {
-      return false
-    }
+    // Operating status: the effective selection (the open statuses by default,
+    // none when "Include closed" is ticked or every status has been removed).
+    if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) return false
     // Provider type accordion filters on the detailed type (child checkboxes).
     if (activeTypes.length > 0 && activeTypes.indexOf(item.type_detail) === -1) return false
     // Group type filters on a group's type; providers have no group type so a
@@ -309,6 +419,7 @@ router.get('/results', function (req, res) {
     if (!catMatch(activeAdmissions, item.admissions_policy)) return false
     if (!catMatch(activeSpecialClasses, item.special_classes)) return false
     if (!catMatch(activeFeTypes, item.fe_type)) return false
+    if (!catMatch(activeResourced, item.resourced_provision)) return false
 
     // SEN type: item.sen_types is an array; match if any active type is present.
     if (activeSenTypes.length > 0) {
@@ -339,6 +450,19 @@ router.get('/results', function (req, res) {
   })
 
   var totalResults = filteredResults.length
+
+  // Live CSV of everything matching the current search and filters.
+  if (req.query.download === 'csv') {
+    return sendCsv(res, 'search-results.csv', filteredResults)
+  }
+
+  // A search that finds exactly one record goes straight to that record. Only
+  // for a fresh search: once people apply filters they stay on the results.
+  var NON_FILTER_KEYS = ['what', 'where', 'id', 'kind', 'include_closed', 'sort', 'page']
+  var appliedFilterKeys = Object.keys(req.query).filter(function (k) { return NON_FILTER_KEYS.indexOf(k) === -1 })
+  if (totalResults === 1 && appliedFilterKeys.length === 0 && (hasQ || hasWhere || exactId)) {
+    return res.redirect('/establishment/' + encodeURIComponent(filteredResults[0].id) + '?from=' + encodeURIComponent('/search'))
+  }
   var totalPages = Math.ceil(totalResults / RESULTS_PER_PAGE) || 1
 
   if (currentPage < 1) currentPage = 1
@@ -389,7 +513,7 @@ router.get('/results', function (req, res) {
         paginationItems.push({
           number: i,
           current: i === currentPage,
-          href: buildPageUrl(req, i)
+          href: buildPageUrl(effReq, i)
         })
       } else if (
         paginationItems.length > 0 &&
@@ -498,7 +622,8 @@ router.get('/results', function (req, res) {
   // data, but show them with clearer labels.
   var phaseLabels = {
     'Middle deemed primary': 'Middle (Primary)',
-    'Middle deemed secondary': 'Middle (Secondary)'
+    'Middle deemed secondary': 'Middle (Secondary)',
+    'Not recorded': 'No phase of education recorded'
   }
   phaseOptions = orderedOptions(phaseCounts, activePhases, [
     'Nursery',
@@ -512,11 +637,22 @@ router.get('/results', function (req, res) {
     'Not recorded'
   ], phaseLabels)
 
-  var boardingOptions = orderedOptions(boardingCounts, activeBoarding, ['Boarding school', 'No boarders', 'Not applicable', 'Not recorded'])
-  var nurseryOptions = orderedOptions(nurseryCounts, activeNursery, ['Has nursery classes', 'No nursery classes', 'Not applicable', 'Not recorded'])
-  var sixthFormOptions = orderedOptions(sixthFormCounts, activeSixthForm, ['Has a sixth form', 'Does not have a sixth form', 'Not applicable', 'Not recorded'])
-  var admissionsOptions = orderedOptions(admissionsCounts, activeAdmissions, ['Non-selective', 'Selective', 'Not applicable', 'Not recorded'])
-  var specialClassesOptions = orderedOptions(specialClassesCounts, activeSpecialClasses, ['Has special classes', 'No special classes', 'Not applicable', 'Not recorded'])
+  // "Not recorded" is stored once but labelled per field, so each filter says
+  // what is actually missing. The submitted value stays 'Not recorded'.
+  var boardingLabels = { 'Not recorded': 'No boarding provision recorded' }
+  var nurseryLabels = { 'Not recorded': 'No nursery provision recorded' }
+  var sixthFormLabels = { 'Not recorded': 'No sixth form provision recorded' }
+  var admissionsLabels = { 'Not recorded': 'No admissions policy recorded' }
+  var specialClassesLabels = { 'Not recorded': 'No special classes recorded' }
+  var senTypeLabels = { 'Not recorded': 'No type of SEN provision recorded' }
+  var resourcedLabels = { 'Not recorded': 'No resourced provision recorded' }
+  var resourcedOptions = orderedOptions(resourcedCounts, activeResourced, ['Resourced provision', 'SEN unit', 'Resourced provision and SEN unit', 'Not applicable', 'Not recorded'], resourcedLabels)
+
+  var boardingOptions = orderedOptions(boardingCounts, activeBoarding, ['Boarding school', 'No boarders', 'Not applicable', 'Not recorded'], boardingLabels)
+  var nurseryOptions = orderedOptions(nurseryCounts, activeNursery, ['Has nursery classes', 'No nursery classes', 'Not applicable', 'Not recorded'], nurseryLabels)
+  var sixthFormOptions = orderedOptions(sixthFormCounts, activeSixthForm, ['Has a sixth form', 'Does not have a sixth form', 'Not applicable', 'Not recorded'], sixthFormLabels)
+  var admissionsOptions = orderedOptions(admissionsCounts, activeAdmissions, ['Non-selective', 'Selective', 'Not applicable', 'Not recorded'], admissionsLabels)
+  var specialClassesOptions = orderedOptions(specialClassesCounts, activeSpecialClasses, ['Has special classes', 'No special classes', 'Not applicable', 'Not recorded'], specialClassesLabels)
   // Revised SEN provision list order (as agreed). Values with no records are
   // omitted by orderedOptions, so e.g. ADHD only appears once data supplies it.
   var feTypeOptions = orderedOptions(feTypeCounts, activeFeTypes, [])
@@ -591,16 +727,16 @@ router.get('/results', function (req, res) {
     'Speech, language and communication',
     'Not applicable',
     'Not recorded'
-  ])
+  ], senTypeLabels)
 
   // Build selected filter tags
   var selectedCategories = []
 
   if (activeStatuses.length > 0) {
     selectedCategories.push({
-      heading: { text: 'Status' },
+      heading: { text: 'Operating status' },
       items: activeStatuses.map(function (val) {
-        return { text: val, href: buildRemoveFilterUrl(req, 'status', val) }
+        return { text: val, href: buildRemoveFilterUrl(effReq, 'status', val) }
       })
     })
   }
@@ -609,7 +745,7 @@ router.get('/results', function (req, res) {
     selectedCategories.push({
       heading: { text: 'Local authority' },
       items: activeLAs.map(function (val) {
-        return { text: val, href: buildRemoveFilterUrl(req, 'local_authority', val) }
+        return { text: val, href: buildRemoveFilterUrl(effReq, 'local_authority', val) }
       })
     })
   }
@@ -619,7 +755,7 @@ router.get('/results', function (req, res) {
       selectedCategories.push({
         heading: { text: label },
         items: active.map(function (val) {
-          return { text: (valueLabels && valueLabels[val]) || val, href: buildRemoveFilterUrl(req, key, val) }
+          return { text: (valueLabels && valueLabels[val]) || val, href: buildRemoveFilterUrl(effReq, key, val) }
         })
       })
     }
@@ -636,34 +772,35 @@ router.get('/results', function (req, res) {
       group.children.forEach(function (c) { accountedFor[c.value] = true })
       typeTagItems.push({
         text: group.name,
-        href: buildRemoveKeysValuesUrl(req, 'type', group.children.map(function (c) { return c.value }))
+        href: buildRemoveKeysValuesUrl(effReq, 'type', group.children.map(function (c) { return c.value }))
       })
     })
     activeTypes.forEach(function (val) {
       if (accountedFor[val]) return
-      typeTagItems.push({ text: val, href: buildRemoveFilterUrl(req, 'type', val) })
+      typeTagItems.push({ text: val, href: buildRemoveFilterUrl(effReq, 'type', val) })
     })
     if (typeTagItems.length > 0) {
       selectedCategories.push({
-        heading: { text: 'Provider type' },
+        heading: { text: 'Education provider type' },
         items: typeTagItems
       })
     }
   }
-  tagCategory('Group type', 'group_type', activeGroupTypes)
+  tagCategory('Education group type', 'group_type', activeGroupTypes)
   tagCategory('Phase of education', 'phase', activePhases, phaseLabels)
   tagCategory('Gender', 'gender', activeGenders)
   tagCategory('Religious character', 'religious_character', activeReligions)
   tagCategory('Religious ethos', 'religious_ethos', activeEthos)
   tagCategory('Diocese', 'diocese', activeDioceses)
-  tagCategory('Section 41 approved', 'section_41', activeSection41)
-  tagCategory('Boarding provision', 'boarding', activeBoarding)
-  tagCategory('Nursery provision', 'nursery_provision', activeNursery)
-  tagCategory('Sixth form provision', 'sixth_form', activeSixthForm)
-  tagCategory('Admissions policy', 'admissions_policy', activeAdmissions)
-  tagCategory('Special classes', 'special_classes', activeSpecialClasses)
-  tagCategory('Type of SEN provision', 'sen_type', activeSenTypes)
+  tagCategory('Section 41 (approved for SEND provision)', 'section_41', activeSection41)
+  tagCategory('Boarding provision', 'boarding', activeBoarding, boardingLabels)
+  tagCategory('Nursery provision', 'nursery_provision', activeNursery, nurseryLabels)
+  tagCategory('Sixth form provision', 'sixth_form', activeSixthForm, sixthFormLabels)
+  tagCategory('Admissions policy', 'admissions_policy', activeAdmissions, admissionsLabels)
+  tagCategory('Special classes', 'special_classes', activeSpecialClasses, specialClassesLabels)
+  tagCategory('Type of SEN provision', 'sen_type', activeSenTypes, senTypeLabels)
   tagCategory('Further education type', 'fe_type', activeFeTypes)
+  tagCategory('Resourced provision', 'resourced_provision', activeResourced, resourcedLabels)
 
   // Age range shows as a single removable tag covering both bounds.
   if (ageFrom !== null || ageTo !== null) {
@@ -672,14 +809,18 @@ router.get('/results', function (req, res) {
       : (ageFrom !== null ? ageFrom + ' and over' : 'up to ' + ageTo)
     selectedCategories.push({
       heading: { text: 'Age range' },
-      items: [{ text: ageText, href: buildRemoveKeysUrl(req, ['age_from', 'age_to']) }]
+      items: [{ text: ageText, href: buildRemoveKeysUrl(effReq, ['age_from', 'age_to']) }]
     })
   }
 
   // Date ranges show as a single removable tag per filter.
+  var MONTHS = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   function partsText (p) {
     if (!p) return null
-    return [p.d, p.m, p.y].filter(Boolean).join('/')
+    var mi = parseInt(p.m, 10)
+    // Dates read as "1 July 2025", "July 2025" or "2025".
+    if (!p.m || isNaN(mi) || mi < 1 || mi > 12) return [p.d, p.m, p.y].filter(Boolean).join('/')
+    return [p.d ? String(parseInt(p.d, 10)) : '', MONTHS[mi], p.y].filter(Boolean).join(' ')
   }
   function tagDateRange (label, prefix, from, to) {
     if (!from && !to) return
@@ -690,7 +831,7 @@ router.get('/results', function (req, res) {
       heading: { text: label },
       items: [{
         text: text,
-        href: buildRemoveKeysUrl(req, [
+        href: buildRemoveKeysUrl(effReq, [
           prefix + '_from_day', prefix + '_from_month', prefix + '_from_year',
           prefix + '_to_day', prefix + '_to_month', prefix + '_to_year'
         ])
@@ -698,7 +839,7 @@ router.get('/results', function (req, res) {
     })
   }
   tagDateRange('Open date', 'open', openFrom, openTo)
-  tagDateRange('Close date', 'close', closeFrom, closeTo)
+  tagDateRange('Closed date', 'close', closeFrom, closeTo)
 
   var hasActiveFilters = selectedCategories.length > 0
 
@@ -709,8 +850,8 @@ router.get('/results', function (req, res) {
     currentPage: currentPage,
     totalPages: totalPages,
     paginationItems: paginationItems,
-    prevHref: currentPage > 1 ? buildPageUrl(req, currentPage - 1) : null,
-    nextHref: currentPage < totalPages ? buildPageUrl(req, currentPage + 1) : null,
+    prevHref: currentPage > 1 ? buildPageUrl(effReq, currentPage - 1) : null,
+    nextHref: currentPage < totalPages ? buildPageUrl(effReq, currentPage + 1) : null,
     typeOptions: typeOptions,
     statusOptions: statusOptions,
     groupTypeOptions: groupTypeOptions,
@@ -731,6 +872,8 @@ router.get('/results', function (req, res) {
     specialClassesOptions: specialClassesOptions,
     senTypeOptions: senTypeOptions,
     feTypeOptions: feTypeOptions,
+    resourcedOptions: resourcedOptions,
+    downloadHref: buildDownloadUrl(effReq),
     providerTypeGroups: providerTypeGroups,
     ageFrom: req.query.age_from || '',
     ageTo: req.query.age_to || '',
@@ -747,7 +890,7 @@ router.get('/results', function (req, res) {
     includeClosed: includeClosed,
     selectedCategories: selectedCategories,
     hasActiveFilters: hasActiveFilters,
-    clearFiltersHref: buildClearFiltersUrl(req),
+    clearFiltersHref: buildClearFiltersUrl(effReq),
     searchQ: q,
     searchWhere: where,
     searchId: exactId,
@@ -863,8 +1006,12 @@ router.get('/all', function (req, res) {
 function buildPageUrl (req, page) {
   var params = Object.assign({}, req.query, { page: page })
   var qs = Object.keys(params).map(function (k) {
-    return encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
-  }).join('&')
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
   return '/results?' + qs
 }
 
@@ -878,6 +1025,8 @@ function buildRemoveKeysValuesUrl (req, filterKey, valuesToRemove) {
   })
   if (remaining.length > 0) {
     params[filterKey] = remaining
+  } else if (filterKey === 'status') {
+    params[filterKey] = '_all'
   } else {
     delete params[filterKey]
   }
@@ -915,6 +1064,9 @@ function buildRemoveFilterUrl (req, filterKey, filterValue) {
   })
   if (values.length > 0) {
     params[filterKey] = values
+  } else if (filterKey === 'status') {
+    // Removing the last operating status must not fall back to the default.
+    params[filterKey] = '_all'
   } else {
     delete params[filterKey]
   }
@@ -961,6 +1113,19 @@ function dateInRange (dateStr, from, to) {
   if (lo !== null && val < lo) return false
   if (hi !== null && val > hi) return false
   return true
+}
+
+function buildDownloadUrl (req) {
+  var params = Object.assign({}, req.query, { download: 'csv' })
+  delete params.page
+  var qs = Object.keys(params).map(function (k) {
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
+  return '/results?' + qs
 }
 
 function buildClearFiltersUrl (req) {
