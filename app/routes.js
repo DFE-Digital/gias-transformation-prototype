@@ -38,6 +38,116 @@ Object.values(predecessorsData).forEach(function (preds) {
 // only" toggle and the Status filter — not by pre-splitting the data.
 const allData = giasData
 
+// A provider's `part_of` is a list of groups (or null), since a school can
+// belong to more than one — e.g. a federation and a shared foundation trust.
+function partOfGroups (item) {
+  return Array.isArray(item.part_of) ? item.part_of : []
+}
+function isMemberOf (item, groupUid) {
+  return partOfGroups(item).some(function (g) { return g.group_uid === groupUid })
+}
+function partOfMatches (item, needle) {
+  return partOfGroups(item).some(function (g) {
+    return (g.group_name && g.group_name.toLowerCase().indexOf(needle) !== -1) ||
+      (g.group_uid && g.group_uid.toLowerCase().indexOf(needle) !== -1)
+  })
+}
+
+// DfE number (LAESTAB) is a 3-digit local authority code plus a 4-digit
+// establishment number, held as "861/7007". People type it several ways:
+// 861/7007, 8617007, 861 7007 or 861-7007. Compare on digits only.
+function digitsOnly (v) { return String(v || '').replace(/\D/g, '') }
+function dfeNumberMatches (item, rawQuery) {
+  if (!item.dfe_number) return false
+  var q = String(rawQuery || '').trim()
+  var itemDigits = digitsOnly(item.dfe_number)
+  // Seven digits with no separator: exact match on the whole DfE number.
+  if (/^\d{7}$/.test(q)) return itemDigits === q
+  // Three digits, a separator, then some of the establishment number.
+  if (/^\d{3}\s*[\/\-]\s*\d{1,4}$|^\d{3}\s+\d{1,4}$/.test(q)) {
+    var qDigits = digitsOnly(q)
+    return qDigits.length >= 4 && itemDigits.indexOf(qDigits) === 0
+  }
+  return false
+}
+
+// ---------------------------------------------------------------------------
+// CSV export (live downloads on the results page and record pages)
+// ---------------------------------------------------------------------------
+
+// Source dates are day-first (DD-MM-YYYY or DD/MM/YYYY); exports use ISO dates
+// so they sort and import cleanly.
+function isoDate (d) {
+  if (!d) return ''
+  var m = String(d).trim().match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/)
+  return m ? m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0') : String(d)
+}
+function csvCell (v) {
+  if (v === null || v === undefined) return ''
+  var t = String(v)
+  return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t
+}
+var CSV_COLUMNS = [
+  ['URN or UID', function (x) { return x.id }],
+  ['Record type', function (x) { return x.id_type }],
+  ['Name', function (x) { return x.name }],
+  ['Type', function (x) { return x.type }],
+  ['Detailed type', function (x) { return x.type_detail }],
+  ['Operating status', function (x) { return x.status }],
+  ['Open date', function (x) { return isoDate(x.open_date) }],
+  ['Closed date', function (x) { return isoDate(x.close_date) }],
+  ['Local authority', function (x) { return x.local_authority }],
+  ['Phase of education', function (x) { return x.phase }],
+  ['Street', function (x) { return x.street }],
+  ['Town', function (x) { return x.town }],
+  ['County', function (x) { return x.county === 'Not recorded' ? '' : x.county }],
+  ['Postcode', function (x) { return x.postcode }],
+  ['DfE number (LAESTAB)', function (x) { return x.dfe_number }],
+  ['UKPRN', function (x) { return x.ukprn }],
+  ['Gender', function (x) { return x.gender }],
+  ['Age low', function (x) { return x.age_low }],
+  ['Age high', function (x) { return x.age_high }],
+  ['School capacity', function (x) { return x.max_students }],
+  ['Number of pupils', function (x) { return x.pupil_numbers && x.pupil_numbers.total }],
+  ['Pupils in resourced provision', function (x) { return x.resourced_pupils }],
+  ['Resourced provision capacity', function (x) { return x.resourced_capacity }],
+  ['Pupils in SEN unit', function (x) { return x.sen_unit_pupils }],
+  ['SEN unit capacity', function (x) { return x.sen_unit_capacity }],
+  ['Type of SEN provision', function (x) { return (x.sen_types || []).filter(function (t) { return t !== 'Not recorded' }).join('; ') }],
+  ['Resourced provision', function (x) { return x.resourced_provision }],
+  ['Section 41 (approved for SEND provision)', function (x) { return x.section_41 === 'Approved' ? 'Yes' : (x.section_41 === 'Not approved' ? 'No' : '') }],
+  ['Boarding provision', function (x) { return x.boarding }],
+  ['Nursery provision', function (x) { return x.nursery_provision }],
+  ['Sixth form provision', function (x) { return x.sixth_form }],
+  ['Admissions policy', function (x) { return x.admissions_policy }],
+  ['Special classes', function (x) { return x.special_classes }],
+  ['Religious character', function (x) { return x.religious_character }],
+  ['Diocese', function (x) { return x.diocese }],
+  ['Website', function (x) { return x.website && x.website.href }],
+  ['Headteacher', function (x) { return x.headteacher }],
+  ['Date last changed/confirmed', function (x) { return isoDate(x.last_changed) }],
+  ['Part of group', function (x) { return partOfGroups(x).map(function (g) { return g.group_name }).join('; ') }]
+]
+function sendCsv (res, fileName, records) {
+  var lines = [CSV_COLUMNS.map(function (c) { return csvCell(c[0]) }).join(',')]
+  records.forEach(function (x) {
+    lines.push(CSV_COLUMNS.map(function (c) { return csvCell(c[1](x)) }).join(','))
+  })
+  res.set({
+    'Content-Type': 'text/csv; charset=utf-8',
+    'Content-Disposition': 'attachment; filename="' + fileName + '"'
+  })
+  // Byte order mark so Excel opens the file as UTF-8.
+  res.send('\uFEFF' + lines.join('\r\n') + '\r\n')
+}
+
+router.get('/download/record/:id', function (req, res) {
+  var item = giasData.find(function (x) { return x.id === req.params.id })
+  if (!item) return res.status(404).render('404')
+  sendCsv(res, 'record-' + item.id + '.csv', [item])
+})
+
+
 // Full value lists for the autocomplete filter facets (computed once).
 // These power the Local authority and Diocese "type to filter" inputs.
 const allLocalAuthorities = Array.from(new Set(
@@ -55,7 +165,7 @@ router.get('/index', function (req, res) {
 
 // Autocomplete API endpoint
 router.get('/api/schools', function (req, res) {
-  var q = (req.query.q || '').toLowerCase()
+  var q = (req.query.q || '').replace(/\s+/g, ' ').trim().toLowerCase()
 
   if (q.length < 2) {
     return res.json([])
@@ -66,8 +176,8 @@ router.get('/api/schools', function (req, res) {
       (item.name && item.name.toLowerCase().indexOf(q) !== -1) ||
       (item.id && item.id.toLowerCase().indexOf(q) !== -1) ||
       (item.local_authority && item.local_authority.toLowerCase().indexOf(q) !== -1) ||
-      (item.part_of && item.part_of.group_name && item.part_of.group_name.toLowerCase().indexOf(q) !== -1) ||
-      (item.part_of && item.part_of.group_uid && item.part_of.group_uid.toLowerCase().indexOf(q) !== -1)
+      dfeNumberMatches(item, q) ||
+      partOfMatches(item, q)
     )
   })
 
@@ -80,13 +190,16 @@ router.get('/api/schools', function (req, res) {
 
 // Results page
 router.get('/results', function (req, res) {
-  var q = (req.query.q || '').trim()
+  // Collapse repeated spaces so a stray double space can't stop a match.
+  var q = (req.query.what || '').replace(/\s+/g, ' ').trim()
+  var where = (req.query.where || '').replace(/\s+/g, ' ').trim()
   var exactId = (req.query.id || '').trim()
   var currentPage = parseInt(req.query.page) || 1
 
   // Active filters
   var activeTypes = [].concat(req.query.type || []).filter(function (v) { return v !== '_unchecked' })
-  var activeStatuses = [].concat(req.query.status || []).filter(function (v) { return v !== '_unchecked' })
+  var activeStatuses = [].concat(req.query.status || []).filter(function (v) { return v !== '_unchecked' && v !== '_all' })
+  var activeGroupTypes = [].concat(req.query.group_type || []).filter(function (v) { return v !== '_unchecked' })
   var activeLAs = [].concat(req.query.local_authority || []).filter(function (v) { return v !== '_unchecked' })
   var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { return v !== '_unchecked' })
   var activePhases = [].concat(req.query.phase || []).filter(function (v) { return v !== '_unchecked' })
@@ -94,6 +207,31 @@ router.get('/results', function (req, res) {
   var activeReligions = [].concat(req.query.religious_character || []).filter(function (v) { return v !== '_unchecked' })
   var activeDioceses = [].concat(req.query.diocese || []).filter(function (v) { return v !== '_unchecked' })
   var activeSection41 = [].concat(req.query.section_41 || []).filter(function (v) { return v !== '_unchecked' })
+  var activeBoarding = [].concat(req.query.boarding || []).filter(function (v) { return v !== '_unchecked' })
+  var activeNursery = [].concat(req.query.nursery_provision || []).filter(function (v) { return v !== '_unchecked' })
+  var activeSixthForm = [].concat(req.query.sixth_form || []).filter(function (v) { return v !== '_unchecked' })
+  var activeAdmissions = [].concat(req.query.admissions_policy || []).filter(function (v) { return v !== '_unchecked' })
+  var activeSpecialClasses = [].concat(req.query.special_classes || []).filter(function (v) { return v !== '_unchecked' })
+  var activeSenTypes = [].concat(req.query.sen_type || []).filter(function (v) { return v !== '_unchecked' })
+  var activeFeTypes = [].concat(req.query.fe_type || []).filter(function (v) { return v !== '_unchecked' })
+  var activeResourced = [].concat(req.query.resourced_provision || []).filter(function (v) { return v !== '_unchecked' })
+  var activeEthos = [].concat(req.query.religious_ethos || []).filter(function (v) { return v !== '_unchecked' })
+
+  // Range filters (From/To). Empty string means unbounded on that side.
+  var ageFrom = parseInt(req.query.age_from) ; if (isNaN(ageFrom)) ageFrom = null
+  var ageTo = parseInt(req.query.age_to) ; if (isNaN(ageTo)) ageTo = null
+  function ymd (prefix) {
+    var y = (req.query[prefix + '_year'] || '').trim()
+    var m = (req.query[prefix + '_month'] || '').trim()
+    var d = (req.query[prefix + '_day'] || '').trim()
+    if (!y && !m && !d) return null
+    // build a comparable YYYYMMDD number; missing parts default to boundary
+    return { y: y, m: m, d: d }
+  }
+  var openFrom = ymd('open_from')
+  var openTo = ymd('open_to')
+  var closeFrom = ymd('close_from')
+  var closeTo = ymd('close_to')
 
   // Record kind: 'provider' (URN) or 'group' (UID / Group UID). Drives the
   // "Education providers only" / "Provider groups only" quick-search links.
@@ -102,40 +240,73 @@ router.get('/results', function (req, res) {
   // Sort order: 'az' (default) or 'za'
   var sortOrder = (req.query.sort === 'za') ? 'za' : 'az'
 
-  // "Show open providers only" toggle. When on, results are constrained to
-  // open records and this overrides the Status filter (the toggle wins).
-  //
-  // The GOV.UK checkbox posts 'open-only' when ticked, or '_unchecked' when the
-  // form is submitted with it unticked. On a fresh page load with no query at
-  // all, it defaults to on (matching the ticked-by-default design).
-  var openOnlyRaw = [].concat(req.query['open-only'] || [])
-  var formSubmitted = Object.keys(req.query).length > 0
-  var openOnly
-  if (!formSubmitted) {
-    openOnly = true // default state on a fresh search
-  } else {
-    openOnly = openOnlyRaw.indexOf('open-only') !== -1
+  // "Include closed education providers" toggle from the search panel.
+  // Closed providers and groups are hidden by default; this opts them back in.
+  // The kit's checkboxes send a hidden "_unchecked" value too, so a ticked box
+  // arrives as an array (['_unchecked', 'yes']) rather than the string 'yes'.
+  var includeClosed = [].concat(req.query.include_closed || []).indexOf('yes') !== -1
+
+  // Operating status defaults to the open statuses, shown as selected filters,
+  // so people can see (and remove) the assumption that they want open records.
+  // An explicit status choice, including "none ticked" (status=_all), wins.
+  // "Include closed" switches the default off. effQuery is req.query plus the
+  // default, used when building links so they carry the effective filters.
+  var DEFAULT_STATUSES = ['Open', 'Open, but proposed to close']
+  var effQuery = Object.assign({}, req.query)
+  if (req.query.status === undefined && !includeClosed) {
+    activeStatuses = DEFAULT_STATUSES.slice()
+    effQuery.status = DEFAULT_STATUSES.slice()
   }
+  var effReq = { query: effQuery }
+
+  // Status handling: an explicit Status filter always takes precedence. When no
+  // status is ticked, closed records are hidden unless "Include closed" is set.
 
   // Base search against active data only
   var searchResults = []
 
+  // Two independent text predicates, combined with AND:
+  //  - q     matches name and ID codes only ("what")
+  //  - where matches location fields: postcode, town, county, LA, street
+  // Either can be used alone; when both are present a record must match both.
+  // "Show all" only applies when neither field is used (q is empty or '*').
+  var qLower = q.toLowerCase()
+  var whereLower = where.toLowerCase()
+
+  function matchesQ(item) {
+    return (
+      (item.name && item.name.toLowerCase().indexOf(qLower) !== -1) ||
+      (item.id && item.id.toLowerCase().indexOf(qLower) !== -1) ||
+      (item.ukprn && item.ukprn.toLowerCase().indexOf(qLower) !== -1) ||
+      (item.dfe_number && item.dfe_number.toLowerCase().indexOf(qLower) !== -1) ||
+      dfeNumberMatches(item, q) ||
+      partOfMatches(item, qLower)
+    )
+  }
+
+  function matchesWhere(item) {
+    return (
+      (item.postcode && item.postcode.toLowerCase().indexOf(whereLower) !== -1) ||
+      (item.town && item.town.toLowerCase().indexOf(whereLower) !== -1) ||
+      (item.county && item.county.toLowerCase().indexOf(whereLower) !== -1) ||
+      (item.local_authority && item.local_authority.toLowerCase().indexOf(whereLower) !== -1) ||
+      (item.street && item.street.toLowerCase().indexOf(whereLower) !== -1)
+    )
+  }
+
+  var hasQ = q.length > 0 && q !== '*'
+  var hasWhere = where.length > 0
+
   if (exactId) {
-  searchResults = allData.filter(function (item) {
-    return item.id === exactId
-  })
-} else if (q === '*' || q.length === 0) {
-  searchResults = allData
-} else if (q.length > 0) {
-    var qLower = q.toLowerCase()
     searchResults = allData.filter(function (item) {
-      return (
-        (item.name && item.name.toLowerCase().indexOf(qLower) !== -1) ||
-        (item.id && item.id.toLowerCase().indexOf(qLower) !== -1) ||
-        (item.local_authority && item.local_authority.toLowerCase().indexOf(qLower) !== -1) ||
-        (item.part_of && item.part_of.group_name && item.part_of.group_name.toLowerCase().indexOf(qLower) !== -1) ||
-        (item.part_of && item.part_of.group_uid && item.part_of.group_uid.toLowerCase().indexOf(q) !== -1)
-      )
+      return item.id === exactId
+    })
+  } else if (!hasQ && !hasWhere) {
+    // No search terms (fresh load or explicit '*') — show everything
+    searchResults = allData
+  } else {
+    searchResults = allData.filter(function (item) {
+      return (!hasQ || matchesQ(item)) && (!hasWhere || matchesWhere(item))
     })
   }
 
@@ -147,8 +318,27 @@ router.get('/results', function (req, res) {
   var phaseCounts = {}
   var genderCounts = {}
   var religionCounts = {}
+  var ethosCounts = {}
   var dioceseCounts = {}
   var section41Counts = {}
+  var boardingCounts = {}
+  var nurseryCounts = {}
+  var sixthFormCounts = {}
+  var admissionsCounts = {}
+  var specialClassesCounts = {}
+  var senTypeCounts = {}
+  var feTypeCounts = {}
+  var resourcedCounts = {}
+  var typeGroupCounts = {}
+  var typeDetailCounts = {}
+  var groupTypeCounts = {}
+
+  // Count a value, treating null/empty as "Not recorded" so the filter can
+  // offer that as an explicit option.
+  function bump (obj, key) {
+    if (key === null || key === undefined || key === '') key = 'Not recorded'
+    obj[key] = (obj[key] || 0) + 1
+  }
 
   searchResults.forEach(function (item) {
     if (item.type) typeCounts[item.type] = (typeCounts[item.type] || 0) + 1
@@ -159,8 +349,40 @@ router.get('/results', function (req, res) {
     if (item.phase) phaseCounts[item.phase] = (phaseCounts[item.phase] || 0) + 1
     if (item.gender) genderCounts[item.gender] = (genderCounts[item.gender] || 0) + 1
     if (item.religious_character) religionCounts[item.religious_character] = (religionCounts[item.religious_character] || 0) + 1
+    if (item.religious_ethos) ethosCounts[item.religious_ethos] = (ethosCounts[item.religious_ethos] || 0) + 1
     if (item.diocese) dioceseCounts[item.diocese] = (dioceseCounts[item.diocese] || 0) + 1
     if (item.section_41) section41Counts[item.section_41] = (section41Counts[item.section_41] || 0) + 1
+    // Group-only facet: group type (e.g. "Trust: Multi-academy", "Federation").
+    if (item.id_type === 'UID' || item.id_type === 'Group UID') {
+      if (item.type) groupTypeCounts[item.type] = (groupTypeCounts[item.type] || 0) + 1
+    }
+    // Provider-only facets
+    if (item.id_type === 'URN') {
+      bump(boardingCounts, item.boarding)
+      bump(nurseryCounts, item.nursery_provision)
+      bump(sixthFormCounts, item.sixth_form)
+      bump(admissionsCounts, item.admissions_policy)
+      bump(specialClassesCounts, item.special_classes)
+      bump(resourcedCounts, item.resourced_provision)
+      if (item.fe_type) feTypeCounts[item.fe_type] = (feTypeCounts[item.fe_type] || 0) + 1
+      if (item.type_group) {
+        typeGroupCounts[item.type_group] = (typeGroupCounts[item.type_group] || 0) + 1
+        if (!typeDetailCounts[item.type_group]) typeDetailCounts[item.type_group] = {}
+        if (item.type_detail) {
+          typeDetailCounts[item.type_group][item.type_detail] = (typeDetailCounts[item.type_group][item.type_detail] || 0) + 1
+        }
+      }
+      // sen_types is an array — a record can contribute to several options.
+      // An empty array counts once as "Not recorded".
+      var senTypes = item.sen_types || []
+      if (senTypes.length === 0) {
+        senTypeCounts['Not recorded'] = (senTypeCounts['Not recorded'] || 0) + 1
+      } else {
+        senTypes.forEach(function (t) {
+          senTypeCounts[t] = (senTypeCounts[t] || 0) + 1
+        })
+      }
+    }
   })
 
   // Apply filters
@@ -168,20 +390,54 @@ router.get('/results', function (req, res) {
     // Record kind: provider = URN, group = UID / Group UID.
     if (kind === 'provider' && item.id_type !== 'URN') return false
     if (kind === 'group' && item.id_type !== 'UID' && item.id_type !== 'Group UID') return false
-    // "Show open providers only" wins over the Status filter when on.
-    if (openOnly) {
-      if (item.status === 'Closed') return false
-    } else if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) {
-      return false
-    }
-    if (activeTypes.length > 0 && activeTypes.indexOf(item.type) === -1) return false
+    // Operating status: the effective selection (the open statuses by default,
+    // none when "Include closed" is ticked or every status has been removed).
+    if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) return false
+    // Provider type accordion filters on the detailed type (child checkboxes).
+    if (activeTypes.length > 0 && activeTypes.indexOf(item.type_detail) === -1) return false
+    // Group type filters on a group's type; providers have no group type so a
+    // group-type selection excludes them (mirrors the provider-type facet).
+    if (activeGroupTypes.length > 0 && activeGroupTypes.indexOf(item.type) === -1) return false
     if (activeLAs.length > 0 && activeLAs.indexOf(item.local_authority) === -1) return false
     if (activeSen.length > 0 && activeSen.indexOf(String(item.sen_provision)) === -1) return false
     if (activePhases.length > 0 && activePhases.indexOf(item.phase) === -1) return false
     if (activeGenders.length > 0 && activeGenders.indexOf(item.gender) === -1) return false
     if (activeReligions.length > 0 && activeReligions.indexOf(item.religious_character) === -1) return false
+    if (activeEthos.length > 0 && activeEthos.indexOf(item.religious_ethos) === -1) return false
     if (activeDioceses.length > 0 && activeDioceses.indexOf(item.diocese) === -1) return false
     if (activeSection41.length > 0 && activeSection41.indexOf(item.section_41) === -1) return false
+
+    // New categorical filters. "Not recorded" option matches null/empty fields.
+    function catMatch (active, value) {
+      if (active.length === 0) return true
+      if (active.indexOf('Not recorded') !== -1 && (value === null || value === undefined || value === '')) return true
+      return active.indexOf(value) !== -1
+    }
+    if (!catMatch(activeBoarding, item.boarding)) return false
+    if (!catMatch(activeNursery, item.nursery_provision)) return false
+    if (!catMatch(activeSixthForm, item.sixth_form)) return false
+    if (!catMatch(activeAdmissions, item.admissions_policy)) return false
+    if (!catMatch(activeSpecialClasses, item.special_classes)) return false
+    if (!catMatch(activeFeTypes, item.fe_type)) return false
+    if (!catMatch(activeResourced, item.resourced_provision)) return false
+
+    // SEN type: item.sen_types is an array; match if any active type is present.
+    if (activeSenTypes.length > 0) {
+      var st = item.sen_types || []
+      var hit = activeSenTypes.some(function (t) {
+        if (t === 'Not recorded') return st.length === 0 || st.indexOf('Not recorded') !== -1
+        return st.indexOf(t) !== -1
+      })
+      if (!hit) return false
+    }
+
+    // Age range: item covers ages age_low..age_high. Overlap test with From/To.
+    if (ageFrom !== null && item.age_high !== null && item.age_high !== undefined && item.age_high < ageFrom) return false
+    if (ageTo !== null && item.age_low !== null && item.age_low !== undefined && item.age_low > ageTo) return false
+
+    // Date ranges (open_date / close_date are day-first strings)
+    if (!dateInRange(item.open_date, openFrom, openTo)) return false
+    if (!dateInRange(item.close_date, closeFrom, closeTo)) return false
     return true
   })
 
@@ -194,6 +450,19 @@ router.get('/results', function (req, res) {
   })
 
   var totalResults = filteredResults.length
+
+  // Live CSV of everything matching the current search and filters.
+  if (req.query.download === 'csv') {
+    return sendCsv(res, 'search-results.csv', filteredResults)
+  }
+
+  // A search that finds exactly one record goes straight to that record. Only
+  // for a fresh search: once people apply filters they stay on the results.
+  var NON_FILTER_KEYS = ['what', 'where', 'id', 'kind', 'include_closed', 'sort', 'page']
+  var appliedFilterKeys = Object.keys(req.query).filter(function (k) { return NON_FILTER_KEYS.indexOf(k) === -1 })
+  if (totalResults === 1 && appliedFilterKeys.length === 0 && (hasQ || hasWhere || exactId)) {
+    return res.redirect('/establishment/' + encodeURIComponent(filteredResults[0].id) + '?from=' + encodeURIComponent('/search'))
+  }
   var totalPages = Math.ceil(totalResults / RESULTS_PER_PAGE) || 1
 
   if (currentPage < 1) currentPage = 1
@@ -206,9 +475,25 @@ router.get('/results', function (req, res) {
   pageResults = pageResults.map(function (item) {
     if (item.id_type === 'UID' || item.id_type === 'Group UID') {
       var memberCount = giasData.filter(function (school) {
-        return school.part_of && school.part_of.group_uid === item.id
+        return isMemberOf(school, item.id)
       }).length
-      return Object.assign({}, item, { memberCount: memberCount })
+      // The GIAS links files are the authoritative record of membership, so an
+      // absence of link rows means the group genuinely has no members — most
+      // often because it has closed. Fall back to the part_of count only where
+      // links have nothing but the prototype still holds members, so the count
+      // can't contradict the members listed on the group's own page.
+      var displayCount = item.member_count || memberCount || 0
+      // The row label depends on what the group contains. Single-academy trusts
+      // hold one academy by definition, so they get no row at all.
+      var memberLabel = null
+      if (item.type === 'Trust: Multi-academy') memberLabel = 'Number of academies'
+      else if (item.type === 'Federation' || item.type === 'Shared foundation trust') memberLabel = 'Number of providers'
+      else if (item.type === "Children's Centres Group" || item.type === "Children's Centres Collaboration") memberLabel = 'Number of centres'
+      return Object.assign({}, item, {
+        memberCount: memberCount,
+        memberLabel: memberLabel,
+        memberValue: memberLabel ? displayCount : null
+      })
     }
     return item
   })
@@ -228,7 +513,7 @@ router.get('/results', function (req, res) {
         paginationItems.push({
           number: i,
           current: i === currentPage,
-          href: buildPageUrl(req, i)
+          href: buildPageUrl(effReq, i)
         })
       } else if (
         paginationItems.length > 0 &&
@@ -243,7 +528,7 @@ router.get('/results', function (req, res) {
   var typeOptions = Object.keys(typeCounts).sort().map(function (type) {
     return {
       value: type,
-      text: type + ' (' + typeCounts[type] + ')',
+      text: type,
       checked: activeTypes.indexOf(type) !== -1
     }
   })
@@ -251,15 +536,32 @@ router.get('/results', function (req, res) {
   var statusOptions = Object.keys(statusCounts).sort().map(function (status) {
     return {
       value: status,
-      text: status + ' (' + statusCounts[status] + ')',
+      text: status,
       checked: activeStatuses.indexOf(status) !== -1
     }
   })
 
+  var groupTypeOptions = Object.keys(groupTypeCounts).sort().map(function (type) {
+    return {
+      value: type,
+      text: type,
+      checked: activeGroupTypes.indexOf(type) !== -1
+    }
+  })
+
+  // Whether the *displayed* results contain providers and/or groups. Based on
+  // the filtered set (after kind and the Group type facet are applied), not the
+  // pre-filter search set — so browsing or filtering down to groups hides the
+  // provider facets and leaves only Group type. The filter sidebar shows
+  // provider facets only when providers are present, and the Group type facet
+  // only when groups are present.
+  var hasProviders = filteredResults.some(function (x) { return x.id_type === 'URN' })
+  var hasGroups = filteredResults.some(function (x) { return x.id_type === 'UID' || x.id_type === 'Group UID' })
+
   var laOptions = Object.keys(laCounts).sort().map(function (la) {
     return {
       value: la,
-      text: la + ' (' + laCounts[la] + ')',
+      text: la,
       checked: activeLAs.indexOf(la) !== -1
     }
   })
@@ -267,12 +569,12 @@ router.get('/results', function (req, res) {
   var senOptions = [
     {
       value: 'true',
-      text: 'Yes (' + senCounts['true'] + ')',
+      text: 'Yes',
       checked: activeSen.indexOf('true') !== -1
     },
     {
       value: 'false',
-      text: 'No (' + senCounts['false'] + ')',
+      text: 'No',
       checked: activeSen.indexOf('false') !== -1
     }
   ]
@@ -281,7 +583,7 @@ router.get('/results', function (req, res) {
     return Object.keys(counts).sort().map(function (key) {
       return {
         value: key,
-        text: key + ' (' + counts[key] + ')',
+        text: key,
         checked: active.indexOf(key) !== -1
       }
     })
@@ -290,26 +592,151 @@ router.get('/results', function (req, res) {
   var phaseOptions = buildOptions(phaseCounts, activePhases)
   var genderOptions = buildOptions(genderCounts, activeGenders)
   var religionOptions = buildOptions(religionCounts, activeReligions)
+  var ethosOptions = buildOptions(ethosCounts, activeEthos)
   var dioceseOptions = buildOptions(dioceseCounts, activeDioceses)
   var section41Options = buildOptions(section41Counts, activeSection41)
+
+  // Ordered options: `order` lists values in display order; anything present in
+  // the data but not listed is appended alphabetically. Values with no records
+  // are omitted so the filter never shows an empty option. `labels` optionally
+  // maps a raw data value to friendlier display text (the submitted value stays
+  // the raw one, so no data migration is needed).
+  function orderedOptions (counts, active, order, labels) {
+    labels = labels || {}
+    var seen = {}
+    var out = []
+    function label (val) { return labels[val] || val }
+    order.forEach(function (val) {
+      if (counts[val]) {
+        out.push({ value: val, text: label(val), checked: active.indexOf(val) !== -1 })
+        seen[val] = true
+      }
+    })
+    Object.keys(counts).sort().forEach(function (val) {
+      if (!seen[val]) out.push({ value: val, text: label(val), checked: active.indexOf(val) !== -1 })
+    })
+    return out
+  }
+
+  // Phase of education: keep the two "Middle deemed" values distinct in the
+  // data, but show them with clearer labels.
+  var phaseLabels = {
+    'Middle deemed primary': 'Middle (Primary)',
+    'Middle deemed secondary': 'Middle (Secondary)',
+    'Not recorded': 'No phase of education recorded'
+  }
+  phaseOptions = orderedOptions(phaseCounts, activePhases, [
+    'Nursery',
+    'Primary',
+    'Middle deemed primary',
+    'Middle deemed secondary',
+    'Secondary',
+    '16 plus',
+    'All-through',
+    'Not applicable',
+    'Not recorded'
+  ], phaseLabels)
+
+  // "Not recorded" is stored once but labelled per field, so each filter says
+  // what is actually missing. The submitted value stays 'Not recorded'.
+  var boardingLabels = { 'Not recorded': 'No boarding provision recorded' }
+  var nurseryLabels = { 'Not recorded': 'No nursery provision recorded' }
+  var sixthFormLabels = { 'Not recorded': 'No sixth form provision recorded' }
+  var admissionsLabels = { 'Not recorded': 'No admissions policy recorded' }
+  var specialClassesLabels = { 'Not recorded': 'No special classes recorded' }
+  var senTypeLabels = { 'Not recorded': 'No type of SEN provision recorded' }
+  var resourcedLabels = { 'Not recorded': 'No resourced provision recorded' }
+  var resourcedOptions = orderedOptions(resourcedCounts, activeResourced, ['Resourced provision', 'SEN unit', 'Resourced provision and SEN unit', 'Not applicable', 'Not recorded'], resourcedLabels)
+
+  var boardingOptions = orderedOptions(boardingCounts, activeBoarding, ['Boarding school', 'No boarders', 'Not applicable', 'Not recorded'], boardingLabels)
+  var nurseryOptions = orderedOptions(nurseryCounts, activeNursery, ['Has nursery classes', 'No nursery classes', 'Not applicable', 'Not recorded'], nurseryLabels)
+  var sixthFormOptions = orderedOptions(sixthFormCounts, activeSixthForm, ['Has a sixth form', 'Does not have a sixth form', 'Not applicable', 'Not recorded'], sixthFormLabels)
+  var admissionsOptions = orderedOptions(admissionsCounts, activeAdmissions, ['Non-selective', 'Selective', 'Not applicable', 'Not recorded'], admissionsLabels)
+  var specialClassesOptions = orderedOptions(specialClassesCounts, activeSpecialClasses, ['Has special classes', 'No special classes', 'Not applicable', 'Not recorded'], specialClassesLabels)
+  // Revised SEN provision list order (as agreed). Values with no records are
+  // omitted by orderedOptions, so e.g. ADHD only appears once data supplies it.
+  var feTypeOptions = orderedOptions(feTypeCounts, activeFeTypes, [])
+
+  // Provider type accordion structure: ordered parent groups, each holding its
+  // child types. Only populated groups/children appear. `anyChecked` lets the
+  // view open a group when one of its children is active.
+  var typeGroupOrder = [
+    'Academies',
+    'Local authority maintained schools',
+    'Free Schools',
+    'Independent schools',
+    'Special schools',
+    'Colleges',
+    "Children's Centres",
+    'Other types',
+    'Universities',
+    'Welsh schools',
+    'Online provider'
+  ]
+  var providerTypeGroups = []
+  typeGroupOrder.forEach(function (groupName) {
+    if (!typeGroupCounts[groupName]) return
+    var childCounts = typeDetailCounts[groupName] || {}
+    var children = Object.keys(childCounts).sort().map(function (child) {
+      return {
+        value: child,
+        text: child,
+        checked: activeTypes.indexOf(child) !== -1
+      }
+    })
+    if (children.length === 0) return
+    providerTypeGroups.push({
+      name: groupName,
+      count: typeGroupCounts[groupName],
+      children: children,
+      anyChecked: children.some(function (c) { return c.checked }),
+      allChecked: children.every(function (c) { return c.checked })
+    })
+  })
+  // Any group present in the data but missing from the order list is appended,
+  // so a new GIAS group can never silently vanish from the filter.
+  Object.keys(typeGroupCounts).sort().forEach(function (groupName) {
+    if (typeGroupOrder.indexOf(groupName) !== -1) return
+    var childCounts = typeDetailCounts[groupName] || {}
+    var children = Object.keys(childCounts).sort().map(function (child) {
+      return { value: child, text: child, checked: activeTypes.indexOf(child) !== -1 }
+    })
+    if (children.length === 0) return
+    providerTypeGroups.push({
+      name: groupName,
+      count: typeGroupCounts[groupName],
+      children: children,
+      anyChecked: children.some(function (c) { return c.checked }),
+      allChecked: children.every(function (c) { return c.checked })
+    })
+  })
+
+  var senTypeOptions = orderedOptions(senTypeCounts, activeSenTypes, [
+    'ADHD',
+    'Autistic Spectrum Condition',
+    'Impairment (hearing)',
+    'Impairment (multi-sensory)',
+    'Impairment (visual)',
+    'Learning difficulty (moderate)',
+    'Learning difficulty (profound and multiple)',
+    'Learning difficulty (severe)',
+    'Learning difficulty (specific)',
+    'Other difficulty / disability',
+    'Physical disability',
+    'Social, emotional and mental health',
+    'Speech, language and communication',
+    'Not applicable',
+    'Not recorded'
+  ], senTypeLabels)
 
   // Build selected filter tags
   var selectedCategories = []
 
-  if (activeTypes.length > 0) {
-    selectedCategories.push({
-      heading: { text: 'Type' },
-      items: activeTypes.map(function (val) {
-        return { text: val, href: buildRemoveFilterUrl(req, 'type', val) }
-      })
-    })
-  }
-
   if (activeStatuses.length > 0) {
     selectedCategories.push({
-      heading: { text: 'Status' },
+      heading: { text: 'Operating status' },
       items: activeStatuses.map(function (val) {
-        return { text: val, href: buildRemoveFilterUrl(req, 'status', val) }
+        return { text: val, href: buildRemoveFilterUrl(effReq, 'status', val) }
       })
     })
   }
@@ -318,36 +745,101 @@ router.get('/results', function (req, res) {
     selectedCategories.push({
       heading: { text: 'Local authority' },
       items: activeLAs.map(function (val) {
-        return { text: val, href: buildRemoveFilterUrl(req, 'local_authority', val) }
+        return { text: val, href: buildRemoveFilterUrl(effReq, 'local_authority', val) }
       })
     })
   }
 
-  if (activeSen.length > 0) {
-    selectedCategories.push({
-      heading: { text: 'SEN provision' },
-      items: activeSen.map(function (val) {
-        return { text: val === 'true' ? 'Yes' : 'No', href: buildRemoveFilterUrl(req, 'sen_provision', val) }
-      })
-    })
-  }
-
-  function tagCategory (label, key, active) {
+  function tagCategory (label, key, active, valueLabels) {
     if (active.length > 0) {
       selectedCategories.push({
         heading: { text: label },
         items: active.map(function (val) {
-          return { text: val, href: buildRemoveFilterUrl(req, key, val) }
+          return { text: (valueLabels && valueLabels[val]) || val, href: buildRemoveFilterUrl(effReq, key, val) }
         })
       })
     }
   }
 
-  tagCategory('Phase of education', 'phase', activePhases)
+  // Provider type tags. When every child type in a group is selected, show one
+  // tag for the group (removing it clears all of that group's children) rather
+  // than listing each child. Partly-selected groups list their children.
+  if (activeTypes.length > 0) {
+    var typeTagItems = []
+    var accountedFor = {}
+    providerTypeGroups.forEach(function (group) {
+      if (!group.allChecked) return
+      group.children.forEach(function (c) { accountedFor[c.value] = true })
+      typeTagItems.push({
+        text: group.name,
+        href: buildRemoveKeysValuesUrl(effReq, 'type', group.children.map(function (c) { return c.value }))
+      })
+    })
+    activeTypes.forEach(function (val) {
+      if (accountedFor[val]) return
+      typeTagItems.push({ text: val, href: buildRemoveFilterUrl(effReq, 'type', val) })
+    })
+    if (typeTagItems.length > 0) {
+      selectedCategories.push({
+        heading: { text: 'Education provider type' },
+        items: typeTagItems
+      })
+    }
+  }
+  tagCategory('Education group type', 'group_type', activeGroupTypes)
+  tagCategory('Phase of education', 'phase', activePhases, phaseLabels)
   tagCategory('Gender', 'gender', activeGenders)
   tagCategory('Religious character', 'religious_character', activeReligions)
+  tagCategory('Religious ethos', 'religious_ethos', activeEthos)
   tagCategory('Diocese', 'diocese', activeDioceses)
-  tagCategory('Section 41 approved', 'section_41', activeSection41)
+  tagCategory('Section 41 (approved for SEND provision)', 'section_41', activeSection41)
+  tagCategory('Boarding provision', 'boarding', activeBoarding, boardingLabels)
+  tagCategory('Nursery provision', 'nursery_provision', activeNursery, nurseryLabels)
+  tagCategory('Sixth form provision', 'sixth_form', activeSixthForm, sixthFormLabels)
+  tagCategory('Admissions policy', 'admissions_policy', activeAdmissions, admissionsLabels)
+  tagCategory('Special classes', 'special_classes', activeSpecialClasses, specialClassesLabels)
+  tagCategory('Type of SEN provision', 'sen_type', activeSenTypes, senTypeLabels)
+  tagCategory('Further education type', 'fe_type', activeFeTypes)
+  tagCategory('Resourced provision', 'resourced_provision', activeResourced, resourcedLabels)
+
+  // Age range shows as a single removable tag covering both bounds.
+  if (ageFrom !== null || ageTo !== null) {
+    var ageText = ageFrom !== null && ageTo !== null
+      ? ageFrom + ' to ' + ageTo
+      : (ageFrom !== null ? ageFrom + ' and over' : 'up to ' + ageTo)
+    selectedCategories.push({
+      heading: { text: 'Age range' },
+      items: [{ text: ageText, href: buildRemoveKeysUrl(effReq, ['age_from', 'age_to']) }]
+    })
+  }
+
+  // Date ranges show as a single removable tag per filter.
+  var MONTHS = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  function partsText (p) {
+    if (!p) return null
+    var mi = parseInt(p.m, 10)
+    // Dates read as "1 July 2025", "July 2025" or "2025".
+    if (!p.m || isNaN(mi) || mi < 1 || mi > 12) return [p.d, p.m, p.y].filter(Boolean).join('/')
+    return [p.d ? String(parseInt(p.d, 10)) : '', MONTHS[mi], p.y].filter(Boolean).join(' ')
+  }
+  function tagDateRange (label, prefix, from, to) {
+    if (!from && !to) return
+    var f = partsText(from)
+    var t = partsText(to)
+    var text = f && t ? f + ' to ' + t : (f ? 'from ' + f : 'up to ' + t)
+    selectedCategories.push({
+      heading: { text: label },
+      items: [{
+        text: text,
+        href: buildRemoveKeysUrl(effReq, [
+          prefix + '_from_day', prefix + '_from_month', prefix + '_from_year',
+          prefix + '_to_day', prefix + '_to_month', prefix + '_to_year'
+        ])
+      }]
+    })
+  }
+  tagDateRange('Open date', 'open', openFrom, openTo)
+  tagDateRange('Closed date', 'close', closeFrom, closeTo)
 
   var hasActiveFilters = selectedCategories.length > 0
 
@@ -358,28 +850,49 @@ router.get('/results', function (req, res) {
     currentPage: currentPage,
     totalPages: totalPages,
     paginationItems: paginationItems,
-    prevHref: currentPage > 1 ? buildPageUrl(req, currentPage - 1) : null,
-    nextHref: currentPage < totalPages ? buildPageUrl(req, currentPage + 1) : null,
+    prevHref: currentPage > 1 ? buildPageUrl(effReq, currentPage - 1) : null,
+    nextHref: currentPage < totalPages ? buildPageUrl(effReq, currentPage + 1) : null,
     typeOptions: typeOptions,
     statusOptions: statusOptions,
+    groupTypeOptions: groupTypeOptions,
+    hasProviders: hasProviders,
+    hasGroups: hasGroups,
     laOptions: laOptions,
     senOptions: senOptions,
     phaseOptions: phaseOptions,
     genderOptions: genderOptions,
     religionOptions: religionOptions,
+    ethosOptions: ethosOptions,
     dioceseOptions: dioceseOptions,
     section41Options: section41Options,
+    boardingOptions: boardingOptions,
+    nurseryOptions: nurseryOptions,
+    sixthFormOptions: sixthFormOptions,
+    admissionsOptions: admissionsOptions,
+    specialClassesOptions: specialClassesOptions,
+    senTypeOptions: senTypeOptions,
+    feTypeOptions: feTypeOptions,
+    resourcedOptions: resourcedOptions,
+    downloadHref: buildDownloadUrl(effReq),
+    providerTypeGroups: providerTypeGroups,
+    ageFrom: req.query.age_from || '',
+    ageTo: req.query.age_to || '',
+    openFromParts: openFrom,
+    openToParts: openTo,
+    closeFromParts: closeFrom,
+    closeToParts: closeTo,
     allLocalAuthorities: allLocalAuthorities,
     allDioceses: allDioceses,
     activeLAs: activeLAs,
     activeDioceses: activeDioceses,
     sortOrder: sortOrder,
-    openOnly: openOnly,
     kind: kind,
+    includeClosed: includeClosed,
     selectedCategories: selectedCategories,
     hasActiveFilters: hasActiveFilters,
-    clearFiltersHref: buildClearFiltersUrl(req),
+    clearFiltersHref: buildClearFiltersUrl(effReq),
     searchQ: q,
+    searchWhere: where,
     searchId: exactId,
     currentUrl: req.originalUrl
   })
@@ -402,7 +915,38 @@ router.get('/establishment/:id', function (req, res) {
   var members = []
   if (item.id_type === 'UID' || item.id_type === 'Group UID') {
     members = giasData.filter(function (school) {
-      return school.part_of && school.part_of.group_uid === id
+      return isMemberOf(school, id)
+    })
+  }
+
+  // Group members by phase of education for the Academies tab. Sections are
+  // shown in education order; any member without a recognised phase (including
+  // "Not applicable" and blanks) falls under "Other". Members are listed
+  // alphabetically within each section.
+  var PHASE_ORDER = [
+    'Nursery',
+    'Primary',
+    'Middle deemed primary',
+    'Middle deemed secondary',
+    'Secondary',
+    'All-through',
+    '16 plus'
+  ]
+  var membersByPhase = []
+  if (members.length > 0) {
+    var phaseBuckets = {}
+    members.forEach(function (m) {
+      var label = PHASE_ORDER.indexOf(m.phase) !== -1 ? m.phase : 'Other'
+      if (!phaseBuckets[label]) phaseBuckets[label] = []
+      phaseBuckets[label].push(m)
+    })
+    PHASE_ORDER.concat(['Other']).forEach(function (label) {
+      if (phaseBuckets[label]) {
+        phaseBuckets[label].sort(function (a, b) {
+          return (a.name || '').localeCompare(b.name || '')
+        })
+        membersByPhase.push({ phase: label, members: phaseBuckets[label] })
+      }
     })
   }
 
@@ -412,9 +956,41 @@ router.get('/establishment/:id', function (req, res) {
   // Governance record (governors for providers; trustees + members for groups)
   var governance = governanceData[id] || null
 
+  // Build "left within the last 12 months" lists from the full governance
+  // arrays. A person counts as a recent leaver if they are no longer current
+  // and their term end date falls within the last 12 months.
+  if (governance) {
+    var govNow = new Date()
+    var govCutoff = new Date()
+    govCutoff.setFullYear(govCutoff.getFullYear() - 1)
+
+    var parseDmy = function (s) {
+      if (!s) return null
+      var parts = s.split('/')
+      if (parts.length !== 3) return null
+      var d = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]))
+      return isNaN(d.getTime()) ? null : d
+    }
+
+    var recentLeavers = function (list) {
+      return (list || []).filter(function (g) {
+        if (g.current) return false
+        var ended = parseDmy(g.term_ends)
+        return ended && ended >= govCutoff && ended <= govNow
+      }).sort(function (a, b) {
+        return parseDmy(b.term_ends) - parseDmy(a.term_ends)
+      })
+    }
+
+    governance.governors_left_recent = recentLeavers(governance.governors)
+    governance.trustees_left_recent = recentLeavers(governance.trustees)
+    governance.members_left_recent = recentLeavers(governance.members)
+  }
+
   res.render('establishment', {
     item: item,
     members: members,
+    membersByPhase: membersByPhase,
     predecessors: predecessors,
     governance: governance,
     backLink: req.query.from || '/results'
@@ -423,18 +999,63 @@ router.get('/establishment/:id', function (req, res) {
 
 // View all establishments
 router.get('/all', function (req, res) {
-  res.redirect('/results?q=*')
+  res.redirect('/results?what=*')
 })
 
 
 function buildPageUrl (req, page) {
   var params = Object.assign({}, req.query, { page: page })
   var qs = Object.keys(params).map(function (k) {
-    return encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
-  }).join('&')
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
   return '/results?' + qs
 }
 
+
+// Remove several values from a single filter key at once — used where one tag
+// stands for a set of selections (e.g. a fully-selected provider type group).
+function buildRemoveKeysValuesUrl (req, filterKey, valuesToRemove) {
+  var params = Object.assign({}, req.query)
+  var remaining = [].concat(params[filterKey] || []).filter(function (v) {
+    return v !== '_unchecked' && valuesToRemove.indexOf(v) === -1
+  })
+  if (remaining.length > 0) {
+    params[filterKey] = remaining
+  } else if (filterKey === 'status') {
+    params[filterKey] = '_all'
+  } else {
+    delete params[filterKey]
+  }
+  delete params.page
+  var qs = Object.keys(params).map(function (k) {
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
+  return '/results?' + qs
+}
+
+// Remove a whole set of query keys at once — used by range filters where the
+// tag represents several params (e.g. age_from + age_to).
+function buildRemoveKeysUrl (req, keys) {
+  var params = Object.assign({}, req.query)
+  keys.forEach(function (k) { delete params[k] })
+  delete params.page
+  var qs = Object.keys(params).map(function (k) {
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
+  return '/results?' + qs
+}
 
 function buildRemoveFilterUrl (req, filterKey, filterValue) {
   var params = Object.assign({}, req.query)
@@ -443,6 +1064,9 @@ function buildRemoveFilterUrl (req, filterKey, filterValue) {
   })
   if (values.length > 0) {
     params[filterKey] = values
+  } else if (filterKey === 'status') {
+    // Removing the last operating status must not fall back to the default.
+    params[filterKey] = '_all'
   } else {
     delete params[filterKey]
   }
@@ -458,10 +1082,59 @@ function buildRemoveFilterUrl (req, filterKey, filterValue) {
 }
 
 
+// Parse a day-first GIAS date ('DD-MM-YYYY' or 'DD/MM/YYYY') to a sortable
+// YYYYMMDD integer, or null if unparseable.
+function toYmd (dateStr) {
+  if (!dateStr) return null
+  var m = String(dateStr).trim().match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/)
+  if (!m) return null
+  return parseInt(m[3] + m[2].padStart(2, '0') + m[1].padStart(2, '0'), 10)
+}
+
+// Convert a {y,m,d} bound to a YYYYMMDD integer. `isTo` fills missing month/day
+// with the upper boundary (12/31) so a year-only 'To' includes the whole year.
+function boundToYmd (bound, isTo) {
+  if (!bound) return null
+  var y = bound.y
+  if (!y) return null
+  var m = bound.m || (isTo ? '12' : '01')
+  var d = bound.d || (isTo ? '31' : '01')
+  return parseInt(y + m.padStart(2, '0') + d.padStart(2, '0'), 10)
+}
+
+// True if a record date falls within [from,to] (either side may be null).
+// A null record date passes only when no bound is set on that filter.
+function dateInRange (dateStr, from, to) {
+  var lo = boundToYmd(from, false)
+  var hi = boundToYmd(to, true)
+  if (lo === null && hi === null) return true
+  var val = toYmd(dateStr)
+  if (val === null) return false
+  if (lo !== null && val < lo) return false
+  if (hi !== null && val > hi) return false
+  return true
+}
+
+function buildDownloadUrl (req) {
+  var params = Object.assign({}, req.query, { download: 'csv' })
+  delete params.page
+  var qs = Object.keys(params).map(function (k) {
+    return [].concat(params[k]).filter(function (v) {
+      return v !== '_unchecked'
+    }).map(function (v) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+    }).join('&')
+  }).filter(Boolean).join('&')
+  return '/results?' + qs
+}
+
 function buildClearFiltersUrl (req) {
   var params = {}
-  if (req.query.q) params.q = req.query.q
+  if (req.query.what) params.what = req.query.what
+  if (req.query.where) params.where = req.query.where
   if (req.query.id) params.id = req.query.id
+  // Keep the search-panel "Include closed" toggle; it isn't a sidebar filter.
+  if (req.query.include_closed) params.include_closed = req.query.include_closed
   var qs = Object.keys(params).map(function (k) {
     return encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
   }).join('&')

@@ -55,13 +55,14 @@
 {#
   Autocomplete filter section (Local authority, Diocese).
   Long value lists (100+) aren't usable as checkboxes, so these use the
-  accessible-autocomplete "type to filter" pattern. Selecting a suggestion
-  submits the filter form (reusing the same server-side filtering as the
-  checkbox facets), so the value applies and appears as a removable tag in
-  the "Selected filters" area — no bespoke filtering logic.
+  accessible-autocomplete "type to filter" pattern. Selecting a suggestion adds
+  it as a pending tag inside the filter (above the input) without applying it;
+  pending tags can be removed before applying. On "Apply filters" the values
+  submit and appear as removable tags in the top "Selected filters" area,
+  reusing the same server-side filtering as the checkbox facets.
 
-  Already-selected values are carried as hidden inputs so they persist across
-  submissions and can be removed via the selected-filter tags.
+  Already-applied values are carried as hidden inputs so they persist across
+  submissions and can be removed via the top selected-filter tags.
 #}
 {% macro autocompleteSection(title, name, activeValues) %}
   <details class="govuk-details dfe-filter-section">
@@ -72,6 +73,9 @@
       {% for val in activeValues %}
         <input type="hidden" name="{{ name }}" value="{{ val }}">
       {% endfor %}
+      {# Pending selections (chosen but not yet applied) are listed here by JS,
+         above the input. They move to the top "Selected filters" panel on Apply. #}
+      <ul class="dfe-pending-tags govuk-list" data-pending-for="{{ name }}"></ul>
       <div class="govuk-form-group govuk-!-margin-bottom-0">
         <label class="govuk-label govuk-visually-hidden" for="{{ name }}-autocomplete">{{ title }}</label>
         <div
@@ -86,6 +90,140 @@
   </details>
 {% endmacro %}
 
+{#
+  Age range filter — two number inputs. A record matches when its statutory age
+  span overlaps the requested range, so either bound can be left blank.
+#}
+{% macro ageRangeSection(ageFrom, ageTo) %}
+  <details class="govuk-details dfe-filter-section" {% if ageFrom or ageTo %}open{% endif %}>
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">Age range</span>
+    </summary>
+    <div class="govuk-details__text">
+      <div class="govuk-date-input">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="age_from">From</label>
+            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="age_from" name="age_from" type="text" inputmode="numeric"
+              value="{{ ageFrom }}">
+          </div>
+        </div>
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="age_to">To</label>
+            <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="age_to" name="age_to" type="text" inputmode="numeric"
+              value="{{ ageTo }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+{% endmacro %}
+
+{#
+  Date range filter — From and To, each as day/month/year. Any part can be left
+  blank: a year-only "From" counts from 1 January, a year-only "To" counts to
+  31 December, so broad searches work without entering full dates.
+#}
+{% macro dateRangeSection(title, prefix, fromParts, toParts) %}
+  <details class="govuk-details dfe-filter-section" {% if fromParts or toParts %}open{% endif %}>
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">{{ title }}</span>
+    </summary>
+    <div class="govuk-details__text">
+      {% for bound in [
+        { key: "from", label: "From", parts: fromParts },
+        { key: "to", label: "To", parts: toParts }
+      ] %}
+        {% set p = bound.parts or {} %}
+        <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">{{ bound.label }}</legend>
+          <div class="govuk-date-input">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_day">Day</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="{{ prefix }}_{{ bound.key }}_day" name="{{ prefix }}_{{ bound.key }}_day"
+                  type="text" inputmode="numeric" value="{{ p.d }}">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_month">Month</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="{{ prefix }}_{{ bound.key }}_month" name="{{ prefix }}_{{ bound.key }}_month"
+                  type="text" inputmode="numeric" value="{{ p.m }}">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="{{ prefix }}_{{ bound.key }}_year">Year</label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                  id="{{ prefix }}_{{ bound.key }}_year" name="{{ prefix }}_{{ bound.key }}_year"
+                  type="text" inputmode="numeric" value="{{ p.y }}">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      {% endfor %}
+    </div>
+  </details>
+{% endmacro %}
+
+{#
+  Provider type accordion.
+
+  Each parent group has a checkbox that selects or clears all of its child
+  types, and reveals the children so any can be unticked. The parent submits
+  no value of its own — only the child "type" checkboxes are sent — so without
+  JavaScript the children behave as an ordinary checkbox list and filtering
+  still works. JS adds the select-all, the indeterminate state, and the reveal.
+#}
+{% macro providerTypeSection(groups) %}
+  {% if groups.length > 0 %}
+    <details class="govuk-details dfe-filter-section" {% if groups | selectattr("anyChecked") | list | length %}open{% endif %}>
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">Education provider type</span>
+      </summary>
+      <div class="govuk-details__text">
+        {% for group in groups %}
+          {% set groupId = "type-group-" + loop.index %}
+          <div class="dfe-type-group" data-module="dfe-type-group">
+            <div class="govuk-checkboxes govuk-checkboxes--small dfe-type-group__parent">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="{{ groupId }}" type="checkbox"
+                  data-type-group-toggle
+                  aria-controls="{{ groupId }}-children"
+                  aria-expanded="{{ "true" if group.anyChecked else "false" }}"
+                  {% if group.allChecked %}checked{% endif %}>
+                <label class="govuk-label govuk-checkboxes__label" for="{{ groupId }}">
+                  {{ group.name }}
+                </label>
+              </div>
+            </div>
+            <div class="dfe-type-group__children" id="{{ groupId }}-children">
+              {{ govukCheckboxes({
+                idPrefix: groupId + "-child",
+                name: "type",
+                classes: "govuk-checkboxes--small",
+                fieldset: {
+                  legend: {
+                    text: group.name + " types",
+                    classes: "govuk-visually-hidden"
+                  }
+                },
+                items: group.children
+              }) }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </details>
+  {% endif %}
+{% endmacro %}
+
 {% block content %}
 
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">
@@ -97,44 +235,41 @@
   </h1>
 
   {#
-    Search panel — visual match to the Search page. For this pass the search
-    still runs on the single "q" term underneath; the "Where" field is present
-    but its location logic is wired in the next pass.
+    Search panel — content and behaviour match the Search page. "What" maps to
+    the q term (name / ID codes / group); "Where" maps to location fields
+    (postcode, town, county, local authority, street). Both are wired in the route.
   #}
   <form method="get" action="/results" class="dfe-search-panel govuk-!-margin-bottom-6">
-    {% if kind %}<input type="hidden" name="kind" value="{{ kind }}">{% endif %}
+    <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search.</p>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--s" for="what">What</label>
-          <div id="what-hint" class="govuk-hint">Enter a name or ID number</div>
-          <input class="govuk-input" id="what" name="q" type="text" value="{{ searchQ if searchQ !== '*' else '' }}" aria-describedby="what-hint">
+          <label class="govuk-label govuk-label--s" for="what">Enter a name or ID number</label>
+          <div id="what-hint" class="govuk-hint">For example, a school or trust name, URN, UKPRN or DfE number</div>
+          <input class="govuk-input" id="what" name="what" type="text" value="{{ searchQ if searchQ !== '*' else '' }}" aria-describedby="what-hint">
         </div>
       </div>
       <div class="govuk-grid-column-one-half">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--s" for="where">Where</label>
-          <div id="where-hint" class="govuk-hint">Enter a postcode, city or local authority</div>
+          <label class="govuk-label govuk-label--s" for="where">Enter a location</label>
+          <div id="where-hint" class="govuk-hint">For example, a postcode, city or local authority</div>
           <input class="govuk-input" id="where" name="where" type="text" value="{{ searchWhere }}" aria-describedby="where-hint">
         </div>
       </div>
     </div>
 
-    <div class="dfe-search-panel__actions">
-      {{ govukCheckboxes({
-        classes: "govuk-checkboxes--small govuk-!-margin-bottom-0",
-        name: "open-only",
-        items: [
-          {
-            value: "open-only",
-            text: "Show open providers only",
-            checked: openOnly if openOnly !== undefined else true
-          }
-        ]
-      }) }}
+    {# Include closed providers toggle — reflects the current search state. #}
+    {{ govukCheckboxes({
+      name: "include_closed",
+      classes: "govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-bottom-4",
+      items: [
+        { value: "yes", text: "Include closed education providers", checked: includeClosed }
+      ]
+    }) }}
 
+    <div class="dfe-search-panel__actions">
       {{ govukButton({
-        text: "Search",
+        text: "Search the records",
         classes: "govuk-!-margin-bottom-0"
       }) }}
     </div>
@@ -145,15 +280,39 @@
     {# Filter sidebar #}
     <div class="govuk-grid-column-one-third">
 
+      {#
+        Provider facets show only when the results include providers; the Group
+        type facet shows only when they include groups and sits fourth (after
+        Provider type). A groups-only search therefore offers just Group type.
+      #}
       {% set filterOptionsHtml %}
-        {{ filterSection("Provider type", typeOptions, "type", "type") }}
-        {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
-        {{ filterSection("Status", statusOptions, "status", "status") }}
-        {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
-        {{ filterSection("Gender", genderOptions, "gender", "gender") }}
-        {{ filterSection("Religious character and ethos", religionOptions, "religious_character", "religious_character") }}
-        {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
-        {{ filterSection("Section 41 approved", section41Options, "section_41", "section_41") }}
+        {{ filterSection("Operating status", statusOptions, "status", "status") }}
+        {% if hasProviders %}
+          {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
+          {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
+          {{ providerTypeSection(providerTypeGroups) }}
+        {% endif %}
+        {% if hasGroups %}
+          {{ filterSection("Education group type", groupTypeOptions, "group_type", "group_type") }}
+        {% endif %}
+        {% if hasProviders %}
+          {{ filterSection("Further education type", feTypeOptions, "fe_type", "fe_type") }}
+          {{ filterSection("Section 41 (approved for SEND provision)", section41Options, "section_41", "section_41") }}
+          {{ dateRangeSection("Open date", "open", openFromParts, openToParts) }}
+          {{ dateRangeSection("Closed date", "close", closeFromParts, closeToParts) }}
+          {{ filterSection("Type of SEN provision", senTypeOptions, "sen_type", "sen_type") }}
+          {{ filterSection("Resourced provision", resourcedOptions, "resourced_provision", "resourced_provision") }}
+          {{ ageRangeSection(ageFrom, ageTo) }}
+          {{ filterSection("Gender", genderOptions, "gender", "gender") }}
+          {{ filterSection("Special classes", specialClassesOptions, "special_classes", "special_classes") }}
+          {{ filterSection("Admissions policy", admissionsOptions, "admissions_policy", "admissions_policy") }}
+          {{ filterSection("Boarding provision", boardingOptions, "boarding", "boarding") }}
+          {{ filterSection("Nursery provision", nurseryOptions, "nursery_provision", "nursery_provision") }}
+          {{ filterSection("Sixth form provision", sixthFormOptions, "sixth_form", "sixth_form") }}
+          {{ filterSection("Religious character", religionOptions, "religious_character", "religious_character") }}
+          {{ filterSection("Religious ethos", ethosOptions, "religious_ethos", "religious_ethos") }}
+          {{ autocompleteSection("Diocese", "diocese", activeDioceses) }}
+        {% endif %}
       {% endset %}
 
       <form method="get" action="/results">
@@ -161,8 +320,10 @@
         {% if searchId %}
           <input type="hidden" name="id" value="{{ searchId }}">
         {% elif searchQ %}
-          <input type="hidden" name="q" value="{{ searchQ }}">
+          <input type="hidden" name="what" value="{{ searchQ }}">
         {% endif %}
+        {% if searchWhere %}<input type="hidden" name="where" value="{{ searchWhere }}">{% endif %}
+        {% if includeClosed %}<input type="hidden" name="include_closed" value="yes">{% endif %}
         {% if sortOrder and sortOrder !== 'az' %}
           <input type="hidden" name="sort" value="{{ sortOrder }}">
         {% endif %}
@@ -193,14 +354,16 @@
         {# Results header row: count, sort, download #}
         <div class="dfe-results-header">
           <p class="govuk-body-l govuk-!-margin-bottom-2">
-            {{ totalResults }} result{{ 's' if totalResults !== 1 }}
+            {{ totalResults | thousands }} result{{ 's' if totalResults !== 1 }}
           </p>
         </div>
 
         <div class="dfe-results-controls">
           <form method="get" action="/results" class="dfe-results-sort">
-            {% if searchId %}<input type="hidden" name="id" value="{{ searchId }}">{% elif searchQ %}<input type="hidden" name="q" value="{{ searchQ }}">{% endif %}
+            {% if searchId %}<input type="hidden" name="id" value="{{ searchId }}">{% elif searchQ %}<input type="hidden" name="what" value="{{ searchQ }}">{% endif %}
+            {% if searchWhere %}<input type="hidden" name="where" value="{{ searchWhere }}">{% endif %}
             {% if kind %}<input type="hidden" name="kind" value="{{ kind }}">{% endif %}
+            {% if includeClosed %}<input type="hidden" name="include_closed" value="yes">{% endif %}
             {{ govukSelect({
               id: "sort",
               name: "sort",
@@ -222,39 +385,30 @@
 
           <div class="dfe-results-download">
             {{ govukButton({
-              text: "Download results",
+              text: "Download these results (CSV)",
               classes: "govuk-button--secondary govuk-!-margin-bottom-0",
-              href: "#"
+              href: downloadHref
             }) }}
           </div>
         </div>
 
         {% for item in results %}
           <div class="govuk-summary-card">
+            
             <div class="govuk-summary-card__title-wrapper">
               <h2 class="govuk-summary-card__title govuk-heading-s govuk-!-margin-bottom-0">
                 <a class="govuk-link" href="/establishment/{{ item.id }}?from={{ currentUrl | urlencode }}">{{ item.name }}</a>
               </h2>
+              {% if item.status == "Closed" %}
+                <div class="govuk-summary-card__actions">
+                  <strong class="govuk-tag govuk-tag--orange">Closed</strong>
+                </div>
+              {% endif %}
             </div>
+            
             <div class="govuk-summary-card__content">
+              
               <dl class="govuk-summary-list">
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
-                  <dd class="govuk-summary-list__value">{{ item.id }}</dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Type</dt>
-                  <dd class="govuk-summary-list__value">{{ item.type }}</dd>
-                </div>
-
-                {% if item.street or item.town or item.postcode %}
-                  <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Address</dt>
-                    <dd class="govuk-summary-list__value">{{ [item.street, item.town, item.county, item.postcode] | select | join(", ") }}</dd>
-                  </div>
-                {% endif %}
 
                 {% if item.local_authority %}
                   <div class="govuk-summary-list__row">
@@ -263,19 +417,60 @@
                   </div>
                 {% endif %}
 
-                {% if item.part_of %}
+                {# Providers: Local authority, Phase of education, Education provider type,
+                   DfE number, URN, Address, Part of. Groups keep their own shorter set. #}
+                {% if item.id_type == "URN" and item.phase %}
                   <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Part of a group</dt>
+                    <dt class="govuk-summary-list__key">Phase of education</dt>
+                    <dd class="govuk-summary-list__value">{{ item.phase }}</dd>
+                  </div>
+                {% endif %}
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">{{ "Education provider type" if item.id_type == "URN" else "Education group type" }}</dt>
+                  <dd class="govuk-summary-list__value">{% if item.type_detail and (item.type | lower) != (item.type_detail | lower) %}{{ item.type }} ({{ item.type_detail }}){% else %}{{ item.type }}{% endif %}</dd>
+                </div>
+
+                {% if item.id_type == "URN" and item.dfe_number %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">DfE number</dt>
+                    <dd class="govuk-summary-list__value">{{ item.dfe_number }}</dd>
+                  </div>
+                {% endif %}
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">{{ item.id_type }}</dt>
+                  <dd class="govuk-summary-list__value">{{ item.id }}</dd>
+                </div>
+
+                {% if item.street or item.town or item.postcode %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Address</dt>
+                    <dd class="govuk-summary-list__value">{{ [item.street, item.town, (item.county if item.county != "Not recorded"), item.postcode] | select | join(", ") }}</dd>
+                  </div>
+                {% endif %}
+
+                {% if item.part_of and item.part_of.length %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Part of group</dt>
                     <dd class="govuk-summary-list__value">
-                      <a class="govuk-link" href="/establishment/{{ item.part_of.group_uid }}?from={{ currentUrl | urlencode }}">{{ item.part_of.group_name }}</a>
+                      {% if item.part_of.length == 1 %}
+                        <a class="govuk-link" href="/establishment/{{ item.part_of[0].group_uid }}?from={{ currentUrl | urlencode }}">{{ item.part_of[0].group_name }}</a>
+                      {% else %}
+                        <ul class="govuk-list">
+                          {% for group in item.part_of %}
+                            <li><a class="govuk-link" href="/establishment/{{ group.group_uid }}?from={{ currentUrl | urlencode }}">{{ group.group_name }}</a> ({{ group.group_type | lower }})</li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
                     </dd>
                   </div>
                 {% endif %}
 
-                {% if item.memberCount %}
+                {% if item.memberLabel %}
                   <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Academies</dt>
-                    <dd class="govuk-summary-list__value">{{ item.memberCount }}</dd>
+                    <dt class="govuk-summary-list__key">{{ item.memberLabel }}</dt>
+                    <dd class="govuk-summary-list__value">{{ item.memberValue | thousands }}</dd>
                   </div>
                 {% endif %}
 
@@ -313,9 +508,11 @@
   <script>
     (function () {
       // Enhance each filter that opts in via data-module="dfe-filter-autocomplete".
-      // On selecting a suggestion we set a hidden field and submit the sidebar
-      // filter form, so the value applies through the same server-side filtering
-      // as the checkbox facets and appears as a removable "Selected filter" tag.
+      // Selecting a suggestion adds it as a *pending* tag inside the filter plus
+      // a hidden field on the form, but does NOT apply it. On "Apply filters"
+      // the form submits normally and the value appears in the top "Selected
+      // filters" panel (rendered server-side). Pending tags can be removed with
+      // their own × before applying.
       var containers = document.querySelectorAll('[data-module="dfe-filter-autocomplete"]')
 
       containers.forEach(function (container) {
@@ -329,11 +526,58 @@
 
         // The sidebar filter form this facet belongs to
         var form = container.closest('form')
+        var pendingList = form ? form.querySelector('[data-pending-for="' + name + '"]') : null
+
+        // Values already applied (server-rendered hidden inputs) — don't let the
+        // user add a pending duplicate of something that's already applied.
+        function appliedValues () {
+          var out = []
+          if (!form) { return out }
+          form.querySelectorAll('input[type="hidden"][name="' + name + '"]').forEach(function (h) {
+            if (!h.hasAttribute('data-pending')) { out.push(h.value) }
+          })
+          return out
+        }
+        function pendingValues () {
+          var out = []
+          if (!form) { return out }
+          form.querySelectorAll('input[type="hidden"][name="' + name + '"][data-pending]').forEach(function (h) {
+            out.push(h.value)
+          })
+          return out
+        }
+
+        function addPending (value) {
+          if (!form || !pendingList) { return }
+          if (appliedValues().indexOf(value) !== -1) { return }
+          if (pendingValues().indexOf(value) !== -1) { return }
+
+          var hidden = document.createElement('input')
+          hidden.type = 'hidden'
+          hidden.name = name
+          hidden.value = value
+          hidden.setAttribute('data-pending', '')
+          form.appendChild(hidden)
+
+          var li = document.createElement('li')
+          li.className = 'dfe-pending-tags__item'
+          var btn = document.createElement('button')
+          btn.type = 'button'
+          btn.className = 'dfe-pending-tags__remove'
+          btn.innerHTML = value + ' <span aria-hidden="true">\u00d7</span>'
+          btn.setAttribute('aria-label', 'Remove ' + label + ' ' + value)
+          btn.addEventListener('click', function () {
+            form.removeChild(hidden)
+            pendingList.removeChild(li)
+          })
+          li.appendChild(btn)
+          pendingList.appendChild(li)
+        }
 
         accessibleAutocomplete({
           element: container,
           id: name + '-autocomplete',
-          name: name + '-autocomplete-input', // not submitted directly; see below
+          name: name + '-autocomplete-input', // not submitted directly
           minLength: 3,
           showNoOptionsFound: true,
           placeholder: 'Type to filter ' + label.toLowerCase(),
@@ -344,18 +588,57 @@
             }))
           },
           onConfirm: function (selected) {
-            if (!selected || !form) { return }
-            // Add the chosen value as a hidden field on the filter form, then
-            // submit so it applies and shows as a tag. Standard behaviour:
-            // the input clears and the list closes on reload.
-            var hidden = document.createElement('input')
-            hidden.type = 'hidden'
-            hidden.name = name
-            hidden.value = selected
-            form.appendChild(hidden)
-            form.submit()
+            if (!selected) { return }
+            addPending(selected)
+            // Clear the input so the user can add another.
+            var input = document.getElementById(name + '-autocomplete')
+            if (input) { input.value = '' }
           }
         })
+      })
+    })()
+
+    // Provider type accordion.
+    // The parent checkbox selects/clears every child in its group and reveals
+    // the list so individual types can be unticked. It carries no value itself,
+    // so with JS off the children still submit normally.
+    ;(function () {
+      var groups = document.querySelectorAll('[data-module="dfe-type-group"]')
+      Array.prototype.forEach.call(groups, function (group) {
+        var parent = group.querySelector('[data-type-group-toggle]')
+        var childWrap = group.querySelector('.dfe-type-group__children')
+        var children = group.querySelectorAll('.dfe-type-group__children input[type="checkbox"]')
+        if (!parent || !childWrap || children.length === 0) { return }
+
+        function setExpanded (expanded) {
+          parent.setAttribute('aria-expanded', expanded ? 'true' : 'false')
+          group.classList.toggle('dfe-type-group--open', expanded)
+        }
+
+        function syncFromChildren () {
+          var checked = 0
+          Array.prototype.forEach.call(children, function (c) { if (c.checked) checked++ })
+          parent.checked = checked > 0 && checked === children.length
+          parent.indeterminate = checked > 0 && checked < children.length
+          // Keep the group open while any child is selected.
+          if (checked > 0) { setExpanded(true) }
+        }
+
+        parent.addEventListener('change', function () {
+          Array.prototype.forEach.call(children, function (c) { c.checked = parent.checked })
+          parent.indeterminate = false
+          // Ticking reveals the children so they can be refined; unticking
+          // leaves the group open so the user can see what changed.
+          setExpanded(true)
+        })
+
+        Array.prototype.forEach.call(children, function (c) {
+          c.addEventListener('change', syncFromChildren)
+        })
+
+        // Initial state: collapsed unless something in this group is selected.
+        setExpanded(parent.checked || Array.prototype.some.call(children, function (c) { return c.checked }))
+        syncFromChildren()
       })
     })()
   </script>

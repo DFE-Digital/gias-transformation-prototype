@@ -160,6 +160,38 @@ $govuk-font-family: 'Inter', sans-serif;
   margin-bottom: 0;
 }
 
+// Browse-by-type block inside the search card, below the Search button.
+// The "Or browse records by type" heading sits inline with the links on one
+// baseline, wrapping to its own line on narrow screens.
+.dfe-search-panel__browse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: govuk-spacing(2) govuk-spacing(4);
+  margin-top: govuk-spacing(4);
+}
+
+// Keep the inline heading tight so it aligns with the link row.
+.dfe-browse-list__title {
+  margin-bottom: 0;
+}
+
+.dfe-browse-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2) govuk-spacing(5);
+}
+
+.dfe-browse-list li {
+  margin-bottom: 0;
+}
+
+.dfe-browse-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: govuk-spacing(1);
+}
+
 // ============================================================================
 // 6. Results page — header controls and filter sections
 // ============================================================================
@@ -342,6 +374,15 @@ $govuk-font-family: 'Inter', sans-serif;
 // 9. MoJ filter overrides
 // ============================================================================
 
+// Push the Apply button below the filters.
+.moj-filter__options {
+  display: flex;
+  flex-direction: column;
+}
+.moj-filter__options .govuk-button {
+  order: 1;
+}
+
 // Repoint the selected-filter tag remove-cross to local images.
 .moj-filter__tag::after {
   background-image: url('/public/images/icon-tag-remove-cross.svg');
@@ -349,4 +390,169 @@ $govuk-font-family: 'Inter', sans-serif;
 
 .moj-filter__tag:hover::after {
   background-image: url('/public/images/icon-tag-remove-cross-white.svg');
+}
+
+// ============================================================================
+// 10. Establishment details — grouped "ID numbers" sub-list
+// ============================================================================
+
+// Renders LAESTAB / UKPRN / URN as an aligned key/value pair inside a single
+// summary-list row, matching the establishment-page-reorder design.
+.dfe-id-numbers {
+  margin: 0;
+}
+
+// A source note ("Summer census 2026") ranged right inside a summary list value,
+// so rows keep the full value width. Wraps under the figure on narrow screens.
+.dfe-summary-list__value--with-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 govuk-spacing(4);
+}
+
+.dfe-summary-list__note {
+  color: #484949;
+
+  @include govuk-media-query($from: tablet) {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+.dfe-id-numbers__row {
+  display: flex;
+  gap: govuk-spacing(4);
+
+  & + & {
+    margin-top: govuk-spacing(1);
+  }
+}
+
+.dfe-id-numbers__key {
+  @include govuk-font($size: 19);
+  margin: 0;
+  min-width: 80px;
+  flex: 0 0 auto;
+}
+
+.dfe-id-numbers__value {
+  @include govuk-font($size: 19);
+  margin: 0;
+  width:90px;
+  order: -1; // value shows first even where the term comes first in the markup
+}
+
+// ============================================================================
+// Provider type accordion filter — parent group with nested child types
+// ============================================================================
+
+.dfe-type-group + .dfe-type-group {
+  margin-top: govuk-spacing(2);
+}
+
+.dfe-type-group__parent .govuk-checkboxes__label {
+  font-weight: bold;
+}
+
+// Child types are indented and marked with a rule to signal the nesting.
+.dfe-type-group__children {
+  margin-left: govuk-spacing(5);
+  padding-left: govuk-spacing(3);
+  border-left: 2px solid $govuk-border-colour;
+}
+
+// With JS enabled the children start collapsed and are revealed by the parent.
+// The `js-enabled` class is added by GOV.UK Frontend, so with JS off the
+// children remain visible and usable as an ordinary checkbox list.
+.js-enabled .dfe-type-group__children {
+  display: none;
+}
+
+.js-enabled .dfe-type-group--open .dfe-type-group__children {
+  display: block;
+}
+
+// ============================================================================
+// Pending autocomplete selections — tags shown inside a filter before Apply
+// ============================================================================
+
+.dfe-pending-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2);
+  margin-bottom: govuk-spacing(3);
+
+  &:empty {
+    margin-bottom: 0; // no gap when there are no pending tags
+  }
+}
+
+.dfe-pending-tags__item {
+  margin: 0;
+}
+
+// Styled like a removable MoJ filter tag: label plus a × affordance.
+.dfe-pending-tags__remove {
+  @include govuk-font($size: 16);
+  display: inline-flex;
+  align-items: center;
+  gap: govuk-spacing(1);
+  padding: 0 govuk-spacing(2);
+  min-height: 30px;
+  color: govuk-colour("white");
+  background-color: govuk-colour("blue");
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: govuk-shade(govuk-colour("blue"), 20%);
+  }
+
+  &:focus {
+    outline: 3px solid transparent;
+    color: govuk-colour("black");
+    background-color: $govuk-focus-colour;
+    box-shadow: 0 -2px $govuk-focus-colour, 0 4px govuk-colour("black");
+  }
+}
+
+// A–Z jump navigation for the glossary page.
+// Horizontal row of letters; letters with no entries are shown but not linked.
+
+.dfe-az-nav {
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(2);
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.dfe-az-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2) govuk-spacing(3);
+  margin: 0;
+}
+
+.dfe-az-nav__item {
+  @include govuk-font($size: 24, $weight: bold);
+  margin: 0;
+}
+
+// Letters with no glossary entries: visible for a complete A–Z, but muted
+.dfe-az-nav__item--disabled {
+  color: govuk-colour("mid-grey");
+}
+
+
+// Governance tab header: section heading on the left, glossary link on the
+// right, aligned on the same baseline. Wraps to two lines on narrow screens.
+
+.dfe-governance-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: govuk-spacing(2) govuk-spacing(4);
+  margin-bottom: govuk-spacing(4);
 }

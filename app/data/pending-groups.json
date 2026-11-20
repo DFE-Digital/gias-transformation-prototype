@@ -1,0 +1,4552 @@
+[
+ {
+  "uid": "1029",
+  "name": "Tomlinscote School and Sixth Form College",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1031",
+  "name": "Aspect",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1032",
+  "name": "Avonbourne International Business and Enterprise Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1034",
+  "name": "The Banbury School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1035",
+  "name": "Barr's Hill School Trust Ltd",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1037",
+  "name": "Bebington High Sports College a Co-operative Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1041",
+  "name": "Birchwood High School Board of Trustees",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1045",
+  "name": "Burnley Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1046",
+  "name": "Cambridge Meridian Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1047",
+  "name": "Chaddesley Corbett Educational Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1048",
+  "name": "Chafford Hundred Campus Business and Enterprise College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1051",
+  "name": "Chase Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1052",
+  "name": "Chester Diocesan Board of Education",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1055",
+  "name": "Comberton Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1056",
+  "name": "ContinU Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1057",
+  "name": "Coombeshead College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1058",
+  "name": "Co-op Aspect",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1059",
+  "name": "COWA",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1061",
+  "name": "Cuckoo Hall Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1062",
+  "name": "Derby Pride Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1063",
+  "name": "Donnington and Trench Learners Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1066",
+  "name": "Excel Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1069",
+  "name": "Fosse Way School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1071",
+  "name": "George Pindar Community Sports College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1073",
+  "name": "Grantham The Walton Girls' High School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1074",
+  "name": "Hazelwick School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1075",
+  "name": "Hilbre High School Humanities College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1076",
+  "name": "Hinchley Wood School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1077",
+  "name": "Houghton Kepier Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1078",
+  "name": "Hounsdown Future Leaders Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1080",
+  "name": "Kingsbridge Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1081",
+  "name": "Learning Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1085",
+  "name": "The Lipson Learning Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1088",
+  "name": "Lyng Hall Trust Ltd",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1089",
+  "name": "Makerfield Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1092",
+  "name": "Montgomery Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1095",
+  "name": "None",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1097",
+  "name": "North Pennine Learning Partnership Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1098",
+  "name": "Oldfield Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1100",
+  "name": "PL9 Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1102",
+  "name": "Rainhill Learning Village Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1104",
+  "name": "Sebright Education Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1105",
+  "name": "South Dartmoor Leading Practice Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1107",
+  "name": "South Rochdale Innovation Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1108",
+  "name": "South West Academic Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1110",
+  "name": "St Paul's Way Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1111",
+  "name": "Stoke Damerel Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1112",
+  "name": "Stoke Park School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1115",
+  "name": "The Activate Trust Hereford",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1116",
+  "name": "The Arnewood Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1118",
+  "name": "The Barkestone Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1119",
+  "name": "The Biddenham International Campus",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1120",
+  "name": "The Brixham Learning Campus and Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1121",
+  "name": "The Calday Grange Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1122",
+  "name": "The Campsmount Community Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1124",
+  "name": "The Canterbury High School and Beauherne Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1125",
+  "name": "The Cedars Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1127",
+  "name": "The Central Technology and Sports College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1129",
+  "name": "The Chiswick Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1133",
+  "name": "The Don Valley School & Performing Arts Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1134",
+  "name": "The Duston School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1136",
+  "name": "The Ferrers Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1138",
+  "name": "The Folkestone School for Girls Trust Limited",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1140",
+  "name": "The Gleed Girls' Technology College & South Holland Post 16 Centre",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1141",
+  "name": "The Halesowen Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1142",
+  "name": "The Harlington Area Schools Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1144",
+  "name": "The Henry Morris Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1145",
+  "name": "The Herefordshire Learning Disability Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1146",
+  "name": "The Howard Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1148",
+  "name": "The Innovation Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1149",
+  "name": "The Kemnal Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1151",
+  "name": "The Kenilworth Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1152",
+  "name": "The King Richard School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1153",
+  "name": "The Kingswood Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1154",
+  "name": "The Lakeside Learning Village Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1155",
+  "name": "The Learning Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1156",
+  "name": "The Local Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1160",
+  "name": "The Medway Education and Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1161",
+  "name": "The Montacute Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1163",
+  "name": "The PCS Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1164",
+  "name": "The Perins Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1166",
+  "name": "The Ralph Allen Innovation Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1168",
+  "name": "The Robinswood Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1169",
+  "name": "The Rochford District Schools Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1170",
+  "name": "The Saffron Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1171",
+  "name": "The Sale Grammar School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1173",
+  "name": "The School Partnership Trust (SPT)",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1176",
+  "name": "The Somer Valley Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1177",
+  "name": "The South Craven Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1178",
+  "name": "The St Christopher SEN Specialist Foundation Special School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1179",
+  "name": "St Clere's Co-operative Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1181",
+  "name": "The Studley High School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1182",
+  "name": "The Tarleton High School Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1185",
+  "name": "The Towcester Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1187",
+  "name": "The Vale Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1188",
+  "name": "The Westwood Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1189",
+  "name": "The Woodchurch High School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1191",
+  "name": "Truro and Roseland Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1192",
+  "name": "Trust for Innovative Learning and Training",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1194",
+  "name": "Upper Eden Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1195",
+  "name": "Violet Lane Trust School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1198",
+  "name": "Wakefield ASPIRE Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1199",
+  "name": "Walney Island Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1200",
+  "name": "Wednesbury Innovation Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1201",
+  "name": "West Oldham Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1202",
+  "name": "Whitley Abbey Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1203",
+  "name": "Widewell School Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1204",
+  "name": "Wigmore Ascent Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1206",
+  "name": "Worth Primary School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1207",
+  "name": "Worthing High School Trust (WHST)",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1208",
+  "name": "Baxter College Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1214",
+  "name": "East Blackburn Learning Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1217",
+  "name": "Jarrow School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1234",
+  "name": "The Parkside Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1235",
+  "name": "Slough Grammar School Charitable Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1237",
+  "name": "Brownhills School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1240",
+  "name": "The Education Trust for Wetherby",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1241",
+  "name": "Foxford School Trust Limited",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1242",
+  "name": "Whitefield School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1244",
+  "name": "South West Bristol Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1245",
+  "name": "Trentham Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1252",
+  "name": "The Ted Wragg Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1255",
+  "name": "Stanley Infant and Nursery School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1257",
+  "name": "Thames View Infant School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1258",
+  "name": "The Brigshaw Federation: A Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1260",
+  "name": "Sir Thomas Wharton Community College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1261",
+  "name": "The da Vinci Community College Learning Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1265",
+  "name": "The Radclyffe Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1269",
+  "name": "Charters School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1276",
+  "name": "The Swavesey Village College Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1286",
+  "name": "The Upminster Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1289",
+  "name": "The Royal Docks Co-operative Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1290",
+  "name": "The Golbourne and Lowton Co-operative Learning Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1291",
+  "name": "The Rutland County College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1294",
+  "name": "Westwood Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1295",
+  "name": "Oakwood Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1296",
+  "name": "The Feltham Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1298",
+  "name": "The Pegasus Cooperative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1303",
+  "name": "Moat Farm Junior School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1304",
+  "name": "The Park Lane Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1305",
+  "name": "Babington Community College: A Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1307",
+  "name": "New College Leicester Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1315",
+  "name": "The Kings of Wessex School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1320",
+  "name": "The Sir Thomas Boughey Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1322",
+  "name": "The Flixton Well Woman Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1324",
+  "name": "The Hounslow Manor Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1328",
+  "name": "Avon Valley College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1330",
+  "name": "Monk's Walk Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1331",
+  "name": "Lees Brook Community Sports College Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1333",
+  "name": "The Heston Community Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1336",
+  "name": "The Lakers Family Co-operative College",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1343",
+  "name": "Jack Hunt Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1351",
+  "name": "The Vale of Marston Schools' Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1352",
+  "name": "The Temple Newsam Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1358",
+  "name": "South Axholme Community School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1360",
+  "name": "New Primary School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1362",
+  "name": "1362 - The Harlow Education Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1363",
+  "name": "The Bottisham Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1367",
+  "name": "Wildern Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1372",
+  "name": "Reading Foundation Limited",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1374",
+  "name": "Education for Bromyard: A Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1375",
+  "name": "Westfield Learning Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1376",
+  "name": "The Durand Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1379",
+  "name": "The Roundwood Park and Sir John Lawes Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1380",
+  "name": "The Vandyke Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1382",
+  "name": "Costello Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1383",
+  "name": "David Ross Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1388",
+  "name": "Whitehill Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1389",
+  "name": "The Fulham Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1390",
+  "name": "Fulham Cross Girls' School and Language College",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1392",
+  "name": "Kingsway Learning Trust Limited",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1396",
+  "name": "The Phoenix Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1400",
+  "name": "The Bosworth College Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1405",
+  "name": "Hereford Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1406",
+  "name": "Ratton School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1411",
+  "name": "The Whalley Range Enterprise, Sport and Health Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1416",
+  "name": "Co-op Upper Shirley Learning Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1417",
+  "name": "The Huish Community Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1418",
+  "name": "The Huish Community Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1425",
+  "name": "Parkside Creative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1432",
+  "name": "Elliott Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1433",
+  "name": "The Aylsham Cluster Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1437",
+  "name": "The Higher Asperations Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1439",
+  "name": "North Thames Co-operative Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1440",
+  "name": "Riddlesdown Collegiate/Woodcote High School Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1443",
+  "name": "Anglo European Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1445",
+  "name": "The Co-operative Learning Partnership Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1447",
+  "name": "Lytham St Annes Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1448",
+  "name": "The Seaford Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1454",
+  "name": "The Carlton & Royston Learning Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1459",
+  "name": "Regents Park Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1460",
+  "name": "The Shavington Learning Community",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1461",
+  "name": "The Northfleet School for Girls Co-operative Learning Trust The Northfleet School for Girls Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1462",
+  "name": "The Northfleet Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1475",
+  "name": "Cowes Pathfinder Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1489",
+  "name": "The King's Grove Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1501",
+  "name": "The Lowestoft Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1506",
+  "name": "The Greenwood Dale Foundation Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1507",
+  "name": "Crewe South Co-operative Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1519",
+  "name": "Meadowhead Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1525",
+  "name": "The Helston and Lizard Peninsula Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1531",
+  "name": "Chase Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1538",
+  "name": "Oakwood Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1554",
+  "name": "Colston Girls School Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1561",
+  "name": "The Newcastle Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1562",
+  "name": "The Wrekin Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1569",
+  "name": "St Austell Educational Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1572",
+  "name": "Severn Community Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1576",
+  "name": "The Park Community Co-Operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1580",
+  "name": "REAch2 Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1584",
+  "name": "The Exe Estuary Academic Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1587",
+  "name": "The Holsworthy Co-operative Learning Trust Foundation",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1593",
+  "name": "The Royds Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1604",
+  "name": "Coombe Secondary Schools Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1609",
+  "name": "Blythe Bridge High School Music Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1630",
+  "name": "The Educational Alliance of Canford Heath",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1633",
+  "name": "Westlands Academies Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1635",
+  "name": "Coombeshead Academy",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1639",
+  "name": "Learning Schools Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1640",
+  "name": "School Partnership Trust Academies",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1642",
+  "name": "Crofty Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1657",
+  "name": "Newcastle North West Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1658",
+  "name": "The Elliot Foundation Academies Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1669",
+  "name": "South Newcastle Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1825",
+  "name": "Chipping Sodbury School Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1826",
+  "name": "Weston-super-Mare Education Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1912",
+  "name": "The Birley Learning Community Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1915",
+  "name": "The Bradford Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1917",
+  "name": "Pioneer Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1918",
+  "name": "Wolverton Learning Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1921",
+  "name": "West Hull Co-Operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1952",
+  "name": "The Wath Community Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1955",
+  "name": "Co-op The Priesthorpe Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1957",
+  "name": "Eden Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1958",
+  "name": "Stranton Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1961",
+  "name": "Exeter Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1963",
+  "name": "The Acorn Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1964",
+  "name": "Dartmoor Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1965",
+  "name": "Brentwood Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1987",
+  "name": "Lidget Green Community Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1988",
+  "name": "The Beacon Co-operative Leraning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1990",
+  "name": "Calder Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1991",
+  "name": "Education Through Enterprise Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "1999",
+  "name": "Willow Schools Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2000",
+  "name": "Three Valleys Learning Partnership",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2011",
+  "name": "Minster Spires Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2012",
+  "name": "The Honley Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2013",
+  "name": "The Endeavour Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2015",
+  "name": "Outer West Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2016",
+  "name": "The Leek Federation Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2068",
+  "name": "Acorn Care",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2077",
+  "name": "The Adelaide Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2078",
+  "name": "Advance Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2080",
+  "name": "Adventure Learning Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2084",
+  "name": "Northern Ambition Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2105",
+  "name": "All Hallows Catholic School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2106",
+  "name": "All Roads",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2132",
+  "name": "Amey",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2148",
+  "name": "Archdiocese of Birmingham",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2149",
+  "name": "Archdiocese of Liverpool",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2150",
+  "name": "Archdiocese of Southwark",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2159",
+  "name": "Armthorpe Shaw Wood Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2201",
+  "name": "Attwood Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2208",
+  "name": "Avanti Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2221",
+  "name": "Bacon CTC",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2234",
+  "name": "Barnfield Education Partnership Trust (BEPT)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2241",
+  "name": "Barrow Sixth Form College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2243",
+  "name": "Barry Townsley CBE",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2300",
+  "name": "Green Spring Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2321",
+  "name": "Birmingham City University Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2327",
+  "name": "Bishop Challoner Catholic College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2390",
+  "name": "Bournemouth School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2392",
+  "name": "Bournemouth School for Girls",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2401",
+  "name": "Bradfield College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2402",
+  "name": "Bradfield School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2405",
+  "name": "Bradford College Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2414",
+  "name": "BrandH Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2417",
+  "name": "Bransholme and District Academies Partnership (Umbrella Trust)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2438",
+  "name": "Bright Tribe Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2441",
+  "name": "Brighter Futures Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2449",
+  "name": "Cathedral Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2450",
+  "name": "British Telecom",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2467",
+  "name": "Brook Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2500",
+  "name": "Bursley Academy",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2501",
+  "name": "Bursley Academy Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2503",
+  "name": "Burton and South Derbyshire College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2506",
+  "name": "Bury College Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2509",
+  "name": "Bury St Edmunds Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2529",
+  "name": "Cambridge Primary Education Trust (CPET)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2540",
+  "name": "Canterbury Christ Church University",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2545",
+  "name": "The Trinity Catholic Multi Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2558",
+  "name": "Castle Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2576",
+  "name": "Catch22 Multi Academies Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2589",
+  "name": "CECET The Church of England Central Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2595",
+  "name": "Central Manchester University Hospitals NHS Foundation Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2604",
+  "name": "CHANGE Schools Partnership",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2608",
+  "name": "Chapel Street Community Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2612",
+  "name": "Charles Darwin Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2638",
+  "name": "Community Schools Alliance Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2690",
+  "name": "Churchend Primary Academy",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2702",
+  "name": "City College Brighton and Hove",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2708",
+  "name": "City of Wolverhampton Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2716",
+  "name": "Clevedon Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2720",
+  "name": "Together Learning Partnership",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2721",
+  "name": "East Anglia Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2725",
+  "name": "Clifton Diocese",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2737",
+  "name": "Colchester Institute",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2747",
+  "name": "Coloma Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2764",
+  "name": "ConcertEd",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2812",
+  "name": "Craven Education Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2814",
+  "name": "Crawley Free School Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2818",
+  "name": "Creative Learning Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2836",
+  "name": "CTC Kingshurst Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2852",
+  "name": "David Meller",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2856",
+  "name": "Dayspring Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2862",
+  "name": "De La Salle Order",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2877",
+  "name": "Derby College Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2891",
+  "name": "Diocese of Birmingham Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2892",
+  "name": "Diocese of Bradford, Leeds and Ripon",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2895",
+  "name": "Diocese of Bristol Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2896",
+  "name": "The Diocese of Canterbury Academies Company Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2909",
+  "name": "Hallam Schools Partnership Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2910",
+  "name": "Diocese of Hereford",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2914",
+  "name": "Diocese of London",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2915",
+  "name": "Diocese of Manchester",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2919",
+  "name": "Diocese of Oxford",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2926",
+  "name": "Diocese of St Albans",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "2929",
+  "name": "Diocese of York Educational Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "2942",
+  "name": "Dodworth St John the Baptist CE Primary Academy",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "2951",
+  "name": "Dover Federation for the Arts Multi Academy Trust (DFAMAT)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3005",
+  "name": "Coast Academies",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3007",
+  "name": "Edge Foundation",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3049",
+  "name": "Quaerere Academy Trust, (Q3 Academy - Eric and Grace Payne)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3051",
+  "name": "Erudition Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3054",
+  "name": "Essa Foundation",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3058",
+  "name": "Eveleigh LINK Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3156",
+  "name": "Fylde Coast Teaching School Ltd",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3167",
+  "name": "Gentoo",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3184",
+  "name": "Glenmere Langmoor Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3199",
+  "name": "Goldsworth Primary School",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3204",
+  "name": "Gordon Phillips (Knole academy)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3212",
+  "name": "Grace Foundation",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3221",
+  "name": "Gravesend Grammar School",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3224",
+  "name": "Great Academies Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3242",
+  "name": "Skills for Life Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3267",
+  "name": "Brunel Primary Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3270",
+  "name": "Guildford County School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3278",
+  "name": "The Haberdashers' Livery Company",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "3330",
+  "name": "The HBH Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3335",
+  "name": "Harwich Community Primary School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3381",
+  "name": "Heighington Millfield Primary Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3393",
+  "name": "The Mill Academy",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "3441",
+  "name": "Holiday Extras",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3484",
+  "name": "Hornbeam Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3497",
+  "name": "HTI Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3503",
+  "name": "Hull College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3506",
+  "name": "Hummersknott Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3536",
+  "name": "Interserve Investments Ltd",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3549",
+  "name": "Jack Petchey",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3596",
+  "name": "Kent County Council",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3597",
+  "name": "Kenton School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3601",
+  "name": "Kernow Collaborative Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3678",
+  "name": "Laing O'Rourke",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3699",
+  "name": "Scholars Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3707",
+  "name": "Leaf Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3712",
+  "name": "Learning and Achievement Federation (LeAF)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3734",
+  "name": "Magna Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3742",
+  "name": "Lilac Sky Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3745",
+  "name": "Diocese of Lincoln",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "3752",
+  "name": "Qualitas Learning Alliance",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3756",
+  "name": "Chilford Hundred Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3766",
+  "name": "Endeavour Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3781",
+  "name": "Longfield Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3814",
+  "name": "Lynn Grove Academies' Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3816",
+  "name": "Macclesfield College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3836",
+  "name": "Manchester Airport Company",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3891",
+  "name": "Meopham Community Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3896",
+  "name": "Merchant Venturers, The Society of",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3903",
+  "name": "Methodist Academies and Schools Trust (MAST)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3905",
+  "name": "Mid Essex Anglican Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "3919",
+  "name": "Milton Keynes Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3959",
+  "name": "Navigate Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3976",
+  "name": "Link Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "3988",
+  "name": "Newcastle College Group (NCG)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4013",
+  "name": "North Carr Collaborative Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4021",
+  "name": "The Hart Schools Trust Ltd",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4023",
+  "name": "North Norfolk Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4037",
+  "name": "Northern House School Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4052",
+  "name": "North Essex Multi Academy Trust (NEMAT)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4056",
+  "name": "St Therese of Lisieux Catholic Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4069",
+  "name": "Oaks Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4089",
+  "name": "Oldham College Community Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4091",
+  "name": "Oldknow Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4097",
+  "name": "One World Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4108",
+  "name": "Ossett Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4122",
+  "name": "Discover Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4125",
+  "name": "Blackbird Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4184",
+  "name": "Perry Beeches The Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4198",
+  "name": "Phoenix Multi-Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4224",
+  "name": "Pool Academy",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4261",
+  "name": "Prospects Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4309",
+  "name": "Ravens Wood School, Bromley",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4311",
+  "name": "Ashwood Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4342",
+  "name": "Redmoor Academy",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4367",
+  "name": "Rise Park Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4371",
+  "name": "RNIB Pears Centre for Specialist Learning",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4383",
+  "name": "Rochester Diocesan Board of Education",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4411",
+  "name": "RSA Academies",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4446",
+  "name": "Salford Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4456",
+  "name": "Samworth Brothers",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4461",
+  "name": "Sandhill Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4476",
+  "name": "OUR Co-operative Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4494",
+  "name": "Sharnbrook Academy Federation",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4517",
+  "name": "Shrewsbury Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4529",
+  "name": "Sir Frank Lowe",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4535",
+  "name": "Sir John Madejski",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4572",
+  "name": "South Essex College of Further and Higher Education",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4582",
+  "name": "Central College Nottingham",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4602",
+  "name": "Believe Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4658",
+  "name": "Exeter Diocesan Education Network (EDEN)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4693",
+  "name": "St Helen's Catholic Junior School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4695",
+  "name": "St Helens College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4722",
+  "name": "St Joseph's College Edmund Rice Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4741",
+  "name": "St Mary's Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4864",
+  "name": "Stratton Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4872",
+  "name": "Suffolk New College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4877",
+  "name": "Sussex Downs College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4907",
+  "name": "TBAP Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4914",
+  "name": "Teesside University",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4919",
+  "name": "Temple Grove Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4927",
+  "name": "Aldridge Education",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "4928",
+  "name": "Benfleet Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4932",
+  "name": "The Gryphon Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4940",
+  "name": "The Castle Partnership, Taunton",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4941",
+  "name": "The Castleman Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4947",
+  "name": "The Collaborative Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4949",
+  "name": "The Co-operative Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "4959",
+  "name": "The Dunham Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4960",
+  "name": "The Education Fellowship Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4961",
+  "name": "The Education Village Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4964",
+  "name": "The Evolve Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4968",
+  "name": "The Gainsborough Parish Church C.E. Primary School",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4969",
+  "name": "The Garrard Family Foundation",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4978",
+  "name": "The Hertfordshire and Essex High School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "4980",
+  "name": "The Hinkler Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4987",
+  "name": "The Learning Alliance Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4989",
+  "name": "The Lincoln College Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4992",
+  "name": "The Manchester College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4995",
+  "name": "The Mead Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4997",
+  "name": "The Midland Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "4998",
+  "name": "The Mirfield Free Grammar & Sixth Form",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5008",
+  "name": "The Priory School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5012",
+  "name": "The Queen Katherine School Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5014",
+  "name": "The Raleigh School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5016",
+  "name": "The Redstart Learning Partnership",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5017",
+  "name": "The Riding's Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5019",
+  "name": "The Robinswood Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5021",
+  "name": "Roger De Haan",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5028",
+  "name": "The Silver Birch Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5032",
+  "name": "The South Shropshire Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5034",
+  "name": "ORTU Federation Ltd",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5035",
+  "name": "The Stanway Federation Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5036",
+  "name": "Staploe Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5040",
+  "name": "Endeavour Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5041",
+  "name": "The Village Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5045",
+  "name": "The Williamson Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5055",
+  "name": "The Thomas Hardye Multi Academy Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "5065",
+  "name": "Thriftwood School",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "5099",
+  "name": "Transforming Education in Norfolk (the TEN Group)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5103",
+  "name": "Trent Academies Group",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5120",
+  "name": "Truro and Penwith College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "5138",
+  "name": "UBS",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5139",
+  "name": "University of Chester Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5149",
+  "name": "University for the Creative Arts (UCA)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5150",
+  "name": "University of Bradford",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5155",
+  "name": "University of Hull",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5158",
+  "name": "University of Nottingham",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5159",
+  "name": "University of Plymouth",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5174",
+  "name": "U-xplore",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5175",
+  "name": "Vale Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5194",
+  "name": "Wakefield City Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5207",
+  "name": "Walsall College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5221",
+  "name": "Warrington Collegiate",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5237",
+  "name": "Wearmouth Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5248",
+  "name": "Wellington College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5262",
+  "name": "West Grantham Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5266",
+  "name": "West Herts College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5280",
+  "name": "Synaptic Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5298",
+  "name": "Inspirational Futures Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5322",
+  "name": "Flourish Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5323",
+  "name": "I-Trust Education",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5364",
+  "name": "Winstanley College, Wigan",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5375",
+  "name": "Witham St Hughs Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5383",
+  "name": "Wood Newton Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5406",
+  "name": "Woodside High School",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5437",
+  "name": "Sentamu Academy Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5459",
+  "name": "The Duston School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5507",
+  "name": "South Tendring Education Partnership (STEP)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5508",
+  "name": "Community First Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5512",
+  "name": "Pride Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5513",
+  "name": "Eggbuckland Community College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5547",
+  "name": "Acorn Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5551",
+  "name": "Orchard Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5552",
+  "name": "Griffin Primary School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5554",
+  "name": "The Heart Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5556",
+  "name": "Holmes Chapel Primary School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5559",
+  "name": "King Edward VI College Stourbridge",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5561",
+  "name": "Kirk Sandall Infant Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5562",
+  "name": "Learning Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5564",
+  "name": "Nethergate School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5565",
+  "name": "Cavendish Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5568",
+  "name": "Nunthorpe Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5570",
+  "name": "Portswood Primary Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5571",
+  "name": "Quintin Kynaston School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5573",
+  "name": "Liverpool City Region Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5583",
+  "name": "The SCHOOLSCOMPANY Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5584",
+  "name": "The Engage Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5586",
+  "name": "The Dove Family Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5587",
+  "name": "Folio Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5589",
+  "name": "Waycroft Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5649",
+  "name": "Nottingham Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5650",
+  "name": "St Luke Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5651",
+  "name": "William Willett Learning Trust (WWLT)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5656",
+  "name": "Blank",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5657",
+  "name": "Yorkshire & Humberside Co-operative Academies Trust (YOUR Co-op AT)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5665",
+  "name": "Takely Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "5717",
+  "name": "Diocese of Shrewsbury Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15706",
+  "name": "Replace",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15721",
+  "name": "Bedford College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15743",
+  "name": "The Aston Brooke Co-operative Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "15841",
+  "name": "The Shire Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15845",
+  "name": "Floreat Education",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15846",
+  "name": "The Challenger Multi-Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15851",
+  "name": "Telford College of Arts & Technology",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15889",
+  "name": "Atlantic Centre of Excellence Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15891",
+  "name": "Newquay Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15892",
+  "name": "Peacehaven Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "15908",
+  "name": "Diocese of Middlesbrough",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15909",
+  "name": "This is a co-sponsored academy. Details of the sponsors of co-sponsored academies are not included in the current version of performance tables but this information will be available early in 2016",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15910",
+  "name": "The Archbishop Romero MAC (Coventry)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15913",
+  "name": "Lumen Christi Catholic Multi Academy Company",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15914",
+  "name": "Holy Spirit MAC (Warwickshire)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15918",
+  "name": "The Dominic Barberi MAC (South Oxfordshire)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15919",
+  "name": "The St John Bosco MAC (Dudley)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15921",
+  "name": "The All Saints Collegiate MAC (South Stoke)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15922",
+  "name": "The Newman Collegiate MAC (North Stoke)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15924",
+  "name": "Christ the King MAC (North Staffordshire)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15926",
+  "name": "Pope Francis MAC (North Oxfordshire)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15927",
+  "name": "Pope John 23rd MAC (Wolverhampton)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15928",
+  "name": "St Catherine of Sienna MAC (South Sandwell)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15931",
+  "name": "The Bishop Cleary MAC (Wolverhampton)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15965",
+  "name": "Cheshire College South & West",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15982",
+  "name": "Ignite Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15983",
+  "name": "Humberstone Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "15990",
+  "name": "The FennWood Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16047",
+  "name": "The Holy Trinity MAC (South Staffordshire)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16065",
+  "name": "Comenius Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16113",
+  "name": "Leading Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16129",
+  "name": "Transforming Futures Multi Academy Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16130",
+  "name": "Berkshire Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16131",
+  "name": "Plym Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16185",
+  "name": "Camborne Science & International Academy",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16190",
+  "name": "Venture Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16196",
+  "name": "QEGSMAT",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16206",
+  "name": "Bishop Ramsey CE School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16209",
+  "name": "Grove Park Academies",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16211",
+  "name": "Be The Change MAT",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16213",
+  "name": "Romero Catholic Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16214",
+  "name": "GFM Education",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16222",
+  "name": "South Staffordshire College",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16223",
+  "name": "The Seckford Foundation Free Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16227",
+  "name": "Surrey Heath Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16236",
+  "name": "Winterhill School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16242",
+  "name": "Richmond West Schools Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16274",
+  "name": "Education Excellence 4 All (EE4A)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16304",
+  "name": "Lakes Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16364",
+  "name": "Sapientia Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16403",
+  "name": "Wren Academy",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16404",
+  "name": "The Altius Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16405",
+  "name": "Teesside Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16406",
+  "name": "The Northworthy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16421",
+  "name": "Shine Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16440",
+  "name": "Diocese of Edmndsbury and Ipswich Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16449",
+  "name": "Apollo Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16450",
+  "name": "Aim High Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16452",
+  "name": "Cockburn Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16456",
+  "name": "Southgate School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16458",
+  "name": "The Learning for Life Partnership",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16475",
+  "name": "East Dacorum Co-operative Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "16480",
+  "name": "The Redhill Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16491",
+  "name": "Sheffield South East Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16504",
+  "name": "Reach South Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16531",
+  "name": "Nurture Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16565",
+  "name": "FUSION Community Learning Trust",
+  "source_type": "Trust",
+  "status": "Open",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "16585",
+  "name": "Corvus Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16597",
+  "name": "Interaction and Communication Academy Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16601",
+  "name": "Sola Fide C of E Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16651",
+  "name": "Stour Valley Educational Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16667",
+  "name": "Inspiring Futures Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16698",
+  "name": "Christ Church CofE (Aided) Primary School",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16710",
+  "name": "Bonitas Multi Academy Trust Limited",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16729",
+  "name": "AspirePlus Educational Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16793",
+  "name": "Herts & Essex Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16809",
+  "name": "The Learning Village Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16831",
+  "name": "Cambridge Academic Partnership",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16851",
+  "name": "Oval Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16852",
+  "name": "The Pathway Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16866",
+  "name": "Cambridgeshire Educational Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16876",
+  "name": "Southern Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16884",
+  "name": "Diversa Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16924",
+  "name": "The Thrive Partnership Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16937",
+  "name": "The Yare Education Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16944",
+  "name": "Gatehouse Green Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "16947",
+  "name": "Greater Nottingham Education Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17017",
+  "name": "South Warwickshire Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17020",
+  "name": "Atlas Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17078",
+  "name": "Roch Valley Church of England Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17099",
+  "name": "Salisbury Plain Academies",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17152",
+  "name": "Acer Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17160",
+  "name": "Believe Engage Succeed Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17176",
+  "name": "Leading Edge Academies Partnership (LEAP)",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17182",
+  "name": "Stoke Special Schools Trust",
+  "source_type": "Trust",
+  "status": "Closed",
+  "reason": "Shared foundation trust with no members — needs checking"
+ },
+ {
+  "uid": "17209",
+  "name": "Peak Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17211",
+  "name": "Sherborne Area Schools' Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17223",
+  "name": "Achievement for All Education Trust (AfA-ET)",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17228",
+  "name": "Bredon Hill Middle School",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17230",
+  "name": "Congleton Multi-Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17244",
+  "name": "Eko Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17249",
+  "name": "Inspired Learning Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17256",
+  "name": "Norbury Manor Business and Enterprise College for Girls",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17262",
+  "name": "SaGe MAT",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17263",
+  "name": "Coast and Vale Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17264",
+  "name": "SENDAT",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17275",
+  "name": "The Vector Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17318",
+  "name": "Areté Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17363",
+  "name": "The Sandon Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17364",
+  "name": "The LETTA Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "Academies span more than one trust — separate sponsoring body"
+ },
+ {
+  "uid": "17365",
+  "name": "Yorkshire Endeavour Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17375",
+  "name": "Greater Manchester Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17394",
+  "name": "Partners In Learning Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17420",
+  "name": "The Four Stones Multi Academy Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17421",
+  "name": "Brooksby Melton College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17437",
+  "name": "Haig Oundjian",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17451",
+  "name": "Falcon Education Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17497",
+  "name": "The Ryedale Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17509",
+  "name": "The Shared Learning Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17535",
+  "name": "Newbury College",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17572",
+  "name": "Aces Academies Trust",
+  "source_type": "School sponsor",
+  "status": "Closed",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17583",
+  "name": "The Queensmill Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ },
+ {
+  "uid": "17700",
+  "name": "The Prospect Trust",
+  "source_type": "School sponsor",
+  "status": "Open",
+  "reason": "No members — cannot match to a trust"
+ }
+]
