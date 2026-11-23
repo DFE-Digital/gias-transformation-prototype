@@ -52,11 +52,26 @@
 
 {# The fixed sample file for the chosen format, so people can re-download and
    review the column headers and layout without replaying the journey. #}
+{# Which sample to serve: one per kind of data (providers, groups, governance)
+   in each format. When more than one kind is ticked, providers come first,
+   then groups, then governance. #}
+{% set pSel = (((data['provider-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set gSel = (((data['provider-group-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set vSel = (((data['governance-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set sampleKind = "providers" %}
+{% if data['download-scope'] == "specific" and not pSel %}
+  {% if gSel %}{% set sampleKind = "groups" %}{% elif vSel %}{% set sampleKind = "governance" %}{% endif %}
+{% endif %}
+{% set sampleBase = {
+  "providers": "/public/downloads/sample",
+  "groups": "/public/downloads/sample-groups",
+  "governance": "/public/downloads/sample-governance"
+}[sampleKind] %}
 {% set sampleFile = {
-  "csv": "/public/downloads/sample.csv",
-  "json": "/public/downloads/sample.json",
-  "xlsx": "/public/downloads/sample.xlsx"
-}[data['download-format']] or "/public/downloads/sample.csv" %}
+  "csv": sampleBase + ".csv",
+  "json": sampleBase + ".json",
+  "xlsx": sampleBase + ".xlsx"
+}[data['download-format']] or (sampleBase + ".csv") %}
 
 {#********************#}
 {# Build summary rows. Version row only included if user chose a version #}

@@ -6,8 +6,16 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 const giasData = require('./data/gias_prototype.json')
-const predecessorsData = require('./data/predecessors.json')
+// Official GIAS predecessor and successor links, from links_edubasealldata.
+const linksData = require('./data/links.json')
 const governanceData = require('./data/governance.json')
+// Government office region (GOR), keyed by URN, from the GIAS extract of 26 March 2026.
+// Providers missing from that extract get 'Not recorded'.
+const regionByUrn = require('./data/regions.json')
+// Attach each provider's region. Groups have no region of their own.
+giasData.forEach(function (x) {
+  if (x.id_type === 'URN') x.region = regionByUrn[x.id] || 'Not recorded'
+})
 
 // ---------------------------------------------------------------------------
 // DOWNLOAD
@@ -24,19 +32,83 @@ router.post('/download/start', function (req, res) {
 
 const RESULTS_PER_PAGE = 20
 
-// Build a set of closed establishment IDs that have been matched as predecessors.
-// (Retained only for the establishment History tab; no longer used to filter search.)
-const matchedPredecessorIds = new Set()
-Object.values(predecessorsData).forEach(function (preds) {
-  preds.forEach(function (p) {
-    matchedPredecessorIds.add(p.id)
-  })
-})
+// Facet counters. Each filter with a list of options has one. They run over
+// records to count how many have each value, and they run twice: once over the
+// whole register (the full list of options, so none ever disappears) and once
+// per search (how many results each option would return, with every other
+// search term and filter applied).
+function inc (bag, key) { bag[key] = (bag[key] || 0) + 1 }
+function incOrNotRecorded (bag, key) {
+  if (key === null || key === undefined || key === '') key = 'Not recorded'
+  inc(bag, key)
+}
+const FACET_COUNTERS = {
+  region: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.region) },
+  status: function (i, b) { if (i.status) inc(b, i.status) },
+  type: function (i, b) {
+    if (i.id_type === 'URN' && i.type_group) {
+      inc(b.groups, i.type_group)
+      if (i.type_detail) {
+        if (!b.details[i.type_group]) b.details[i.type_group] = {}
+        inc(b.details[i.type_group], i.type_detail)
+      }
+    }
+  },
+  group_type: function (i, b) { if ((i.id_type === 'UID' || i.id_type === 'Group UID') && i.type) inc(b, i.type) },
+  phase: function (i, b) { if (i.phase) inc(b, i.phase) },
+  gender: function (i, b) { if (i.gender) inc(b, i.gender) },
+  religious_character: function (i, b) { if (i.religious_character) inc(b, i.religious_character) },
+  religious_ethos: function (i, b) { if (i.religious_ethos) inc(b, i.religious_ethos) },
+  section_41: function (i, b) { if (i.section_41) inc(b, i.section_41) },
+  boarding: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.boarding) },
+  nursery_provision: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.nursery_provision) },
+  sixth_form: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.sixth_form) },
+  admissions_policy: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.admissions_policy) },
+  special_classes: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.special_classes) },
+  resourced_provision: function (i, b) { if (i.id_type === 'URN') incOrNotRecorded(b, i.resourced_provision) },
+  fe_type: function (i, b) { if (i.id_type === 'URN' && i.fe_type) inc(b, i.fe_type) },
+  sen_type: function (i, b) {
+    if (i.id_type !== 'URN') return
+    // sen_types is an array: a record counts under each type it has, or once
+    // as "Not recorded" when it has none.
+    var t = i.sen_types || []
+    if (t.length === 0) inc(b, 'Not recorded')
+    else t.forEach(function (x) { inc(b, x) })
+  }
+}
+const FACET_KEYS = Object.keys(FACET_COUNTERS)
+function newFacetBag (key) { return key === 'type' ? { groups: {}, details: {} } : {} }
+const FACET_UNIVERSE = {}
+FACET_KEYS.forEach(function (k) { FACET_UNIVERSE[k] = newFacetBag(k) })
+giasData.forEach(function (i) { FACET_KEYS.forEach(function (k) { FACET_COUNTERS[k](i, FACET_UNIVERSE[k]) }) })
+
+// Every option the register has for a facet, at zero, overlaid with the counts.
+function withZeros (universeBag, bag) {
+  var out = {}
+  Object.keys(universeBag).forEach(function (k) { out[k] = 0 })
+  Object.keys(bag).forEach(function (k) { out[k] = bag[k] })
+  return out
+}
+// An option with no matches stays in the list as a greyed-out, disabled
+// checkbox, unless it is ticked (so it can still be unticked). The suffix means
+// the state is not carried by the faded styling alone.
+function unavailableOption (o) {
+  return {
+    value: o.value,
+    text: o.text + ' (no matches)',
+    disabled: true
+  }
+}
+function finishOptions (options, counts) {
+  return options.map(function (o) { return (o.checked || counts[o.value] > 0) ? o : unavailableOption(o) })
+}
 
 // Search runs against the full dataset (open and closed). Whether closed
 // records appear is controlled at request time by the "Show open providers
 // only" toggle and the Status filter — not by pre-splitting the data.
 const allData = giasData
+const urnIndex = new Map()
+giasData.forEach(function (x) { if (x.id_type === 'URN') urnIndex.set(x.id, x) })
 
 // A provider's `part_of` is a list of groups (or null), since a school can
 // belong to more than one — e.g. a federation and a shared foundation trust.
@@ -96,6 +168,7 @@ var CSV_COLUMNS = [
   ['Operating status', function (x) { return x.status }],
   ['Open date', function (x) { return isoDate(x.open_date) }],
   ['Closed date', function (x) { return isoDate(x.close_date) }],
+  ['Region', function (x) { return x.region }],
   ['Local authority', function (x) { return x.local_authority }],
   ['Phase of education', function (x) { return x.phase }],
   ['Street', function (x) { return x.street }],
@@ -202,6 +275,7 @@ router.get('/results', function (req, res) {
   var activeGroupTypes = [].concat(req.query.group_type || []).filter(function (v) { return v !== '_unchecked' })
   var activeLAs = [].concat(req.query.local_authority || []).filter(function (v) { return v !== '_unchecked' })
   var activeSen = [].concat(req.query.sen_provision || []).filter(function (v) { return v !== '_unchecked' })
+  var activeRegions = [].concat(req.query.region || []).filter(function (v) { return v !== '_unchecked' })
   var activePhases = [].concat(req.query.phase || []).filter(function (v) { return v !== '_unchecked' })
   var activeGenders = [].concat(req.query.gender || []).filter(function (v) { return v !== '_unchecked' })
   var activeReligions = [].concat(req.query.religious_character || []).filter(function (v) { return v !== '_unchecked' })
@@ -310,117 +384,45 @@ router.get('/results', function (req, res) {
     })
   }
 
-  // Calculate counts from full search results (before filtering)
-  var typeCounts = {}
-  var statusCounts = {}
-  var laCounts = {}
-  var senCounts = { 'true': 0, 'false': 0 }
-  var phaseCounts = {}
-  var genderCounts = {}
-  var religionCounts = {}
-  var ethosCounts = {}
-  var dioceseCounts = {}
-  var section41Counts = {}
-  var boardingCounts = {}
-  var nurseryCounts = {}
-  var sixthFormCounts = {}
-  var admissionsCounts = {}
-  var specialClassesCounts = {}
-  var senTypeCounts = {}
-  var feTypeCounts = {}
-  var resourcedCounts = {}
-  var typeGroupCounts = {}
-  var typeDetailCounts = {}
-  var groupTypeCounts = {}
-
-  // Count a value, treating null/empty as "Not recorded" so the filter can
-  // offer that as an explicit option.
-  function bump (obj, key) {
-    if (key === null || key === undefined || key === '') key = 'Not recorded'
-    obj[key] = (obj[key] || 0) + 1
+  // Which filters does a record fail? An empty list means it is a result.
+  // A record that fails only one filter still counts towards that filter's own
+  // options, so each filter shows what ticking it would return given every
+  // other search term and filter.
+  function catMatch (active, value) {
+    if (active.length === 0) return true
+    if (active.indexOf('Not recorded') !== -1 && (value === null || value === undefined || value === '')) return true
+    return active.indexOf(value) !== -1
   }
-
-  searchResults.forEach(function (item) {
-    if (item.type) typeCounts[item.type] = (typeCounts[item.type] || 0) + 1
-    if (item.status) statusCounts[item.status] = (statusCounts[item.status] || 0) + 1
-    if (item.local_authority) laCounts[item.local_authority] = (laCounts[item.local_authority] || 0) + 1
-    var senKey = item.sen_provision ? 'true' : 'false'
-    senCounts[senKey]++
-    if (item.phase) phaseCounts[item.phase] = (phaseCounts[item.phase] || 0) + 1
-    if (item.gender) genderCounts[item.gender] = (genderCounts[item.gender] || 0) + 1
-    if (item.religious_character) religionCounts[item.religious_character] = (religionCounts[item.religious_character] || 0) + 1
-    if (item.religious_ethos) ethosCounts[item.religious_ethos] = (ethosCounts[item.religious_ethos] || 0) + 1
-    if (item.diocese) dioceseCounts[item.diocese] = (dioceseCounts[item.diocese] || 0) + 1
-    if (item.section_41) section41Counts[item.section_41] = (section41Counts[item.section_41] || 0) + 1
-    // Group-only facet: group type (e.g. "Trust: Multi-academy", "Federation").
-    if (item.id_type === 'UID' || item.id_type === 'Group UID') {
-      if (item.type) groupTypeCounts[item.type] = (groupTypeCounts[item.type] || 0) + 1
-    }
-    // Provider-only facets
-    if (item.id_type === 'URN') {
-      bump(boardingCounts, item.boarding)
-      bump(nurseryCounts, item.nursery_provision)
-      bump(sixthFormCounts, item.sixth_form)
-      bump(admissionsCounts, item.admissions_policy)
-      bump(specialClassesCounts, item.special_classes)
-      bump(resourcedCounts, item.resourced_provision)
-      if (item.fe_type) feTypeCounts[item.fe_type] = (feTypeCounts[item.fe_type] || 0) + 1
-      if (item.type_group) {
-        typeGroupCounts[item.type_group] = (typeGroupCounts[item.type_group] || 0) + 1
-        if (!typeDetailCounts[item.type_group]) typeDetailCounts[item.type_group] = {}
-        if (item.type_detail) {
-          typeDetailCounts[item.type_group][item.type_detail] = (typeDetailCounts[item.type_group][item.type_detail] || 0) + 1
-        }
-      }
-      // sen_types is an array — a record can contribute to several options.
-      // An empty array counts once as "Not recorded".
-      var senTypes = item.sen_types || []
-      if (senTypes.length === 0) {
-        senTypeCounts['Not recorded'] = (senTypeCounts['Not recorded'] || 0) + 1
-      } else {
-        senTypes.forEach(function (t) {
-          senTypeCounts[t] = (senTypeCounts[t] || 0) + 1
-        })
-      }
-    }
-  })
-
-  // Apply filters
-  var filteredResults = searchResults.filter(function (item) {
+  function failures (item) {
+    var f = []
     // Record kind: provider = URN, group = UID / Group UID.
-    if (kind === 'provider' && item.id_type !== 'URN') return false
-    if (kind === 'group' && item.id_type !== 'UID' && item.id_type !== 'Group UID') return false
+    if (kind === 'provider' && item.id_type !== 'URN') f.push('kind')
+    if (kind === 'group' && item.id_type !== 'UID' && item.id_type !== 'Group UID') f.push('kind')
     // Operating status: the effective selection (the open statuses by default,
     // none when "Include closed" is ticked or every status has been removed).
-    if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) return false
+    if (activeStatuses.length > 0 && activeStatuses.indexOf(item.status) === -1) f.push('status')
     // Provider type accordion filters on the detailed type (child checkboxes).
-    if (activeTypes.length > 0 && activeTypes.indexOf(item.type_detail) === -1) return false
+    if (activeTypes.length > 0 && activeTypes.indexOf(item.type_detail) === -1) f.push('type')
     // Group type filters on a group's type; providers have no group type so a
     // group-type selection excludes them (mirrors the provider-type facet).
-    if (activeGroupTypes.length > 0 && activeGroupTypes.indexOf(item.type) === -1) return false
-    if (activeLAs.length > 0 && activeLAs.indexOf(item.local_authority) === -1) return false
-    if (activeSen.length > 0 && activeSen.indexOf(String(item.sen_provision)) === -1) return false
-    if (activePhases.length > 0 && activePhases.indexOf(item.phase) === -1) return false
-    if (activeGenders.length > 0 && activeGenders.indexOf(item.gender) === -1) return false
-    if (activeReligions.length > 0 && activeReligions.indexOf(item.religious_character) === -1) return false
-    if (activeEthos.length > 0 && activeEthos.indexOf(item.religious_ethos) === -1) return false
-    if (activeDioceses.length > 0 && activeDioceses.indexOf(item.diocese) === -1) return false
-    if (activeSection41.length > 0 && activeSection41.indexOf(item.section_41) === -1) return false
-
-    // New categorical filters. "Not recorded" option matches null/empty fields.
-    function catMatch (active, value) {
-      if (active.length === 0) return true
-      if (active.indexOf('Not recorded') !== -1 && (value === null || value === undefined || value === '')) return true
-      return active.indexOf(value) !== -1
-    }
-    if (!catMatch(activeBoarding, item.boarding)) return false
-    if (!catMatch(activeNursery, item.nursery_provision)) return false
-    if (!catMatch(activeSixthForm, item.sixth_form)) return false
-    if (!catMatch(activeAdmissions, item.admissions_policy)) return false
-    if (!catMatch(activeSpecialClasses, item.special_classes)) return false
-    if (!catMatch(activeFeTypes, item.fe_type)) return false
-    if (!catMatch(activeResourced, item.resourced_provision)) return false
-
+    if (activeGroupTypes.length > 0 && activeGroupTypes.indexOf(item.type) === -1) f.push('group_type')
+    if (activeLAs.length > 0 && activeLAs.indexOf(item.local_authority) === -1) f.push('local_authority')
+    if (activeSen.length > 0 && activeSen.indexOf(String(item.sen_provision)) === -1) f.push('sen')
+    if (activeRegions.length > 0 && activeRegions.indexOf(item.region) === -1) f.push('region')
+    if (activePhases.length > 0 && activePhases.indexOf(item.phase) === -1) f.push('phase')
+    if (activeGenders.length > 0 && activeGenders.indexOf(item.gender) === -1) f.push('gender')
+    if (activeReligions.length > 0 && activeReligions.indexOf(item.religious_character) === -1) f.push('religious_character')
+    if (activeEthos.length > 0 && activeEthos.indexOf(item.religious_ethos) === -1) f.push('religious_ethos')
+    if (activeDioceses.length > 0 && activeDioceses.indexOf(item.diocese) === -1) f.push('diocese')
+    if (activeSection41.length > 0 && activeSection41.indexOf(item.section_41) === -1) f.push('section_41')
+    // "Not recorded" matches null/empty fields.
+    if (!catMatch(activeBoarding, item.boarding)) f.push('boarding')
+    if (!catMatch(activeNursery, item.nursery_provision)) f.push('nursery_provision')
+    if (!catMatch(activeSixthForm, item.sixth_form)) f.push('sixth_form')
+    if (!catMatch(activeAdmissions, item.admissions_policy)) f.push('admissions_policy')
+    if (!catMatch(activeSpecialClasses, item.special_classes)) f.push('special_classes')
+    if (!catMatch(activeFeTypes, item.fe_type)) f.push('fe_type')
+    if (!catMatch(activeResourced, item.resourced_provision)) f.push('resourced_provision')
     // SEN type: item.sen_types is an array; match if any active type is present.
     if (activeSenTypes.length > 0) {
       var st = item.sen_types || []
@@ -428,17 +430,99 @@ router.get('/results', function (req, res) {
         if (t === 'Not recorded') return st.length === 0 || st.indexOf('Not recorded') !== -1
         return st.indexOf(t) !== -1
       })
-      if (!hit) return false
+      if (!hit) f.push('sen_type')
     }
-
     // Age range: item covers ages age_low..age_high. Overlap test with From/To.
-    if (ageFrom !== null && item.age_high !== null && item.age_high !== undefined && item.age_high < ageFrom) return false
-    if (ageTo !== null && item.age_low !== null && item.age_low !== undefined && item.age_low > ageTo) return false
-
+    if (ageFrom !== null && item.age_high !== null && item.age_high !== undefined && item.age_high < ageFrom) f.push('age')
+    if (ageTo !== null && item.age_low !== null && item.age_low !== undefined && item.age_low > ageTo) f.push('age')
     // Date ranges (open_date / close_date are day-first strings)
-    if (!dateInRange(item.open_date, openFrom, openTo)) return false
-    if (!dateInRange(item.close_date, closeFrom, closeTo)) return false
-    return true
+    if (!dateInRange(item.open_date, openFrom, openTo)) f.push('open_date')
+    if (!dateInRange(item.close_date, closeFrom, closeTo)) f.push('close_date')
+    return f
+  }
+
+  var facetBags = {}
+  FACET_KEYS.forEach(function (k) { facetBags[k] = newFacetBag(k) })
+  var laCounts = {}
+  var dioceseCounts = {}
+  var typeCounts = {}
+  var filteredResults = []
+    // Results per record kind under the search and every filter except the kind itself, for the record type links.
+  var kindCounts = { all: 0, provider: 0, group: 0 }
+  searchResults.forEach(function (item) {
+    if (item.local_authority) inc(laCounts, item.local_authority)
+    if (item.diocese) inc(dioceseCounts, item.diocese)
+    var f = failures(item)
+      if (f.filter(function (k) { return k !== 'kind' }).length === 0) {
+      kindCounts.all++
+      kindCounts[item.id_type === 'URN' ? 'provider' : 'group']++
+    }
+    if (f.length === 0) {
+      filteredResults.push(item)
+      if (item.type) inc(typeCounts, item.type)
+    }
+    FACET_KEYS.forEach(function (k) {
+      if (f.length === 0 || (f.length === 1 && f[0] === k)) FACET_COUNTERS[k](item, facetBags[k])
+    })
+  })
+
+  // Counts per option, with every option the register has listed (at zero).
+  var statusCounts = withZeros(FACET_UNIVERSE.status, facetBags.status)
+  var groupTypeCounts = withZeros(FACET_UNIVERSE.group_type, facetBags.group_type)
+  var regionCounts = withZeros(FACET_UNIVERSE.region, facetBags.region)
+  var phaseCounts = withZeros(FACET_UNIVERSE.phase, facetBags.phase)
+  var genderCounts = withZeros(FACET_UNIVERSE.gender, facetBags.gender)
+  var religionCounts = withZeros(FACET_UNIVERSE.religious_character, facetBags.religious_character)
+  var ethosCounts = withZeros(FACET_UNIVERSE.religious_ethos, facetBags.religious_ethos)
+  var section41Counts = withZeros(FACET_UNIVERSE.section_41, facetBags.section_41)
+  var boardingCounts = withZeros(FACET_UNIVERSE.boarding, facetBags.boarding)
+  var nurseryCounts = withZeros(FACET_UNIVERSE.nursery_provision, facetBags.nursery_provision)
+  var sixthFormCounts = withZeros(FACET_UNIVERSE.sixth_form, facetBags.sixth_form)
+  var admissionsCounts = withZeros(FACET_UNIVERSE.admissions_policy, facetBags.admissions_policy)
+  var specialClassesCounts = withZeros(FACET_UNIVERSE.special_classes, facetBags.special_classes)
+  var resourcedCounts = withZeros(FACET_UNIVERSE.resourced_provision, facetBags.resourced_provision)
+  var feTypeCounts = withZeros(FACET_UNIVERSE.fe_type, facetBags.fe_type)
+  var senTypeCounts = withZeros(FACET_UNIVERSE.sen_type, facetBags.sen_type)
+  // Provider type: groups and their types, flattened for the unticking check.
+  var typeGroupCounts = withZeros(FACET_UNIVERSE.type.groups, facetBags.type.groups)
+  var typeDetailCounts = {}
+  var typeDetailFlat = {}
+  Object.keys(FACET_UNIVERSE.type.details).forEach(function (g) {
+    typeDetailCounts[g] = withZeros(FACET_UNIVERSE.type.details[g], facetBags.type.details[g] || {})
+    Object.keys(typeDetailCounts[g]).forEach(function (c) { typeDetailFlat[c] = typeDetailCounts[g][c] })
+  })
+
+  // A ticked option with no matches is unticked, as long as another ticked
+  // option in the same filter does have matches: the results do not change, and
+  // the filter tags and links stay honest. If nothing ticked in a filter has
+  // matches the selection stays, because unticking would widen an empty search
+  // into different results.
+  ;[
+    ['status', function () { return activeStatuses }, function (v) { activeStatuses = v }, statusCounts],
+    ['type', function () { return activeTypes }, function (v) { activeTypes = v }, typeDetailFlat],
+    ['group_type', function () { return activeGroupTypes }, function (v) { activeGroupTypes = v }, groupTypeCounts],
+    ['region', function () { return activeRegions }, function (v) { activeRegions = v }, regionCounts],
+    ['phase', function () { return activePhases }, function (v) { activePhases = v }, phaseCounts],
+    ['gender', function () { return activeGenders }, function (v) { activeGenders = v }, genderCounts],
+    ['religious_character', function () { return activeReligions }, function (v) { activeReligions = v }, religionCounts],
+    ['religious_ethos', function () { return activeEthos }, function (v) { activeEthos = v }, ethosCounts],
+    ['section_41', function () { return activeSection41 }, function (v) { activeSection41 = v }, section41Counts],
+    ['boarding', function () { return activeBoarding }, function (v) { activeBoarding = v }, boardingCounts],
+    ['nursery_provision', function () { return activeNursery }, function (v) { activeNursery = v }, nurseryCounts],
+    ['sixth_form', function () { return activeSixthForm }, function (v) { activeSixthForm = v }, sixthFormCounts],
+    ['admissions_policy', function () { return activeAdmissions }, function (v) { activeAdmissions = v }, admissionsCounts],
+    ['special_classes', function () { return activeSpecialClasses }, function (v) { activeSpecialClasses = v }, specialClassesCounts],
+    ['resourced_provision', function () { return activeResourced }, function (v) { activeResourced = v }, resourcedCounts],
+    ['fe_type', function () { return activeFeTypes }, function (v) { activeFeTypes = v }, feTypeCounts],
+    ['sen_type', function () { return activeSenTypes }, function (v) { activeSenTypes = v }, senTypeCounts]
+  ].forEach(function (f) {
+    var active = f[1]()
+    var hasMatches = function (v) { return (f[3][v] || 0) > 0 }
+    if (active.some(hasMatches) && !active.every(hasMatches)) {
+      var kept = active.filter(hasMatches)
+      f[2](kept)
+      effQuery[f[0]] = kept.slice()
+    }
   })
 
   // Sort by name (A–Z or Z–A)
@@ -461,7 +545,7 @@ router.get('/results', function (req, res) {
   var NON_FILTER_KEYS = ['what', 'where', 'id', 'kind', 'include_closed', 'sort', 'page']
   var appliedFilterKeys = Object.keys(req.query).filter(function (k) { return NON_FILTER_KEYS.indexOf(k) === -1 })
   if (totalResults === 1 && appliedFilterKeys.length === 0 && (hasQ || hasWhere || exactId)) {
-    return res.redirect('/establishment/' + encodeURIComponent(filteredResults[0].id) + '?from=' + encodeURIComponent('/search'))
+    return res.redirect('/establishment/' + encodeURIComponent(filteredResults[0].id) + '?from=' + encodeURIComponent('/home'))
   }
   var totalPages = Math.ceil(totalResults / RESULTS_PER_PAGE) || 1
 
@@ -533,13 +617,12 @@ router.get('/results', function (req, res) {
     }
   })
 
-  var statusOptions = Object.keys(statusCounts).sort().map(function (status) {
-    return {
-      value: status,
-      text: status,
-      checked: activeStatuses.indexOf(status) !== -1
-    }
-  })
+  // All the statuses are always listed, in a fixed order.
+  var STATUS_ORDER = ['Open', 'Closed', 'Proposed to open', 'Open, but proposed to close']
+  Object.keys(statusCounts).forEach(function (st) { if (STATUS_ORDER.indexOf(st) === -1) STATUS_ORDER.push(st) })
+  var statusOptions = finishOptions(STATUS_ORDER.map(function (status) {
+    return { value: status, text: status, checked: activeStatuses.indexOf(status) !== -1 }
+  }), statusCounts)
 
   var groupTypeOptions = Object.keys(groupTypeCounts).sort().map(function (type) {
     return {
@@ -548,6 +631,7 @@ router.get('/results', function (req, res) {
       checked: activeGroupTypes.indexOf(type) !== -1
     }
   })
+  groupTypeOptions = finishOptions(groupTypeOptions, groupTypeCounts)
 
   // Whether the *displayed* results contain providers and/or groups. Based on
   // the filtered set (after kind and the Group type facet are applied), not the
@@ -555,8 +639,11 @@ router.get('/results', function (req, res) {
   // provider facets and leaves only Group type. The filter sidebar shows
   // provider facets only when providers are present, and the Group type facet
   // only when groups are present.
-  var hasProviders = filteredResults.some(function (x) { return x.id_type === 'URN' })
-  var hasGroups = filteredResults.some(function (x) { return x.id_type === 'UID' || x.id_type === 'Group UID' })
+  // When the filters leave no results, fall back to the search results so the
+  // filters stay on the page and can be changed or unticked.
+  var facetBasis = filteredResults.length > 0 ? filteredResults : searchResults
+  var hasProviders = facetBasis.some(function (x) { return x.id_type === 'URN' })
+  var hasGroups = facetBasis.some(function (x) { return x.id_type === 'UID' || x.id_type === 'Group UID' })
 
   var laOptions = Object.keys(laCounts).sort().map(function (la) {
     return {
@@ -590,6 +677,10 @@ router.get('/results', function (req, res) {
   }
 
   var phaseOptions = buildOptions(phaseCounts, activePhases)
+  // Regions run north to south rather than A to Z, with Wales and the
+  // non-regional values last.
+  var regionLabels = { 'Not recorded': 'No region recorded' }
+  var regionOptions = buildOptions(regionCounts, activeRegions)
   var genderOptions = buildOptions(genderCounts, activeGenders)
   var religionOptions = buildOptions(religionCounts, activeReligions)
   var ethosOptions = buildOptions(ethosCounts, activeEthos)
@@ -607,7 +698,7 @@ router.get('/results', function (req, res) {
     var out = []
     function label (val) { return labels[val] || val }
     order.forEach(function (val) {
-      if (counts[val]) {
+      if (Object.prototype.hasOwnProperty.call(counts, val)) {
         out.push({ value: val, text: label(val), checked: active.indexOf(val) !== -1 })
         seen[val] = true
       }
@@ -674,40 +765,26 @@ router.get('/results', function (req, res) {
     'Online provider'
   ]
   var providerTypeGroups = []
-  typeGroupOrder.forEach(function (groupName) {
-    if (!typeGroupCounts[groupName]) return
-    var childCounts = typeDetailCounts[groupName] || {}
-    var children = Object.keys(childCounts).sort().map(function (child) {
-      return {
-        value: child,
-        text: child,
-        checked: activeTypes.indexOf(child) !== -1
-      }
-    })
-    if (children.length === 0) return
-    providerTypeGroups.push({
-      name: groupName,
-      count: typeGroupCounts[groupName],
-      children: children,
-      anyChecked: children.some(function (c) { return c.checked }),
-      allChecked: children.every(function (c) { return c.checked })
-    })
-  })
   // Any group present in the data but missing from the order list is appended,
-  // so a new GIAS group can never silently vanish from the filter.
-  Object.keys(typeGroupCounts).sort().forEach(function (groupName) {
-    if (typeGroupOrder.indexOf(groupName) !== -1) return
+  // so a new GIAS group can never silently vanish from the filter. A group with
+  // no matching types is shown as plain text; within a group, a type with no
+  // matches is plain text with no checkbox (unless it is ticked).
+  var allGroupNames = typeGroupOrder.filter(function (g) { return typeGroupCounts[g] !== undefined })
+  Object.keys(typeGroupCounts).sort().forEach(function (g) { if (allGroupNames.indexOf(g) === -1) allGroupNames.push(g) })
+  allGroupNames.forEach(function (groupName) {
     var childCounts = typeDetailCounts[groupName] || {}
-    var children = Object.keys(childCounts).sort().map(function (child) {
+    var children = finishOptions(Object.keys(childCounts).sort().map(function (child) {
       return { value: child, text: child, checked: activeTypes.indexOf(child) !== -1 }
-    })
+    }), childCounts)
     if (children.length === 0) return
+    var live = children.filter(function (c) { return !c.disabled })
     providerTypeGroups.push({
       name: groupName,
       count: typeGroupCounts[groupName],
       children: children,
-      anyChecked: children.some(function (c) { return c.checked }),
-      allChecked: children.every(function (c) { return c.checked })
+      unavailable: live.length === 0,
+      anyChecked: live.some(function (c) { return c.checked }),
+      allChecked: live.length > 0 && live.every(function (c) { return c.checked })
     })
   })
 
@@ -728,6 +805,36 @@ router.get('/results', function (req, res) {
     'Not applicable',
     'Not recorded'
   ], senTypeLabels)
+
+  regionOptions = orderedOptions(regionCounts, activeRegions, [
+    'North East',
+    'North West',
+    'Yorkshire and the Humber',
+    'East Midlands',
+    'West Midlands',
+    'East of England',
+    'London',
+    'South East',
+    'South West',
+    'Wales',
+    'Not applicable',
+    'Not recorded'
+  ], regionLabels)
+
+  regionOptions = finishOptions(regionOptions, regionCounts)
+  phaseOptions = finishOptions(phaseOptions, phaseCounts)
+  genderOptions = finishOptions(genderOptions, genderCounts)
+  religionOptions = finishOptions(religionOptions, religionCounts)
+  ethosOptions = finishOptions(ethosOptions, ethosCounts)
+  section41Options = finishOptions(section41Options, section41Counts)
+  boardingOptions = finishOptions(boardingOptions, boardingCounts)
+  nurseryOptions = finishOptions(nurseryOptions, nurseryCounts)
+  sixthFormOptions = finishOptions(sixthFormOptions, sixthFormCounts)
+  admissionsOptions = finishOptions(admissionsOptions, admissionsCounts)
+  specialClassesOptions = finishOptions(specialClassesOptions, specialClassesCounts)
+  resourcedOptions = finishOptions(resourcedOptions, resourcedCounts)
+  feTypeOptions = finishOptions(feTypeOptions, feTypeCounts)
+  senTypeOptions = finishOptions(senTypeOptions, senTypeCounts)
 
   // Build selected filter tags
   var selectedCategories = []
@@ -787,6 +894,7 @@ router.get('/results', function (req, res) {
     }
   }
   tagCategory('Education group type', 'group_type', activeGroupTypes)
+  tagCategory('Region', 'region', activeRegions, regionLabels)
   tagCategory('Phase of education', 'phase', activePhases, phaseLabels)
   tagCategory('Gender', 'gender', activeGenders)
   tagCategory('Religious character', 'religious_character', activeReligions)
@@ -859,6 +967,7 @@ router.get('/results', function (req, res) {
     hasGroups: hasGroups,
     laOptions: laOptions,
     senOptions: senOptions,
+    regionOptions: regionOptions,
     phaseOptions: phaseOptions,
     genderOptions: genderOptions,
     religionOptions: religionOptions,
@@ -887,6 +996,14 @@ router.get('/results', function (req, res) {
     activeDioceses: activeDioceses,
     sortOrder: sortOrder,
     kind: kind,
+          // The record type links only help when both kinds have results. The one exception: viewing a kind with no results while the other has some, where hiding them would leave no way back.
+    showKindNav: (kindCounts.provider > 0 && kindCounts.group > 0) ||
+      (kind !== null && kindCounts.all > 0 && filteredResults.length === 0),
+    kindNavItems: [
+      { text: 'All search results', href: buildKindUrl(effReq, null), active: !kind },
+      { text: 'Education providers (' + kindCounts.provider.toLocaleString('en-GB') + ')', href: buildKindUrl(effReq, 'provider'), active: kind === 'provider' },
+      { text: 'Education provider groups (' + kindCounts.group.toLocaleString('en-GB') + ')', href: buildKindUrl(effReq, 'group'), active: kind === 'group' }
+    ],
     includeClosed: includeClosed,
     selectedCategories: selectedCategories,
     hasActiveFilters: hasActiveFilters,
@@ -950,8 +1067,15 @@ router.get('/establishment/:id', function (req, res) {
     })
   }
 
-  // Find any predecessor establishments
-  var predecessors = predecessorsData[id] || []
+  // Official predecessor and successor links (History tab)
+  // Each linked record's own closed date comes from the register.
+  var historyLinks = linksData[id] || { predecessors: [], successors: [], other: [] }
+  function withClosedDate (link) {
+    var rec = urnIndex.get(link.id)
+    return Object.assign({}, link, rec ? { status: rec.status, close_date: rec.close_date } : {})
+  }
+  var historyPredecessors = historyLinks.predecessors.map(withClosedDate)
+  var historySuccessors = historyLinks.successors.map(withClosedDate)
 
   // Governance record (governors for providers; trustees + members for groups)
   var governance = governanceData[id] || null
@@ -991,7 +1115,8 @@ router.get('/establishment/:id', function (req, res) {
     item: item,
     members: members,
     membersByPhase: membersByPhase,
-    predecessors: predecessors,
+    predecessors: historyPredecessors,
+    successors: historySuccessors,
     governance: governance,
     backLink: req.query.from || '/results'
   })
@@ -1126,6 +1251,20 @@ function buildDownloadUrl (req) {
     }).join('&')
   }).filter(Boolean).join('&')
   return '/results?' + qs
+}
+
+// The results URL with the record kind swapped, keeping the search and every
+// filter. Paging resets, because the result set changes.
+function buildKindUrl (req, kind) {
+  var parts = []
+  Object.keys(req.query).forEach(function (k) {
+    if (k === 'kind' || k === 'page') return
+    ;[].concat(req.query[k]).forEach(function (v) {
+      parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(v))
+    })
+  })
+  if (kind) parts.push('kind=' + kind)
+  return '/results' + (parts.length ? '?' + parts.join('&') : '')
 }
 
 function buildClearFiltersUrl (req) {

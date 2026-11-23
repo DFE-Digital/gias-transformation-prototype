@@ -9,17 +9,29 @@
   review the new column headers and layout — they are not generated from
   the user's selections.
 #}
+{# Which sample to serve: one per kind of data (providers, groups, governance)
+   in each format. When more than one kind is ticked, providers come first,
+   then groups, then governance. #}
+{% set pSel = (((data['provider-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set gSel = (((data['provider-group-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set vSel = (((data['governance-data'] or '') | string) | replace('_unchecked', '') | replace(',', '')) | trim %}
+{% set sampleKind = "providers" %}
+{% if data['download-scope'] == "specific" and not pSel %}
+  {% if gSel %}{% set sampleKind = "groups" %}{% elif vSel %}{% set sampleKind = "governance" %}{% endif %}
+{% endif %}
+{% set sampleBase = {
+  "providers": "/public/downloads/sample",
+  "groups": "/public/downloads/sample-groups",
+  "governance": "/public/downloads/sample-governance"
+}[sampleKind] %}
 {% set fmt = data['download-format'] or 'csv' %}
 {% set sampleFile = {
-  "csv": "/public/downloads/sample.csv",
-  "json": "/public/downloads/sample.json",
-  "xlsx": "/public/downloads/sample.xlsx"
-}[fmt] or "/public/downloads/sample.csv" %}
-{% set downloadName = {
-  "csv": "FEPI-Sample-2026_07_13.csv",
-  "json": "FEPI-Sample-2026_07_13.json",
-  "xlsx": "FEPI-Sample-2026_07_13.xlsx"
-}[fmt] or "FEPI-Sample-2026_07_13.csv" %}
+  "csv": sampleBase + ".csv",
+  "json": sampleBase + ".json",
+  "xlsx": sampleBase + ".xlsx"
+}[fmt] or (sampleBase + ".csv") %}
+{% set nameKind = {"providers": "", "groups": "-Groups", "governance": "-Governance"}[sampleKind] %}
+{% set downloadName = "FEPI-Sample" + nameKind + "-2026_07_13." + fmt %}
 
 {% block content %}
 

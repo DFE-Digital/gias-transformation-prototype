@@ -140,6 +140,47 @@ $govuk-font-family: 'Inter', sans-serif;
   }
 }
 
+// Home page search sits in a full-width band that runs flush from the masthead.
+// The box-shadow and clip-path stretch the background to the viewport edges
+// without causing horizontal scroll.
+.dfe-search-band {
+  padding-top: govuk-spacing(6);
+  padding-bottom: govuk-spacing(7);
+  background-color: govuk-colour("blue", $variant: "tint-80");
+  box-shadow: 0 0 0 100vmax govuk-colour("blue", $variant: "tint-80");
+  clip-path: inset(0 -100vmax);
+
+  // The default link blue is 3.9:1 on this tint, below WCAG AA (4.5:1).
+  // Shade-25 blue is 5.9:1.
+  .govuk-link:link,
+  .govuk-link:visited {
+    color: govuk-colour("blue", $variant: "shade-25");
+  }
+
+  .govuk-link:hover {
+    color: govuk-colour("blue", $variant: "shade-50");
+  }
+
+  .govuk-link:focus {
+    color: govuk-colour("black");
+  }
+}
+
+// Search panel without its own background or padding (the band provides both).
+.dfe-search-panel--flush {
+  padding: 0;
+  background-color: transparent;
+}
+
+// Smaller masthead type on the home page so the search and download headings lead.
+.x-govuk-masthead .dfe-masthead__title--l {
+  @include govuk-font($size: 36, $weight: "bold");
+}
+
+.x-govuk-masthead .dfe-masthead__description--s {
+  @include govuk-font($size: 19);
+}
+
 // Checkbox left, Search button right, on one row.
 .dfe-search-panel__actions {
   display: flex;
@@ -192,23 +233,90 @@ $govuk-font-family: 'Inter', sans-serif;
   gap: govuk-spacing(1);
 }
 
+// Record type links above the filters and results.
+.dfe-kind-nav .moj-sub-navigation__item {
+  margin-bottom: 0;
+}
+
+.moj-sub-navigation {
+  margin-bottom: 0;
+}
+
+// The three links (with counts) need about 850px to sit in one row. Below that
+// they would wrap, leaving one link alone on a second line, so keep the stacked
+// list the MoJ component already uses on mobile until there is room.
+@media (min-width: 40.0625em) and (max-width: 56.1875em) {
+  .dfe-kind-nav .moj-sub-navigation__list {
+    box-shadow: none;
+  }
+
+  .dfe-kind-nav .moj-sub-navigation__item {
+    display: block;
+    margin-top: -1px;
+    margin-right: 0;
+    box-shadow: inset 0 -1px 0 $govuk-border-colour;
+
+    &:last-child {
+      box-shadow: none;
+    }
+  }
+
+  .dfe-kind-nav .moj-sub-navigation__link {
+    padding-left: govuk-spacing(3);
+
+    &:focus::before,
+    &[aria-current="page"]::before {
+      width: 5px;
+      height: 100%;
+    }
+  }
+}
+
 // ============================================================================
 // 6. Results page — header controls and filter sections
 // ============================================================================
 
-// "N results" wrapper above the controls row.
-.dfe-results-header {
-  margin-bottom: govuk-spacing(2);
+// Sort on the left, Download on the right, bottom edges level.
+.dfe-results-bar {
+  margin-bottom: govuk-spacing(4);
 }
 
-// Sort + Download row, sitting above the result cards.
 .dfe-results-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: govuk-spacing(4);
-  margin-bottom: govuk-spacing(4);
+}
+
+// Count and record type links share a row, level on their text baselines.
+// Stacked (count above links) on mobile.
+.dfe-results-top {
+  margin-bottom: govuk-spacing(6);
+
+  @include govuk-media-query($from: tablet) {
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+.dfe-results-count {
+  @include govuk-font($size: 24, $weight: bold);
+  margin: 0;
+
+  // Sits against the right edge of the filter column, next to the links.
+  @include govuk-media-query($from: tablet) {
+    text-align: right;
+  }
+}
+
+// On small screens, stack the sort and download controls full width.
+@media (max-width: 40.0525em) {
+  .dfe-results-controls {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
 }
 
 .dfe-results-sort {
@@ -221,12 +329,11 @@ $govuk-font-family: 'Inter', sans-serif;
   margin-bottom: govuk-spacing(1);
 }
 
-.dfe-results-sort__select {
-  margin-bottom: 0;
-}
-
-.dfe-results-download {
-  margin-left: auto;
+// The select's wrapper (not the select itself) carries the default bottom
+// margin, which was lifting it above the Download button. The 2px matches the
+// button's bottom shadow so the visible bottom edges line up.
+.dfe-results-sort .govuk-form-group {
+  margin-bottom: 2px;
 }
 
 // Autocomplete filter facet (Local authority, Diocese) container.
@@ -439,7 +546,7 @@ $govuk-font-family: 'Inter', sans-serif;
 .dfe-id-numbers__value {
   @include govuk-font($size: 19);
   margin: 0;
-  width:90px;
+  width:100px;
   order: -1; // value shows first even where the term comes first in the markup
 }
 
@@ -447,30 +554,82 @@ $govuk-font-family: 'Inter', sans-serif;
 // Provider type accordion filter — parent group with nested child types
 // ============================================================================
 
-.dfe-type-group + .dfe-type-group {
-  margin-top: govuk-spacing(2);
+// The borders sit on a wrapper, not the fieldset: a fieldset's top border
+// runs through its legend.
+.dfe-type-filter {
+  padding: govuk-spacing(2) 0 govuk-spacing(1);
+  border-top: 1px solid $govuk-border-colour;
+  border-bottom: 1px solid $govuk-border-colour;
 }
 
-.dfe-type-group__parent .govuk-checkboxes__label {
-  font-weight: bold;
+.dfe-type-filter__fieldset {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-// Child types are indented and marked with a rule to signal the nesting.
-.dfe-type-group__children {
-  margin-left: govuk-spacing(5);
-  padding-left: govuk-spacing(3);
+.dfe-type-filter__legend {
+  @include govuk-font($size: 19, $weight: bold);
+  padding: 0;
+  margin-bottom: govuk-spacing(1);
+}
+
+// Type groups are indented under the legend. They reuse the filter section
+// summary styling (chevron on the right) but drop its row borders.
+.dfe-type-filter__groups {
+  margin-left: govuk-spacing(3);
+}
+
+.dfe-type-filter .dfe-type-group.dfe-filter-section {
+  border: 0;
+}
+
+// "(9 types, 2 selected)" sits lighter than the group name.
+.dfe-type-group__meta {
+  font-weight: normal;
+}
+
+// Open group: the types sit under a rule to show they belong to the group.
+.dfe-type-filter .dfe-type-group > .govuk-details__text {
+  margin-left: govuk-spacing(1);
+  padding: 0 0 govuk-spacing(2) govuk-spacing(3);
   border-left: 2px solid $govuk-border-colour;
 }
 
-// With JS enabled the children start collapsed and are revealed by the parent.
-// The `js-enabled` class is added by GOV.UK Frontend, so with JS off the
-// children remain visible and usable as an ordinary checkbox list.
-.js-enabled .dfe-type-group__children {
-  display: none;
+// input is hidden in the markup, so hide the box drawn on its label too, and
+// line the text up with the other labels. Secondary text colour (not opacity)
+// keeps it readable: 7.1:1 on white, so it still meets WCAG AA.
+.govuk-checkboxes__label.dfe-checkboxes__label--unavailable,
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label.dfe-checkboxes__label--unavailable {
+  margin-left: 34px;
+  opacity: 1;
+  color: $govuk-secondary-text-colour;
+  cursor: default;
+
+  &::before,
+  &::after {
+    display: none;
+  }
 }
 
-.js-enabled .dfe-type-group--open .dfe-type-group__children {
-  display: block;
+.dfe-type-group__all {
+  margin-bottom: govuk-spacing(2);
+}
+
+// GOV.UK checkboxes draw no mixed state, so show a dash when only some of a
+// group's types are ticked. (The native indeterminate state is also what
+// assistive technology announces as "mixed".)
+.dfe-type-group__all .govuk-checkboxes__input:indeterminate + .govuk-checkboxes__label::after {
+  top: 20px;
+  left: 6px;
+  width: 12px;
+  height: 0;
+  border-width: 3px 0 0 0;
+  border-top-color: currentcolor; // the tick sets this to transparent
+  transform: none;
+  opacity: 1;
 }
 
 // ============================================================================

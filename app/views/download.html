@@ -12,7 +12,7 @@
 {% set specificDataHtml %}
   <p class="govuk-body">Select all the data you need</p>
 
-  <p class="govuk-hint">File sizes are for CSV. JSON and XLSX files are larger.</p>
+  <p class="govuk-hint">File sizes are for CSV. XLSX files are larger.</p>
 
   {{ govukCheckboxes({
     name: "provider-data",
@@ -132,7 +132,7 @@
           name: "download-scope",
           fieldset: {
             legend: {
-              text: "What records do you want to download?",
+              text: "Which records do you want to download?",
               classes: "govuk-fieldset__legend--m",
               isPageHeading: false
             }
@@ -144,14 +144,14 @@
             },
             {
               value: "specific",
-              text: "Selected records",
+              text: "Make your own selection",
               conditional: {
                 html: specificDataHtml
               }
             },
             {
               value: "updates",
-              text: "Updates only",
+              text: "Updates only (select a date you want updates from)",
               conditional: {
                 html: updatesDateHtml
               }
@@ -176,7 +176,7 @@
               },
               {
                 value: "earlier",
-                text: "Version from an earlier date",
+                text: "Version from an earlier date (select a date)",
                 conditional: {
                   html: earlierDateHtml
                 }
@@ -189,7 +189,7 @@
           name: "download-format",
           fieldset: {
             legend: {
-              text: "What format do you want to download in?",
+              text: "Which format do you want to download in?",
               classes: "govuk-fieldset__legend--m",
               isPageHeading: false
             }
@@ -200,10 +200,6 @@
               text: "CSV"
             },
             {
-              value: "json",
-              text: "JSON"
-            },
-            {
               value: "xlsx",
               text: "XLSX (Excel)"
             }
@@ -211,7 +207,7 @@
         }) }}
 
         {{ govukButton({
-          text: "Download dataset"
+          text: "Download data"
         }) }}
 
       </form>

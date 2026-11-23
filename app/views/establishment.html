@@ -5,7 +5,7 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
 {% set pageName = item.name %}
-{% set activeNav = "Search" %}
+{% set activeNav = "Home" %}
 
 {% set isGroup = (item.id_type === 'UID' or item.id_type === 'Group UID') %}
 
@@ -29,11 +29,11 @@
 {#
   statusTag — renders a GOV.UK tag for statuses that have one, otherwise the
   plain status text. Extend the mapping here when status_detail is introduced
-  (e.g. "Proposed to convert to academy" -> govuk-tag--orange).
+  (e.g. "Proposed to convert to academy" -> govuk-tag--blue).
 #}
 {% macro statusTag(status) %}
   {% if status == "Closed" %}
-    <strong class="govuk-tag govuk-tag--orange">Closed</strong>
+    <strong class="govuk-tag govuk-tag--blue">Closed</strong>
   {% elif status == "Open" %}
     <strong class="govuk-tag govuk-tag--green">Open</strong>
   {% else %}
@@ -114,18 +114,16 @@
 {% endmacro %}
 
 {% block beforeContent %}
-  {# A one-result search lands here with from=/search, so there is no
+  {# A one-result search lands here with from=/home, so there is no
      "Search results" step to link back to. #}
-  {% if backLink != "/search" %}
+  {% if backLink != "/home" %}
     {% set crumbs = [
       { text: "Home", href: "/home" },
-      { text: "Search", href: "/search" },
       { text: "Search results", href: backLink }
     ] %}
   {% else %}
     {% set crumbs = [
-      { text: "Home", href: "/home" },
-      { text: "Search", href: "/search" }
+      { text: "Home", href: "/home" }
     ] %}
   {% endif %}
   {{ govukBreadcrumbs({ items: crumbs }) }}
@@ -232,6 +230,14 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Local authority</dt>
           <dd class="govuk-summary-list__value">{{ item.local_authority }}</dd>
+        </div>
+      {% endif %}
+
+      {# Region #}
+      {% if item.region and item.region != "Not recorded" %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Region</dt>
+          <dd class="govuk-summary-list__value">{{ item.region }}</dd>
         </div>
       {% endif %}
 
@@ -564,32 +570,54 @@
   HISTORY PANEL (providers only) — previously known as
   ===========================================================================
 #}
-{% set historyHtml %}
-  <h2 class="govuk-heading-l">History</h2>
-  {% if predecessors.length > 0 %}
+{% macro historyTable(links, heading, emptyText, fromId) %}
+  {% if links.length > 0 %}
     <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">{{ heading }}</caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">Name</th>
-          <th scope="col" class="govuk-table__header">Type</th>
+          <th scope="col" class="govuk-table__header">Education provider type</th>
           <th scope="col" class="govuk-table__header">URN</th>
+          <th scope="col" class="govuk-table__header">Date closed</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        {% for predecessor in predecessors %}
+        {% for link in links %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a class="govuk-link" href="/establishment/{{ predecessor.id }}?from=/establishment/{{ item.id }}">{{ predecessor.name }}</a>
+              {% if link.in_register %}
+                <a class="govuk-link" href="/establishment/{{ link.id }}?from=/establishment/{{ fromId }}">{{ link.name }}</a>
+              {% else %}
+                {{ link.name }}
+              {% endif %}
             </td>
-            <td class="govuk-table__cell">{{ predecessor.type }}</td>
-            <td class="govuk-table__cell">{{ predecessor.id }}</td>
+            <td class="govuk-table__cell">
+              {% if not link.in_register %}Record not available
+              {% elif link.type_detail and (link.type | lower) != (link.type_detail | lower) %}{{ link.type }} ({{ link.type_detail }})
+              {% else %}{{ link.type }}{% endif %}
+            </td>
+            <td class="govuk-table__cell">{{ link.id }}</td>
+            <td class="govuk-table__cell">
+              {% if not link.in_register %}Record not available
+              {% elif link.close_date %}{{ link.close_date | govukDate }}
+              {% elif link.status == "Closed" %}No closed date recorded
+              {% else %}Still open{% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   {% else %}
-    <p class="govuk-body">No previous names are currently recorded for this provider.</p>
+    <h3 class="govuk-heading-m">{{ heading }}</h3>
+    <p class="govuk-body">{{ emptyText }}</p>
   {% endif %}
+{% endmacro %}
+
+{% set historyHtml %}
+  <h2 class="govuk-heading-l">History</h2>
+  {{ historyTable(predecessors, "Predecessors", "No predecessors are recorded for this provider.", item.id) }}
+  {{ historyTable(successors, "Successors", "No successors are recorded for this provider.", item.id) }}
 {% endset %}
 
 {% block content %}

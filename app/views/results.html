@@ -4,9 +4,10 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "moj/components/filter/macro.njk" import mojFilter %}
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
 
 {% set pageName = "Search results" %}
-{% set activeNav = "Search" %}
+{% set activeNav = "Home" %}
 
 {% block head %}
   {{ super() }}
@@ -16,8 +17,7 @@
 {% block beforeContent %}
   {{ govukBreadcrumbs({
     items: [
-      { text: "Home", href: "/home" },
-      { text: "Search", href: "/search" }
+      { text: "Home", href: "/home" }
     ]
   }) }}
 {% endblock %}
@@ -183,44 +183,47 @@
 #}
 {% macro providerTypeSection(groups) %}
   {% if groups.length > 0 %}
-    <details class="govuk-details dfe-filter-section" {% if groups | selectattr("anyChecked") | list | length %}open{% endif %}>
-      <summary class="govuk-details__summary">
-        <span class="govuk-details__summary-text">Education provider type</span>
-      </summary>
-      <div class="govuk-details__text">
-        {% for group in groups %}
-          {% set groupId = "type-group-" + loop.index %}
-          <div class="dfe-type-group" data-module="dfe-type-group">
-            <div class="govuk-checkboxes govuk-checkboxes--small dfe-type-group__parent">
-              <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="{{ groupId }}" type="checkbox"
-                  data-type-group-toggle
-                  aria-controls="{{ groupId }}-children"
-                  aria-expanded="{{ "true" if group.anyChecked else "false" }}"
-                  {% if group.allChecked %}checked{% endif %}>
-                <label class="govuk-label govuk-checkboxes__label" for="{{ groupId }}">
-                  {{ group.name }}
-                </label>
-              </div>
+    {# Sentence-case labels for groups whose register names are not #}
+    {% set groupLabels = { "Free Schools": "Free schools", "Children's Centres": "Children’s centres" } %}
+    <div class="dfe-type-filter">
+      <fieldset class="govuk-fieldset dfe-type-filter__fieldset">
+        <legend class="govuk-fieldset__legend dfe-type-filter__legend">Education provider type</legend>
+        <div class="dfe-type-filter__groups">
+          {% for group in groups %}
+            {% set groupId = "type-group-" + loop.index %}
+            {% set label = groupLabels[group.name] or group.name %}
+            {% set selected = group.children | selectattr("checked") | list | length %}
+            <details class="govuk-details dfe-filter-section dfe-type-group" data-module="dfe-type-group"{% if group.anyChecked %} open{% endif %}>
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  {{ label }} <span class="dfe-type-group__meta">({{ group.children | length }} {{ "type" if group.children | length == 1 else "types" }}<span data-type-selected-count>{% if selected %}, {{ selected }} selected{% endif %}</span>)</span>
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">{{ label }}</legend>
+                {# "Select all" only works with JavaScript, so it stays hidden until the script reveals it. It has no name, so it is never submitted. #}
+                <div class="govuk-checkboxes govuk-checkboxes--small dfe-type-group__all" data-type-select-all hidden>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="{{ groupId }}-all" type="checkbox">
+                    <label class="govuk-label govuk-checkboxes__label" for="{{ groupId }}-all">
+                      Select all<span class="govuk-visually-hidden"> {{ label | lower }}</span>
+                    </label>
+                  </div>
+                </div>
+                {{ govukCheckboxes({
+                  idPrefix: groupId + "-child",
+                  name: "type",
+                  classes: "govuk-checkboxes--small",
+                  items: group.children
+                }) }}
+              </fieldset>
             </div>
-            <div class="dfe-type-group__children" id="{{ groupId }}-children">
-              {{ govukCheckboxes({
-                idPrefix: groupId + "-child",
-                name: "type",
-                classes: "govuk-checkboxes--small",
-                fieldset: {
-                  legend: {
-                    text: group.name + " types",
-                    classes: "govuk-visually-hidden"
-                  }
-                },
-                items: group.children
-              }) }}
-            </div>
-          </div>
+          </details>
         {% endfor %}
       </div>
-    </details>
+    </fieldset>
+    </div>
   {% endif %}
 {% endmacro %}
 
@@ -275,6 +278,22 @@
     </div>
   </form>
 
+  {# Count on the left, record type links on the right. Same column split as the filters and results below, so the two line up. #}
+  <div class="govuk-grid-row dfe-results-top">
+    <div class="govuk-grid-column-one-third">
+      <p class="dfe-results-count">{{ totalResults | thousands }} result{{ 's' if totalResults !== 1 }}</p>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      {% if showKindNav %}
+        {{ mojSubNavigation({
+          label: "Record type",
+          classes: "dfe-kind-nav",
+          items: kindNavItems
+        }) }}
+      {% endif %}
+    </div>
+  </div>
+
   <div class="govuk-grid-row">
 
     {# Filter sidebar #}
@@ -288,6 +307,7 @@
       {% set filterOptionsHtml %}
         {{ filterSection("Operating status", statusOptions, "status", "status") }}
         {% if hasProviders %}
+          {{ filterSection("Region", regionOptions, "region", "region") }}
           {{ autocompleteSection("Local authority", "local_authority", activeLAs) }}
           {{ filterSection("Phase of education", phaseOptions, "phase", "phase") }}
           {{ providerTypeSection(providerTypeGroups) }}
@@ -351,12 +371,8 @@
 
       {% else %}
 
-        {# Results header row: count, sort, download #}
-        <div class="dfe-results-header">
-          <p class="govuk-body-l govuk-!-margin-bottom-2">
-            {{ totalResults | thousands }} result{{ 's' if totalResults !== 1 }}
-          </p>
-        </div>
+      {# Results bar #}
+      <div class="dfe-results-bar">
 
         <div class="dfe-results-controls">
           <form method="get" action="/results" class="dfe-results-sort">
@@ -391,6 +407,7 @@
             }) }}
           </div>
         </div>
+      </div>
 
         {% for item in results %}
           <div class="govuk-summary-card">
@@ -598,47 +615,35 @@
       })
     })()
 
-    // Provider type accordion.
-    // The parent checkbox selects/clears every child in its group and reveals
-    // the list so individual types can be unticked. It carries no value itself,
-    // so with JS off the children still submit normally.
+    // Provider type groups. Each group is a native <details>. With JS on, a
+    // "Select all" checkbox appears inside each one: it ticks or clears every
+    // type in that group, shows the mixed state when only some are ticked, and
+    // keeps the "n selected" count in the summary up to date. It carries no
+    // value, so with JS off the type checkboxes still submit normally.
     ;(function () {
       var groups = document.querySelectorAll('[data-module="dfe-type-group"]')
       Array.prototype.forEach.call(groups, function (group) {
-        var parent = group.querySelector('[data-type-group-toggle]')
-        var childWrap = group.querySelector('.dfe-type-group__children')
-        var children = group.querySelectorAll('.dfe-type-group__children input[type="checkbox"]')
-        if (!parent || !childWrap || children.length === 0) { return }
+        var allWrap = group.querySelector('[data-type-select-all]')
+        var all = allWrap && allWrap.querySelector('input')
+        var counter = group.querySelector('[data-type-selected-count]')
+        var children = group.querySelectorAll('input[name="type"]:not(:disabled)')
+        if (!all || children.length === 0) { return }
+        allWrap.hidden = false
 
-        function setExpanded (expanded) {
-          parent.setAttribute('aria-expanded', expanded ? 'true' : 'false')
-          group.classList.toggle('dfe-type-group--open', expanded)
-        }
-
-        function syncFromChildren () {
+        function sync () {
           var checked = 0
           Array.prototype.forEach.call(children, function (c) { if (c.checked) checked++ })
-          parent.checked = checked > 0 && checked === children.length
-          parent.indeterminate = checked > 0 && checked < children.length
-          // Keep the group open while any child is selected.
-          if (checked > 0) { setExpanded(true) }
+          all.checked = checked === children.length
+          all.indeterminate = checked > 0 && checked < children.length
+          if (counter) { counter.textContent = checked > 0 ? ', ' + checked + ' selected' : '' }
         }
 
-        parent.addEventListener('change', function () {
-          Array.prototype.forEach.call(children, function (c) { c.checked = parent.checked })
-          parent.indeterminate = false
-          // Ticking reveals the children so they can be refined; unticking
-          // leaves the group open so the user can see what changed.
-          setExpanded(true)
+        all.addEventListener('change', function () {
+          Array.prototype.forEach.call(children, function (c) { c.checked = all.checked })
+          sync()
         })
-
-        Array.prototype.forEach.call(children, function (c) {
-          c.addEventListener('change', syncFromChildren)
-        })
-
-        // Initial state: collapsed unless something in this group is selected.
-        setExpanded(parent.checked || Array.prototype.some.call(children, function (c) { return c.checked }))
-        syncFromChildren()
+        Array.prototype.forEach.call(children, function (c) { c.addEventListener('change', sync) })
+        sync()
       })
     })()
   </script>

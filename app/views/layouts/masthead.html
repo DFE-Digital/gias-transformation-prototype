@@ -7,8 +7,7 @@
 
   The x-govuk masthead documentation says to place the service navigation
   directly above the masthead and give it the `govuk-service-navigation--inverse`
-  modifier so the two read as a single section. We therefore override the whole
-  `header` block so we control the order precisely.
+  modifier so the two read as a single section.
 
   Pages using this layout set the masthead content via variables:
     {% set mastheadTitle = "..." %}          (required)
@@ -48,11 +47,6 @@
         active: activeNav == "Home"
       },
       {
-        href: "/search",
-        text: "Search",
-        active: activeNav == "Search"
-      },
-      {
         href: "/download",
         text: "Download",
         active: activeNav == "Download"
@@ -75,10 +69,12 @@
       html: "This is a prototype for a new version of the service. Nothing here is final."
     },
     title: {
-      text: mastheadTitle
+      text: mastheadTitle,
+      classes: mastheadTitleClasses
     },
     description: {
-      text: mastheadDescription
+      text: mastheadDescription,
+      classes: mastheadDescriptionClasses
     } if mastheadDescription,
     startButton: {
       text: mastheadStartButtonText,

@@ -1,6 +1,9 @@
 {% extends "layouts/masthead.html" %}
 
-{% from "node_modules/dfe-frontend/packages/components/card/macro.njk" import card %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set pageName = "Home" %}
 {% set activeNav = "Home" %}
@@ -11,6 +14,34 @@
 #}
 {% set mastheadTitle = "Find education provider records" %}
 {% set mastheadDescription = "Search and download records for education providers, provider groups and governance in England." %}
+{# Smaller masthead type, so the search and download headings lead the page #}
+{% set mastheadTitleClasses = "dfe-masthead__title--l govuk-!-margin-bottom-2" %}
+{% set mastheadDescriptionClasses = "dfe-masthead__description--l govuk-!-margin-bottom-2" %}
+{# The search band sits flush against the masthead #}
+{% set mainClasses = "govuk-!-padding-top-0" %}
+
+{% set detailsHtml %}
+  <p class="govuk-body">Education providers include:</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>Academies</li>
+    <li>Local authority maintained schools (LAMS)</li>
+    <li>Independent schools</li>
+    <li>Special schools</li>
+    <li>Free schools</li>
+    <li>Other school types such as grammar schools, faith schools and city technology colleges</li>
+    <li>Colleges</li>
+    <li>Universities</li>
+    <li>Online providers</li>
+  </ul>
+  <p class="govuk-body">Education provider groups include:</p>
+  <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+    <li>Academy trust groups</li>
+    <li>Local authority maintained school federations</li>
+    <li>Children's centre groups</li>
+    <li>Multi-academy trusts (MATs)</li>
+    <li>Secure single-academy trusts (SSATs)</li>
+  </ul>
+{% endset %}
 
 {% block content %}
 
@@ -51,43 +82,112 @@
   </div>
 -->
   
-  <!-- CARDS -->
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
+  <!-- SEARCH -->
+  <div class="dfe-search-band">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
 
-      {# Cards component - see node_modules/dfe-frontend/packages/components/card/macro.njk #}
-
-      <div class="dfe-home-cards">
-        {{ card({
-          cards: [
-            {
-              "imageCard": false,
-              "imagePath": "",
-              "altText": "",
-              "headingLevel": "2",
-              "linkCard": true,
-              "link": "/search",
-              "openInNewTab": false,
-              "heading": "Search the records",
-              "description": "Search official records for education providers, provider groups and governance roles.",
-              "meta": ""
-            },
-            {
-              "imageCard": false,
-              "imagePath": "",
-              "altText": "",
-              "headingLevel": "2",
-              "linkCard": true,
-              "link": "/download",
-              "openInNewTab": false,
-              "heading": "Download datasets",
-              "description": "Download complete datasets for analysis, reporting or for use in your own systems.",
-              "meta": ""
-            }
-          ]
+        {{ govukDetails({
+          summaryText: "What we mean by education providers",
+          html: detailsHtml
         }) }}
+
+        <h2 class="govuk-heading-xl govuk-!-margin-bottom-4">Search the records</h2>
+
+        <form method="get" action="/results" class="dfe-search-panel dfe-search-panel--flush">
+
+          <p class="govuk-body govuk-!-margin-bottom-4">Use one or both fields to search.</p>
+
+          <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-one-half">
+              {{ govukInput({
+                label: {
+                  text: "Enter a name or ID number",
+                  classes: "govuk-label--s"
+                },
+                hint: {
+                  text: "For example, a school or trust name, URN, UKPRN or DfE number"
+                },
+                id: "search-what",
+                name: "what"
+              }) }}
+            </div>
+
+            <div class="govuk-grid-column-one-half">
+              {{ govukInput({
+                label: {
+                  text: "Enter a location",
+                  classes: "govuk-label--s"
+                },
+                hint: {
+                  text: "For example, a postcode, city or local authority"
+                },
+                id: "search-where",
+                name: "where"
+              }) }}
+            </div>
+
+          </div>
+
+          {# A single checkbox needs no fieldset. Default off: closed records are hidden unless ticked. #}
+          {{ govukCheckboxes({
+            name: "include_closed",
+            classes: "govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-bottom-4",
+            items: [
+              { value: "yes", text: "Include closed education providers" }
+            ]
+          }) }}
+
+          <div class="dfe-search-panel__actions">
+            {{ govukButton({
+              text: "Search the records",
+              classes: "govuk-!-margin-bottom-0"
+            }) }}
+          </div>
+
+          <!-- Browse records by type -->
+          <div class="dfe-search-panel__browse">
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0 dfe-browse-list__title">Or browse records by type</h3>
+            <ul class="govuk-list govuk-!-margin-bottom-0 dfe-browse-list">
+              <li>
+                <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*">Browse all records</a>
+              </li>
+              <li>
+                <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=provider">Browse education providers</a>
+              </li>
+              <li>
+                <a class="govuk-link govuk-link--no-visited-state" href="/results?what=*&amp;kind=group">Browse education provider groups</a>
+              </li>
+              <li>
+                {# Placeholder: no governors browse view exists in the prototype yet #}
+                <a class="govuk-link govuk-link--no-visited-state" href="#">Browse governors</a>
+              </li>
+            </ul>
+          </div>
+
+        </form>
+
       </div>
-    
+    </div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h2 class="govuk-heading-xl govuk-!-margin-top-8 govuk-!-margin-bottom-6">Download datasets</h2>
+
+      <p class="govuk-body govuk-!-margin-bottom-6">
+        Download datasets of education providers, provider groups and governance for analysis or creating your own databases.
+      </p>
+
+      {{ govukButton({
+        text: "View download options",
+        href: "/download",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+      }) }}
+
     </div>
   </div>
 
@@ -104,13 +204,24 @@
 
       <h2 class="govuk-heading-l">Related services</h2>
 
-      <h3 class="govuk-heading-m">School Profiles</h3>
+      <h3 class="govuk-heading-m">
+        Find and compare school and college profiles
+        <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-2">New service</strong>
+      </h3>
 
       <p class="govuk-body">
         Explore detailed profiles of schools, colleges and other education providers. Compare providers and understand their characteristics, performance and provision.
       </p>
+      <p class="govuk-body">This service covers:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>about the school</li>
+        <li>admissions</li>
+        <li>curriculum and extra-curricular activities</li>
+        <li>academic performance</li>
+        <li>destinations after secondary</li>
+      </ul>
       <p class="govuk-body">
-      <a class="govuk-link" href="#">Explore School Profiles (opens in a new tab)</a>.
+      <a class="govuk-link" href="#">Explore Find and compare school and college profiles (opens in a new tab)</a>.
       </p>
 
       <h3 class="govuk-heading-m">Ofsted</h3>
