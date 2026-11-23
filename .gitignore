@@ -141,6 +141,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# vscode settings
+.vscode/
+
 # Raw GIAS extract archive (full 135-column records) — kept locally for future
 # builds, too large and not needed at runtime, so excluded from the repo.
 app/data/gias_raw.json.gz
